@@ -23,6 +23,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    height: 80%;
+    width: 800px;
     
 }
 .previewModal-header {
@@ -56,10 +58,6 @@
     background: rgba(240,240,240, 1);
     padding: 20px;
     border-radius: 0px 5px 5px 5px;
-    max-width: 600px;
-    min-width: 600px;
-    min-height: 800px;
-    max-height: 800px;
     width: 100%;
 
     position: relative;
