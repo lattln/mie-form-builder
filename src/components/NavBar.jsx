@@ -75,7 +75,7 @@ const NavBar = () => {
     return (
         <div className="navBar">
             <div className="navLogo">
-                <img src="../MIE192.png" alt="MIE Logo" /> {/* Update the path to your logo */}
+                <img src="./MIE192.png" alt="MIE Logo" /> {/* Update the path to your logo */}
             </div>
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleFileChange} style={{ display: 'none' }} />

@@ -1,4 +1,5 @@
 {
+  "homepage": "https://linlatt576.github.io/mie-form-builder_DEMO",
   "name": "mie-form-builder",
   "version": "0.1.0",
   "private": true,
@@ -20,6 +21,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,6 +47,7 @@
   },
   "devDependencies": {
     "editorjs-drag-drop": "^1.1.14",
-    "editorjs-undo": "^2.0.28"
+    "editorjs-undo": "^2.0.28",
+    "gh-pages": "^6.1.1"
   }
 }
