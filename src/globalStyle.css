@@ -1,0 +1,155 @@
+/* GLOBAL CSS */
+
+/* 
+.oswald-<uniquifier> {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+} 
+*/
+
+
+.ce-block__content, .ce-toolbar__content {
+    max-width: 85%;
+}
+
+
+.text-placeholder {
+    color: darkgray;
+}
+
+
+
+
+/* CUSTOM BLOCK SETTINGS */
+.customBlockTool {
+    margin: 0;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: rgba(201, 201, 204, .35);
+    border-radius: 5px;
+    
+
+
+}
+.customBlockTool p {
+    padding: 5px 0px 10px 0px;
+}
+
+.customBlockTool p, label, input, section, option {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+}
+
+.globalText {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+}
+
+.customBlockTool:hover {
+    background-color: rgba(201, 201, 205, .48);
+}
+
+
+.customBlockTool [contenteditable] {
+    margin: 0;
+    text-align: left;
+    user-select: text;
+    min-width: 75px; 
+}
+
+
+.customBlockTool [contenteditable], input, select:focus {
+    outline: none;
+}
+
+.customBlockTool-input {
+    padding: 8px 16px;
+    background-color: #ffffff; 
+    border: none;
+    border-radius: 4px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+.customBlockTool-select {
+    padding: 8px 16px;
+    background-color: #ffffff; 
+    border: none;
+    border-radius: 4px;
+    min-width: 180px;
+    max-width: 180px;
+}
+
+.customBlockTool-date {
+    padding: 8px 16px;
+    background-color: #ffffff; 
+    border: none;
+    border-radius: 4px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+.customBlockTool-columnAllign{
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+}
+
+.customBlockTool-padding {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+/* RENDER SETTINGS */
+.renderSetting {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px;
+    padding-top: 8px;
+    margin-bottom: -6px;
+    border-radius: 5px;
+}
+
+.renderSetting:hover {
+    background-color: #eff2f5;
+}
+
+.renderSetting-button {
+    border: 1px solid rgba(201, 201, 204, .48);
+    border-radius: 5px;
+    background-color: white;
+    padding: 2px 4px 2px 4px;
+    margin-right: 9px;
+}
+
+.renderSetting-input {
+    max-width: 120px;
+    border: 1px solid rgba(201, 201, 204, .48);
+    border-radius: 5px;
+    padding: 5px;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.renderSetting-input:focus {
+    outline: none;
+}

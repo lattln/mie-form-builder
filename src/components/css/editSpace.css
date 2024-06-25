@@ -1,0 +1,15 @@
+.editorbody {
+    text-align: center;
+    min-height: 500px;
+    margin: 0px 150px 0px 150px
+}
+
+#editorjs {
+    min-height: 500px;
+    min-width: 100%;
+    padding: 10px 0px 10px 0px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+}
+
+
