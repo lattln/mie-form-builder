@@ -19,6 +19,7 @@ export default class checkBoxQuestion {
     constructor({ data }) {
         //CONSTRUCTOR OPTIONAL/AS needed
         this.data = data || {};
+        this.isImport = data.isImport || false;
         this.wrapper = null;
         this.checkBoxOptionsContainer = null;
         this.checkBoxIndex = 0;
@@ -32,18 +33,31 @@ export default class checkBoxQuestion {
 
         const questionText = document.createElement('p');
         questionText.contentEditable = true;
-        setUpPlaceHolder(questionText, 'Enter your question...');
+        setUpPlaceHolder(questionText, this.data.question ||'Enter your question...', this.isImport);
 
 
         this.wrapper.appendChild(questionText);
         this.wrapper.appendChild(this.checkBoxContainer);
-        this.addCheckBoxOption(this.checkBoxIndex);
-        this.addCheckBoxOption(this.checkBoxIndex);
+
+        if (this.data.options === undefined) {
+            for (let i = 0; i < 3; i++) this.addCheckBoxOption();
+        } else {
+            (this.data.options || []).forEach((index) => this.addCheckBoxOption(index));
+        }
+
 
 
 
         return this.wrapper;
     }
+
+
+
+        //renders existing data.
+
+
+
+
 
     addCheckBoxOption(index) {
         
@@ -51,13 +65,14 @@ export default class checkBoxQuestion {
         const checkBoxBtn = document.createElement('input');
         const checkBoxLabel = document.createElement('label');
         checkBoxContainer.classList.add('customBlockTool-padding');
-        
 
+        let ifElseLabel = !index ? `Checkbox-${this.checkBoxIndex}` : index;
+        
         checkBoxBtn.type = 'checkbox';
-        checkBoxBtn.id = `checkbox-${index}`
+        checkBoxBtn.id = `checkbox-${this.checkBoxIndex}`
         checkBoxLabel.htmlFor = checkBoxBtn.id;
         checkBoxLabel.contentEditable = true;
-        setUpPlaceHolder(checkBoxLabel, `Option ${index}`);
+        setUpPlaceHolder(checkBoxLabel, ifElseLabel , this.isImport);
 
 
         checkBoxContainer.appendChild(checkBoxBtn);
@@ -81,9 +96,11 @@ export default class checkBoxQuestion {
     save() {
         const question = this.wrapper.querySelector('p').textContent;
         const options = Array.from(this.wrapper.querySelectorAll('label')).map(label => label.textContent);
+        const isImport = true;
         return {
             question,
-            options
+            options,
+            isImport
         };
 
     }

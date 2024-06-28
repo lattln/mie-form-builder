@@ -5,12 +5,14 @@ import reportWebVitals from './reportWebVitals';
 import EditorContextProvider from './components/EditorContext';
 import './globalStyle.css'
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-    <EditorContextProvider>
-      <App />
-    </EditorContextProvider>
+      <EditorContextProvider>
+          <App />
+      </EditorContextProvider>
+
   </div>
 
 );

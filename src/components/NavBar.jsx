@@ -9,6 +9,7 @@ const NavBar = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [jsonData, setJsonData] = useState('');
 
+
         const exportData = async () => {
             if (editorInstanceRef.current) {
                     const data = await editorInstanceRef.current.save();
@@ -18,11 +19,14 @@ const NavBar = () => {
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = 'formData.json';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
+                    const fileName = prompt("You're about to download the export file.\n\n" +
+                                            "Name of file below:", 'JSONFormData');
+                    if (fileName) {
+                        link.download = `${fileName}.json`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
                 }
                 else
                 {
@@ -48,7 +52,7 @@ const NavBar = () => {
                 
             }
 
-        const handleFileChange = (event) => {
+        const handleImport = (event) => {
         console.log("File change triggered");
         const file = event.target.files[0];
         if (file) {
@@ -59,8 +63,9 @@ const NavBar = () => {
                     const data = JSON.parse(content);
                     console.log("File content parsed successfully:", data);
                     if (editorInstanceRef.current) {
-                        await editorInstanceRef.current.render(data, 'import');
+                        await editorInstanceRef.current.render(data);
                         console.log("Form rendered successfully with imported data");
+
                     }
                 } catch (error) {
                     console.error("Failed to parse file content", error);
@@ -75,10 +80,10 @@ const NavBar = () => {
     return (
         <div className="navBar">
             <div className="navLogo">
-                <img src="./MIE192.png" alt="MIE Logo" /> {/* Update the path to your logo */}
+                <img src="../MIE192.png" alt="MIE Logo" /> {/* Update the path to your logo */}
             </div>
             <div className="navButtons">
-            <input id="fileInput" type="file" accept=".json" onChange={handleFileChange} style={{ display: 'none' }} />
+            <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
                 <label htmlFor="fileInput" className="button">Import</label>
                 <button onClick={exportData}>Export</button>
                 <button onClick={handlePreview}>Preview</button>

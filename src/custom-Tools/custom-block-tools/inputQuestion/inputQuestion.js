@@ -20,10 +20,9 @@ export default class InputQuestion {
         }
     }
 
-    constructor(data) {
-        
-
+    constructor( {data}) {
         this.data = data || {};
+        this.isImport = data.isImport || false
         this.wrapper = undefined;
         this.defaultText = 'Enter your question...'
 
@@ -36,14 +35,12 @@ export default class InputQuestion {
 
         const questionText = document.createElement('p');
         questionText.contentEditable = true;
-        questionText.textContent = this.data.question || this.defaultText;
 
         const inputField = document.createElement('input');
-        inputField.InnerHTML = this.data.inputField || '';
         inputField.classList.add('customBlockTool-input');
 
-        setUpPlaceHolder(questionText, this.defaultText);
-        setUpPlaceHolder(inputField, 'user entry');
+        setUpPlaceHolder(questionText, this.data.question || this.defaultText, this.isImport);
+        setUpPlaceHolder(inputField, 'user entry', this.isImport);
 
         const container = document.createElement('div');
         container.classList.add('customBlockTool-columnAllign');
@@ -60,9 +57,12 @@ export default class InputQuestion {
     save() {
         const question = this.wrapper.querySelector('p').textContent;
         const inputField = this.wrapper.querySelector('input').value;
+        const isImport = true;
         return {
             question,
-            inputField
+            inputField,
+            isImport
+            
         };
 
         

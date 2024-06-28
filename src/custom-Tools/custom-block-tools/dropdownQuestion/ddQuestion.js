@@ -16,6 +16,7 @@ export default class ddQuestion {
     constructor({ data }) {
         //CONSTRUCTOR OPTIONAL/AS needed
         this.data = data || {};
+        this.isImport = data.isImport || false;
         this.wrapper = null;
         this.defaultText = 'Enter your question...';
         this.selectOption = null;
@@ -28,8 +29,8 @@ export default class ddQuestion {
 
         const textQuestion = document.createElement('p');
         textQuestion.contentEditable = true;
-        setUpPlaceHolder(textQuestion, this.defaultText);
-
+        setUpPlaceHolder(textQuestion, this.data.question || this.defaultText, this.isImport);
+        
 
         this.selectOption = document.createElement('select');
 
@@ -41,6 +42,10 @@ export default class ddQuestion {
         container.appendChild(this.selectOption);
 
         this.wrapper.appendChild(container);
+
+        if (this.data.selectionOptions) {
+            (this.data.selectionOptions || []).forEach((index) => this.addOptions(index));
+        }
 
         return this.wrapper;
     }
@@ -65,7 +70,7 @@ export default class ddQuestion {
 
         const selectionInput = document.createElement('input');
         selectionInput.classList.add('renderSetting-input');
-        setUpPlaceHolder(selectionInput, 'Enter option..')
+        setUpPlaceHolder(selectionInput, 'Enter option..', this.isImport);
 
 
         addButton.addEventListener('click', () => {
@@ -94,12 +99,15 @@ export default class ddQuestion {
 
 
     save() {
+
         const question = this.wrapper.querySelector('p').textContent;
         const selectionOptions =  Array.from(this.wrapper.querySelectorAll('option')).map(option => option.value);
+        const isImport = true;
         
         return {
             question,
-            selectionOptions
+            selectionOptions,
+            isImport
         }
 
     }

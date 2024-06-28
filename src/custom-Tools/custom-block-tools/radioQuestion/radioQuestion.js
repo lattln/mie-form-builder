@@ -11,11 +11,13 @@ export default class RadioQuestion {
         };
     }
 
-    constructor({ data }) {
+    constructor({data}) {
         this.data = data || {};
+        console.log("RadiOQuestion Constructor: ", this.data);
+        this.isImport = data.isImport || false;
         this.wrapper = null;
         this.container = null;
-        this.optionCount = 0;
+        this.optionCount = 1;
         this.defaultText = 'Enter your question...';
     }
 
@@ -29,8 +31,8 @@ export default class RadioQuestion {
         // Initialize the question text
         const questionText = document.createElement('p');
         questionText.contentEditable = true;
- 
-        setUpPlaceHolder(questionText, this.data.question || this.defaultText);
+
+        setUpPlaceHolder(questionText, this.data.question || this.defaultText, this.isImport );
 
         // Append elements to the wrapper
         
@@ -40,7 +42,7 @@ export default class RadioQuestion {
 
         //renders existing data.
         if (this.data.options === undefined) {
-            for (let i = 0; i < 3; i++) this.addOption(this.optionCount);
+            for (let i = 0; i < 3; i++) this.addOption();
         } else {
             (this.data.options || []).forEach((index) => this.addOption(index));
         }
@@ -50,7 +52,8 @@ export default class RadioQuestion {
     }
 
     addOption(index) {
-        const actualIndex = index || ++this.optionCount;
+
+        let ifElseLabel = !index ? `Option ${this.optionCount}` : index;
 
         const optionsContainer = document.createElement('div');
         optionsContainer.classList.add('customBlockTool-padding');
@@ -58,16 +61,14 @@ export default class RadioQuestion {
         const radioInput = document.createElement('input');
         radioInput.type = 'radio';
         radioInput.name = 'radioQuestion';
-        radioInput.id = `radio-${actualIndex}`;
+        radioInput.id = `radio-${this.optionCount}`;
+        
 
         const label = document.createElement('label');
         label.htmlFor = radioInput.id;
-        setUpPlaceHolder(label, `Option ${actualIndex}`);
+        setUpPlaceHolder(label, ifElseLabel, this.isImport);
     
         label.contentEditable = true;
-
-
-
 
         const removeButton = document.createElement('button');
         removeButton.classList.add('radioQuestion-removeButton')
@@ -81,7 +82,9 @@ export default class RadioQuestion {
         optionsContainer.appendChild(removeButton);
 
         this.container.appendChild(optionsContainer);
+        this.optionCount++;
     }
+
 
     removeOption(optionsContainer) {
         this.optionCount--;
@@ -89,11 +92,14 @@ export default class RadioQuestion {
     }
 
     save() {
+        
         const question = this.wrapper.querySelector('p').textContent;
         const options = Array.from(this.wrapper.querySelectorAll('label')).map(label => label.textContent);
+        const isImport = true;
         return {
             question,
             options,
+            isImport
         };
     }
 

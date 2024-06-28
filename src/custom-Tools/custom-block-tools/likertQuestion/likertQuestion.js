@@ -14,14 +14,17 @@ export default class likertQuestion {
         };
     }
 
-    constructor({ data }) {
+    constructor({data}) {
         //CONSTRUCTOR OPTIONAL/AS needed
+
         this.data = data || {};
+        this.isImport = data.isImport || false;
         this.wrapper = null;
-        this.colNum = 0;
+        this.colNum = !this.data.labelRatingScale ? 4 : this.data.labelRatingScale.length + 1;
         this.questionCount = 0;
         this.radioContainer = null;
         this.columnDivQuestion = null;
+        console.log(this.data.isImport);
 
     }
 
@@ -32,22 +35,24 @@ export default class likertQuestion {
         this.wrapper.classList.add('likertQuestion');
         this.radioContainer.classList.add('likertQuestion-radioContainer');
         
-        
+        if (!this.data.labelRatingScale) {
+            this.likertInitalRowAndColSetter();
+            this.likertAddScaleRow();
+        } else {
+            console.log("this is called?");
+            this.likertInitalRowAndColSetter(this.data.labelRatingScale);
+            (this.data.allQuestions || []).forEach((index) => this.likertAddScaleRow(index))
+        }
 
-        
-        this.likertInitalRowAndColSetter(3);
-        this.likertAddScaleRow();
-
+        console.log(this.questionCount);
         this.wrapper.appendChild(this.radioContainer)
         return this.wrapper;
     }
 
-    likertInitalRowAndColSetter(scaleSize) {
-        this.colNum = (scaleSize + 1);
-
+    likertInitalRowAndColSetter(index) {
+        
         for (let i = 0; i < this.colNum; i++) {
-            console.log("hi for loop");
-            
+            const ifElseLabel = !index ? 'Rating' : index[i-1];
 
             if (i === 0) {
                 const spaceHolder = document.createElement('p');
@@ -59,12 +64,14 @@ export default class likertQuestion {
                 this.wrapper.appendChild(this.columnDivQuestion);
 
             } else {
+                
                 const columnDiv = document.createElement('div');
                 columnDiv.classList.add('likertQuestion-columnDiv');
                 const ratingText = document.createElement('div');
                 ratingText.contentEditable = true;
                 ratingText.classList.add("likertQuestion-ratingText")
-                setUpPlaceHolder(ratingText, `Rating`);
+                setUpPlaceHolder(ratingText, ifElseLabel, this.isImport);
+
                 columnDiv.appendChild(ratingText);
                 this.radioContainer.appendChild(columnDiv);
             }
@@ -73,13 +80,14 @@ export default class likertQuestion {
     }
 
 
-    likertAddScaleRow() {
+    likertAddScaleRow(index) {
+
         for (let i = 0; i < this.colNum; i++) {
-            
+            const ifElseLabelRow = !index ? 'Enter a question for likert Scale..' : index;
             if (i === 0) {
                 const questionText = document.createElement('p')
                 questionText.contentEditable = true;
-                setUpPlaceHolder(questionText, 'Enter question for Likert Scale...');
+                setUpPlaceHolder(questionText, ifElseLabelRow, this.isImport);
                 this.columnDivQuestion.appendChild(questionText);
             } else {
                 const radioInput = document.createElement('input');
@@ -120,7 +128,7 @@ export default class likertQuestion {
                     if (j === 0 ){
                         const questionText = document.createElement('p')
                         questionText.contentEditable = true;
-                        setUpPlaceHolder(questionText, 'Rating');
+                        setUpPlaceHolder(questionText, 'Rating',this.isImport );
                         columnDiv.appendChild(questionText);
                     } else {
                         const radioInput = document.createElement('input');
@@ -140,10 +148,8 @@ export default class likertQuestion {
         if(this.radioContainer.children.length !== 3)
             {
             for (let i = 0; i < 2; i++) {
+                this.radioContainer.children[this.radioContainer.children.length - 1].remove()
 
-                        this.radioContainer.children[this.radioContainer.children.length - 1].remove()
-                    
-                
             }
             this.colNum -= 2;
         }
@@ -154,40 +160,26 @@ export default class likertQuestion {
 
     save() {
     // Initialize an array to hold each question and its ratings
-    const data = [];
+    const isImport = true;
+    const allQuestions = [];
+    const labelRatingScale = [];
+    for(let i = 0; i < this.radioContainer.children.length; i++) {
+        labelRatingScale.push(this.radioContainer.children[i].children[0].textContent);
+    }
+
 
     // Each question is a child of this.columnDivQuestion starting from the second child (first is the header)
     for (let i = 1; i < this.columnDivQuestion.children.length; i++) {
         const questionText = this.columnDivQuestion.children[i].textContent; 
-        const ratings = [];
-        let selected = false;
-        let selectedText = '';
-
-        ratings.push(`Scale: 1-${this.colNum - 1}`);
-        // For each column (rating scale), collect the checked status of the radio button for this question
-        for (let j = 0; j < this.radioContainer.children.length; j++) {
-            const radioButtons = this.radioContainer.children[j].getElementsByTagName('input');
-
-            if (radioButtons[i - 1] && radioButtons[i - 1].checked) {
-                
-                ratings.push(`Selected: ${j + 1}`); 
-                selected = true;
-            } 
-        }
-
-        if (selected === false) {
-            selectedText = 'No selection'
-            ratings.push(`Selected: ${selectedText}`);
-
-        }
-
-        data.push({
-            question: questionText,
-            ratings: ratings
-        });
+        allQuestions.push(questionText);
     }
 
-    return data;
+
+    return {
+        allQuestions,
+        labelRatingScale,
+        isImport
+    }
 }
 
     renderSettings() {

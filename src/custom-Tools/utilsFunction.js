@@ -1,16 +1,27 @@
-export function setUpPlaceHolder(element, text) {
+export function setUpPlaceHolder(element, text, isImport) {
     const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
+    const defaultText = "editable text";
+
 
     if (isInput) {
         if (!element.value) {
             element.placeholder = text;
         }
     } else {
-        element.textContent = element.textContent.trim() || text;
-        element.classList.add('text-placeholder');
+        if (isImport === true) {
+            element.textContent = element.textContent.trim() || text;
+        }
+        else if (isImport === false) {
+            element.textContent = element.textContent.trim() || text;   
+            element.classList.add('text-placeholder');
+
+        }
+        
     
         
     }
+
+    if(isImport) return;
 
     ['click', 'focus'].forEach(function(e) {
         element.addEventListener(e, () => {

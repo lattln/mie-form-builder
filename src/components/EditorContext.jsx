@@ -17,7 +17,8 @@ const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 export const EditorContext = createContext();
 
 function EditorContextProvider(props) {
-    const editorInstanceRef = useRef(null)
+    const editorInstanceRef = useRef(null);
+
     const initEditor = () => {
         const editor = new EditorJS({
 
@@ -57,12 +58,24 @@ function EditorContextProvider(props) {
 
 
                 //Custom Block Tools ----------
-                radioQuestion: RadioQuestion,
-                inputQuestion:  InputQuestion,
-                dropdownQuestion: DropDownQuestion,
-                dateQuestion: DateQuestion,
-                likertQuestion: LikertQuestion,
-                checkBoxQuestion: CheckBoxQuestion,
+                radioQuestion: {
+                    class: RadioQuestion,
+                },
+                inputQuestion: {
+                    class: InputQuestion,
+                },
+                dropdownQuestion: {
+                    class: DropDownQuestion,
+                },
+                dateQuestion: {
+                    class: DateQuestion,
+                },
+                likertQuestion: {
+                    class: LikertQuestion,
+                },
+                checkBoxQuestion: {
+                    class: CheckBoxQuestion,
+                },
                 //--------------------------
 
                 

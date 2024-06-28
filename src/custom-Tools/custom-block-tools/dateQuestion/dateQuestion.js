@@ -16,6 +16,7 @@ export default class dateQuestion {
     constructor({ data }) {
         //CONSTRUCTOR OPTIONAL/AS needed
         this.data = data || {};
+        this.isImport = data.isImport || false;
         this.wrapper = null;
         this.defaultText = 'Enter your question...'
     }
@@ -26,8 +27,8 @@ export default class dateQuestion {
 
         const textQuestion = document.createElement('p');
         textQuestion.contentEditable = true;
-        textQuestion.textContent = this.data.question || this.defaultText;
-        setUpPlaceHolder(textQuestion, this.defaultText);
+
+        setUpPlaceHolder(textQuestion, this.data.question || this.defaultText, this.isImport);
         this.selectOption = document.createElement('select');
 
         const dateInput = document.createElement('input');
@@ -50,9 +51,11 @@ export default class dateQuestion {
     save() {
         const question = this.wrapper.querySelector('p').textContent;
         const date = this.wrapper.querySelector('input').value;
+        const isImport = true;
         return {
             question,
-            date
+            date,
+            isImport
         }
 
     }
