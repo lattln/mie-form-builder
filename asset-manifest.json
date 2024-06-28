@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/mie-form-builder_DEMO/static/css/main.d658bff2.css",
-    "main.js": "/mie-form-builder_DEMO/static/js/main.eb09666e.js",
+    "main.css": "/mie-form-builder_DEMO/static/css/main.b2eab1fb.css",
+    "main.js": "/mie-form-builder_DEMO/static/js/main.e3a04a3d.js",
     "static/js/453.ceb1615a.chunk.js": "/mie-form-builder_DEMO/static/js/453.ceb1615a.chunk.js",
     "index.html": "/mie-form-builder_DEMO/index.html",
-    "main.d658bff2.css.map": "/mie-form-builder_DEMO/static/css/main.d658bff2.css.map",
-    "main.eb09666e.js.map": "/mie-form-builder_DEMO/static/js/main.eb09666e.js.map",
+    "main.b2eab1fb.css.map": "/mie-form-builder_DEMO/static/css/main.b2eab1fb.css.map",
+    "main.e3a04a3d.js.map": "/mie-form-builder_DEMO/static/js/main.e3a04a3d.js.map",
     "453.ceb1615a.chunk.js.map": "/mie-form-builder_DEMO/static/js/453.ceb1615a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d658bff2.css",
-    "static/js/main.eb09666e.js"
+    "static/css/main.b2eab1fb.css",
+    "static/js/main.e3a04a3d.js"
   ]
 }
