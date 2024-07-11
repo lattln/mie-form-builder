@@ -79,7 +79,7 @@ const NavBar = () => {
     return (
         <div className="navBar">
             <div className="navLogo">
-                <img src="../MIE192.png" alt="MIE Logo" />
+                <img src={`${process.env.PUBLIC_URL}/MIE512.png`} alt="MIE Logo" />
             </div>
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
