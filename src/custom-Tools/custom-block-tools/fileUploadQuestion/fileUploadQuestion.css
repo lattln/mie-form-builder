@@ -1,0 +1,24 @@
+.fileUpload-ddBoxArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    border: 2px dashed rgba(160, 160, 160, 1);
+    margin-right: 20px;
+}
+
+.active {
+    border: 2px solid rgba(160, 160, 160, 1);
+}
+
+.fileUpload-ddBoxText {
+    margin: 0;
+    padding: 0 !important;
+    cursor: default ;
+}
+
+.fileUpload-ddBoxLabel {
+    font-weight: 700;
+    cursor: pointer;
+}

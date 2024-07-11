@@ -1,58 +1,53 @@
-import { setUpPlaceHolder } from '../../utilsFunction';
+import { add_icon, likert_icon, remove_icon } from '../../SVGIcons';
+import { setUpPlaceHolder, deleteBlockBtn, initalRating, initalQuestion, createRenderOption } from '../../utilsFunction';
 import './likertQuestion.css'
 
 export default class likertQuestion {
 
     static get toolbox() {
-        //This is a NEEDED function for EDITORJS
-        //This is what the button user will use to select the specific TOOL, This will be rendered in the Tool Selection MENU
         return {
             title: 'Question - Likert',
-            icon: `<svg class="w-[17px] h-[17px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 21h13M12 21V7m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm2-1.8c3.073.661 2.467 2.8 5 2.8M5 8c3.359 0 2.192-2.115 5.012-2.793M7 9.556V7.75m0 1.806-1.95 4.393a.773.773 0 0 0 .37.962.785.785 0 0 0 .362.089h2.436a.785.785 0 0 0 .643-.335.776.776 0 0 0 .09-.716L7 9.556Zm10 0V7.313m0 2.243-1.95 4.393a.773.773 0 0 0 .37.962.786.786 0 0 0 .362.089h2.436a.785.785 0 0 0 .643-.335.775.775 0 0 0 .09-.716L17 9.556Z"/>
-                    </svg>`
+            icon: likert_icon
         };
     }
 
-    constructor({data}) {
-        //CONSTRUCTOR OPTIONAL/AS needed
-
+    constructor({data, api}) {
         this.data = data || {};
-        this.isImport = data.isImport || false;
+        this.api = api;
+        this.outerWrapper = null;
         this.wrapper = null;
         this.colNum = !this.data.labelRatingScale ? 4 : this.data.labelRatingScale.length + 1;
         this.questionCount = 0;
         this.radioContainer = null;
         this.columnDivQuestion = null;
-        console.log(this.data.isImport);
-
     }
 
     render() {
+        this.outerWrapper = document.createElement('div');
+        this.outerWrapper.classList.add('customBlockTool');
         this.wrapper = document.createElement('div');
         this.radioContainer = document.createElement('div');
-        this.wrapper.classList.add('customBlockTool');
+        this.wrapper.classList.add('customBlockTool-innerContainer')
         this.wrapper.classList.add('likertQuestion');
         this.radioContainer.classList.add('likertQuestion-radioContainer');
-        
+
         if (!this.data.labelRatingScale) {
             this.likertInitalRowAndColSetter();
             this.likertAddScaleRow();
         } else {
-            console.log("this is called?");
             this.likertInitalRowAndColSetter(this.data.labelRatingScale);
             (this.data.allQuestions || []).forEach((index) => this.likertAddScaleRow(index))
         }
 
-        console.log(this.questionCount);
         this.wrapper.appendChild(this.radioContainer)
-        return this.wrapper;
+        deleteBlockBtn(this.outerWrapper, this.api)
+        this.outerWrapper.appendChild(this.wrapper)
+        return this.outerWrapper;
     }
 
-    likertInitalRowAndColSetter(index) {
+    likertInitalRowAndColSetter = (index) => {
         
         for (let i = 0; i < this.colNum; i++) {
-            const ifElseLabel = !index ? 'Rating' : index[i-1];
 
             if (i === 0) {
                 const spaceHolder = document.createElement('p');
@@ -62,7 +57,6 @@ export default class likertQuestion {
                 spaceHolder.textContent = 'Question';
                 this.columnDivQuestion.appendChild(spaceHolder);
                 this.wrapper.appendChild(this.columnDivQuestion);
-
             } else {
                 
                 const columnDiv = document.createElement('div');
@@ -70,24 +64,24 @@ export default class likertQuestion {
                 const ratingText = document.createElement('div');
                 ratingText.contentEditable = true;
                 ratingText.classList.add("likertQuestion-ratingText")
-                setUpPlaceHolder(ratingText, ifElseLabel, this.isImport);
-
+                if (!index) {
+                    setUpPlaceHolder(ratingText, initalRating, null);
+                }
+                else {
+                    setUpPlaceHolder(ratingText, initalRating, index[i-1]);
+                }
                 columnDiv.appendChild(ratingText);
                 this.radioContainer.appendChild(columnDiv);
             }
-            
         }
     }
 
-
-    likertAddScaleRow(index) {
-
+    likertAddScaleRow = (index) => {
         for (let i = 0; i < this.colNum; i++) {
-            const ifElseLabelRow = !index ? 'Enter a question for likert Scale..' : index;
             if (i === 0) {
                 const questionText = document.createElement('p')
                 questionText.contentEditable = true;
-                setUpPlaceHolder(questionText, ifElseLabelRow, this.isImport);
+                setUpPlaceHolder(questionText, initalQuestion, index);
                 this.columnDivQuestion.appendChild(questionText);
             } else {
                 const radioInput = document.createElement('input');
@@ -100,7 +94,7 @@ export default class likertQuestion {
         
     }
 
-    likertRemoveScaleRow() {
+    likertRemoveScaleRow = () => {
         if (this.questionCount !== 1) {
             for (let i = 0, j = this.questionCount; i < this.colNum; i++) {
                 if (i === 0) {
@@ -119,7 +113,7 @@ export default class likertQuestion {
         
     }
 
-    likertAddScaleCol() {
+    likertAddScaleCol = () => {
         if (this.radioContainer.children.length < 7) {
             for (let i = 0; i < 2; i++) {
                 const columnDiv = document.createElement('div');
@@ -128,7 +122,7 @@ export default class likertQuestion {
                     if (j === 0 ){
                         const questionText = document.createElement('p')
                         questionText.contentEditable = true;
-                        setUpPlaceHolder(questionText, 'Rating',this.isImport );
+                        setUpPlaceHolder(questionText, initalRating, null);
                         columnDiv.appendChild(questionText);
                     } else {
                         const radioInput = document.createElement('input');
@@ -144,148 +138,64 @@ export default class likertQuestion {
         
     }
     
-    likertRemoveScaleCol() {
+    likertRemoveScaleCol = () => {
         if(this.radioContainer.children.length !== 3)
             {
             for (let i = 0; i < 2; i++) {
                 this.radioContainer.children[this.radioContainer.children.length - 1].remove()
-
             }
             this.colNum -= 2;
         }
-        
-        
-
     }
-
-    save() {
-    // Initialize an array to hold each question and its ratings
-    const isImport = true;
-    const allQuestions = [];
-    const labelRatingScale = [];
-    for(let i = 0; i < this.radioContainer.children.length; i++) {
-        labelRatingScale.push(this.radioContainer.children[i].children[0].textContent);
-    }
-
-
-    // Each question is a child of this.columnDivQuestion starting from the second child (first is the header)
-    for (let i = 1; i < this.columnDivQuestion.children.length; i++) {
-        const questionText = this.columnDivQuestion.children[i].textContent; 
-        allQuestions.push(questionText);
-    }
-
-
-    return {
-        allQuestions,
-        labelRatingScale,
-        isImport
-    }
-}
 
     renderSettings() {
-        const setting = [
+        const settings = [
             {
                 name: 'Add Question',
-                icon: `<svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                        </svg>`
+                icon: add_icon
     
             },
             {
                 name: 'Remove Question',
-                icon: `<svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
-                        </svg>`
+                icon: remove_icon
             },
             {
                 name: 'Add Rating',
-                icon: `<svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                        </svg>`
+                icon: add_icon
             },
             {
                 name: 'Remove Rating',
-                icon: `<svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
-                        </svg>`
+                icon: remove_icon
             }
         ]
 
         const wrapper = document.createElement('div');
-        wrapper.classList.add('likertQuestion-renderSetting');
+        wrapper.classList.add('renderSetting');
 
 
-
-        //ADD QUESTION BUTTON
-        const addQuestionContainer = document.createElement('div');
-        const addQuestionBtn = document.createElement('button');
-        const addQuestionLabel = document.createElement('p');
-        addQuestionContainer.classList.add('renderSetting');
-        addQuestionBtn.classList.add('renderSetting-button')
-        
-        addQuestionBtn.innerHTML = setting[0].icon;
-        addQuestionLabel.textContent = setting[0].name;
-
-        addQuestionContainer.addEventListener('click', () => this.likertAddScaleRow()
-        )
-
-        addQuestionContainer.appendChild(addQuestionBtn);
-        addQuestionContainer.appendChild(addQuestionLabel);
-        wrapper.appendChild(addQuestionContainer);
-
-
-
-        //RREMOVE QUESTION BUTTON
-        const removeQuestionContainer = document.createElement('div');
-        const removeQuestioBtn = document.createElement('button');
-        const removeQuestionLabel = document.createElement('p');
-        removeQuestionContainer.classList.add('renderSetting');
-        removeQuestioBtn.classList.add('renderSetting-button')
-        
-        removeQuestioBtn.innerHTML = setting[1].icon;
-        removeQuestionLabel.textContent = setting[1].name;
-
-        removeQuestionContainer.addEventListener('click', () => this.likertRemoveScaleRow())
-        removeQuestionContainer.appendChild(removeQuestioBtn);
-        removeQuestionContainer.appendChild(removeQuestionLabel);
-        wrapper.appendChild(removeQuestionContainer);
-        
-        
-
-        //ADD COLUMN BUTTON
-        const addRatingContainer = document.createElement('div');
-        const addRatingBtn = document.createElement('button');
-        const addRatingLabel = document.createElement('p');
-        addRatingContainer.classList.add('renderSetting');
-        addRatingBtn.classList.add('renderSetting-button')
-        
-        addRatingBtn.innerHTML = setting[2].icon;
-        addRatingLabel.textContent = setting[2].name;
-
-        addRatingContainer.addEventListener('click', () => this.likertAddScaleCol());
-        addRatingContainer.appendChild(addRatingBtn);
-        addRatingContainer.appendChild(addRatingLabel);
-        wrapper.appendChild(addRatingContainer);
-
-
-        //REMOVE COLUMN BUTTON
-        const removeRatingContainer = document.createElement('div');
-        const removeRatingBtn = document.createElement('button');
-        const removeRatingLabel = document.createElement('p');
-        removeRatingContainer.classList.add('renderSetting');
-        removeRatingBtn.classList.add('renderSetting-button');
-
-        removeRatingBtn.innerHTML = setting[3].icon;
-        removeRatingLabel.textContent = setting[3].name;
-
-        removeRatingContainer.addEventListener('click', () => this.likertRemoveScaleCol());
-        removeRatingContainer.appendChild(removeRatingBtn);
-        removeRatingContainer.appendChild(removeRatingLabel);
-        wrapper.appendChild(removeRatingContainer);
+        createRenderOption(settings[0].name, settings[0].icon, wrapper, () => this.likertAddScaleRow());
+        createRenderOption(settings[1].name, settings[1].icon, wrapper, () => this.likertRemoveScaleRow());
+        createRenderOption(settings[2].name, settings[2].icon, wrapper, () => this.likertAddScaleCow());
+        createRenderOption(settings[3].name, settings[3].icon, wrapper, () => this.likertRemoveScaleCow());
         
         return wrapper;
+    }
 
-
-
+    save() {
+        const allQuestions = [];
+        const labelRatingScale = [];
+        for(let i = 0; i < this.radioContainer.children.length; i++) {
+            labelRatingScale.push(this.radioContainer.children[i].children[0].textContent);
+        }
+    
+        for (let i = 1; i < this.columnDivQuestion.children.length; i++) {
+            const questionText = this.columnDivQuestion.children[i].textContent; 
+            allQuestions.push(questionText);
+        }
+    
+        return {
+            allQuestions,
+            labelRatingScale,
+        }
     }
 }

@@ -1,71 +1,100 @@
-import {setUpPlaceHolder} from '../../utilsFunction';
+import { add_table, Input_Icon, sub_table } from '../../SVGIcons';
+import {setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalGlobal, createRenderOption} from '../../utilsFunction';
 
 
 export default class InputQuestion {
-
-    //We need atleast of two methods to create a block Tool for Editor.js -- render() & save()
-    //We also need to provide a toolbox() get method to display inside the toolbox of editorJS Below is what we can do
-
     static get toolbox() {
-        //You are going to return a title: <tool name> 
-        // and return a icon: <icon> 
-        // looks something like below
 
         return {
             title: 'Question - UserInput',
-            icon: `<svg class="w-[17px] h-[17px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.7" d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.441 1.559a1.907 1.907 0 0 1 0 2.698l-6.069 6.069L10 19l.674-3.372 6.07-6.07a1.907 1.907 0 0 1 2.697 0Z"/>
-                    </svg>`
-
+            icon: Input_Icon
         }
     }
 
-    constructor( {data}) {
+    constructor( {data, api}) {
         this.data = data || {};
-        this.isImport = data.isImport || false
-        this.wrapper = undefined;
-        this.defaultText = 'Enter your question...'
-
-
+        this.api = api;
+        this.wrapper = null;
+        this.blockQuestionContainer = null;
+        
     }
 
     render() {
         this.wrapper = document.createElement('div');
         this.wrapper.classList.add('customBlockTool')
 
-        const questionText = document.createElement('p');
-        questionText.contentEditable = true;
+        this.blockQuestionContainer = document.createElement('div');
+        this.blockQuestionContainer.classList.add('inlineEvenSpace');
 
-        const inputField = document.createElement('input');
-        inputField.classList.add('customBlockTool-input');
-
-        setUpPlaceHolder(questionText, this.data.question || this.defaultText, this.isImport);
-        setUpPlaceHolder(inputField, 'user entry', this.isImport);
-
-        const container = document.createElement('div');
-        container.classList.add('customBlockTool-columnAllign');
-
-        container.appendChild(questionText);
-        container.appendChild(inputField);
-        this.wrapper.appendChild(container);
-
+        deleteBlockBtn(this.wrapper, this.api);
+        this.setupBlock();
 
         return this.wrapper;
     }
 
 
+    setupBlock() {
+        const questionText = document.createElement('p');
+        questionText.classList.add("customBlockTool-questionPadding");
+        questionText.contentEditable = true;
+
+        const inputField = document.createElement('input');
+        inputField.classList.add('customBlockTool-input');
+
+        setUpPlaceHolder(questionText, initalQuestion, this.data.question);
+        setUpPlaceHolder(inputField, initalGlobal + 'answer..', null);
+
+        const container = document.createElement('div');
+        container.classList.add('customBlockTool-innerContainer');
+
+        container.appendChild(questionText);
+        container.appendChild(inputField);
+        this.blockQuestionContainer.appendChild(container);
+        this.wrapper.append(this.blockQuestionContainer);
+
+    }
+
+    renderSettings() {
+        const settings = [
+            {
+                name:'Add Column',
+                icon: add_table
+            },
+            {
+                name:'Remove Column',
+                icon: sub_table
+            }
+        ]
+        const renderWrapper = document.createElement('div');
+        renderWrapper.classList.add('renderSetting');
+
+        createRenderOption(settings[0].name, settings[0].icon, renderWrapper, this.addColumn);
+        createRenderOption(settings[1].name, settings[1].icon, renderWrapper, this.removeColumn);
+        
+        return renderWrapper;
+
+    }
+
+
+
+
+    addColumn = () => {
+        if(this.blockQuestionContainer.children.length < 3 ) {
+            this.setupBlock();
+        }
+    }
+
+    removeColumn = () => {
+        if(this.blockQuestionContainer.children.length !== 1) {
+            this.blockQuestionContainer.children[this.blockQuestionContainer.children.length - 1].remove();
+        }
+    }
+
     save() {
         const question = this.wrapper.querySelector('p').textContent;
-        const inputField = this.wrapper.querySelector('input').value;
-        const isImport = true;
         return {
             question,
-            inputField,
-            isImport
-            
         };
-
-        
     }
 
 

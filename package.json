@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
     "@editorjs/checklist": "^1.6.0",
     "@editorjs/editorjs": "^2.29.1",
     "@editorjs/header": "^2.8.1",

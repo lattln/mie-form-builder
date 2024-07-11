@@ -38,7 +38,7 @@ const NavBar = () => {
             if (editorInstanceRef.current) {
                 const data = await editorInstanceRef.current.save();
                 const jsonData = JSON.stringify(data, null, 2);
-                setJsonData(jsonData); // Update the JSON data state
+                setJsonData(jsonData);
 
                 document.body.classList.add('disable-scroll');
                 setModalOpen(true);
@@ -53,15 +53,13 @@ const NavBar = () => {
             }
 
         const handleImport = (event) => {
-        console.log("File change triggered");
         const file = event.target.files[0];
-        if (file) {
+        if (file && event.target.id === 'fileInput') {
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const content = e.target.result;
                 try {
                     const data = JSON.parse(content);
-                    console.log("File content parsed successfully:", data);
                     if (editorInstanceRef.current) {
                         await editorInstanceRef.current.render(data);
                         console.log("Form rendered successfully with imported data");
@@ -70,6 +68,7 @@ const NavBar = () => {
                 } catch (error) {
                     console.error("Failed to parse file content", error);
                 }
+                event.target.value = '';
             };
             reader.readAsText(file);
         }
@@ -80,7 +79,7 @@ const NavBar = () => {
     return (
         <div className="navBar">
             <div className="navLogo">
-                <img src="./MIE192.png" alt="MIE Logo" /> {/* Update the path to your logo */}
+                <img src="../MIE192.png" alt="MIE Logo" />
             </div>
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />

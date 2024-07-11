@@ -10,8 +10,7 @@ import DropDownQuestion from "../custom-Tools/custom-block-tools/dropdownQuestio
 import DateQuestion from "../custom-Tools/custom-block-tools/dateQuestion/dateQuestion.js";
 import LikertQuestion from "../custom-Tools/custom-block-tools/likertQuestion/likertQuestion.js";
 import CheckBoxQuestion from "../custom-Tools/custom-block-tools/checkBoxQuestion/checkBoxQuestion.js";
-
-
+import FileUploadQuestion from "../custom-Tools/custom-block-tools/fileUploadQuestion/fileUploadQuestion.js";
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 
 export const EditorContext = createContext();
@@ -56,7 +55,6 @@ function EditorContextProvider(props) {
                 //InlineTool
                 marker: MarkerTool,
 
-
                 //Custom Block Tools ----------
                 radioQuestion: {
                     class: RadioQuestion,
@@ -76,8 +74,9 @@ function EditorContextProvider(props) {
                 checkBoxQuestion: {
                     class: CheckBoxQuestion,
                 },
-                //--------------------------
-
+                fileUploadQuestion: {
+                    class: FileUploadQuestion,
+                },
                 
                 //Block Tool
                 header: {
@@ -89,12 +88,11 @@ function EditorContextProvider(props) {
                     }
                 },
 
-                //Block Tool
                 paragraph: {
                     class: Paragraph,
                     inlineToolbar: ['bold', 'italic', 'link', 'marker'],
                     tunes: ['textAlignmentTune']
-                }
+                },
 
             }
         });

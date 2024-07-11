@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    background: rgba(235, 235, 235, .9);
+}
+
+.app{
+    height: 100%;
+}
+
+
+.pass {
+    pointer-events: none; 
+}

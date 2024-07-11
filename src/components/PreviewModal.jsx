@@ -8,9 +8,6 @@ const PreviewModal = ({ isOpen, onClose, jsonRender }) => {
 
     if (!isOpen) return null;
 
-
-
-    
     const handleFormClick = () => {
         setView('form');
         

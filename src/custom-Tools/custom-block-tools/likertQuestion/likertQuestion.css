@@ -1,5 +1,6 @@
 .likertQuestion {
     display: flex;
+    margin-top: .3em;
     
 }
 
@@ -7,6 +8,7 @@
     margin: 0;
     padding: 5px 10px 10px 0px;
     margin-right: 100px;
+    cursor: default;
 }
 
 .likertQuestion-columnDivQuestion [contenteditable] {
@@ -33,9 +35,11 @@
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    margin-right: -20px;
 }
 
 .renderSetting p{
     margin: 0;
     font-size: 15px;
 }
+
