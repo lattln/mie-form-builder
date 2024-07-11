@@ -1,3 +1,1 @@
-DEMO of MIE-FORMBUILDER
-
-https://linlatt576.github.io/mie-form-builder_DEMO/
+DEMO of [MIE-FORMBUILDER](https://lattln.github.io/mie-form-builder_DEMO/)
