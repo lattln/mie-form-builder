@@ -1,6 +1,6 @@
 import './radioQuestion.css';
 import '../../SVGIcons'
-import { setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalOption } from '../../utilsFunction';
+import { setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalOption, createRenderOption } from '../../utilsFunction';
 import { add_icon, radio_Icon, trashCan_Icon } from '../../SVGIcons';
 
 export default class RadioQuestion {
@@ -91,23 +91,14 @@ export default class RadioQuestion {
                 icon: add_icon
             };
 
-        const wrapper = document.createElement('div');
+        const renderWrapper = document.createElement('div');
+        renderWrapper.classList.add('renderSetting');
 
-        const addOptionContainer = document.createElement('div');
-        const addOptionBtn = document.createElement('button');
-        const addOptionLabel = document.createElement('p');
-        addOptionContainer.classList.add('renderSetting');
-        addOptionBtn.classList.add('renderSetting-button')
+        createRenderOption(settings.name, settings.icon, renderWrapper, (index) => this.addOption());
 
-        addOptionBtn.innerHTML = settings.icon;
-        addOptionLabel.textContent = settings.name;
-        
-        addOptionContainer.addEventListener('click', () => this.addOption());
-        addOptionContainer.appendChild(addOptionBtn);
-        addOptionContainer.appendChild(addOptionLabel);
-        wrapper.appendChild(addOptionContainer);
 
-        return wrapper;
+
+        return renderWrapper;
     }
 
     save() {

@@ -94,7 +94,7 @@ export default class checkBoxQuestion {
         const wrapper = document.createElement('div');
         wrapper.classList.add('renderSetting');
 
-        createRenderOption(settings[0].name, settings[0].icon, wrapper, () => {this.addCheckBoxOption(this.checkBoxIndex)});
+        createRenderOption(settings[0].name, settings[0].icon, wrapper, () => this.addCheckBoxOption());
         createRenderOption(settings[1].name, settings[1].icon, wrapper, this.removeCheckBoxOption);
 
         return wrapper;

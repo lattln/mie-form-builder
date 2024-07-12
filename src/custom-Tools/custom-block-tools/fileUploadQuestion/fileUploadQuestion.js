@@ -56,6 +56,7 @@ export default class fileUploadQuestion{
         fileInput.type = 'file';
         fileInput.style.display = 'none';
         fileInput.id ='userDocInput';
+        fileInput.accept = '.pdf,.docx';
 
         this.fileLabel = document.createElement('label');
         this.fileLabel.classList.add("fileUpload-ddBoxLabel");
@@ -98,7 +99,6 @@ export default class fileUploadQuestion{
         fileInput.addEventListener('change', (event) => {
             this.file = event.target.files[0];
             this.handleFile();
-            event.target.value = !this.validType ? '' : event.target.value;
 
         })
 
@@ -107,31 +107,16 @@ export default class fileUploadQuestion{
 
     }
     handleFile() {
-                                //.Docx
-        const validFileTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                                //.Doc
-                                'application/msword',
-                                //.Pdf
-                                'application/pdf', ];
-        let filetype = this.file.type;
-        
-        if(validFileTypes.includes(filetype)) {
-            this.validType = true;
-            let fileReader = new FileReader();
-            fileReader.onload = () => {
-                let fileURL = fileReader.result;
-                //Only Console logging it as of rn.
-                console.log(fileURL);
-            };
-            fileReader.readAsDataURL(this.file);
-            this.ddBoxText.textContent = 'Uploaded';
-            this.ddBoxText2.textContent = '';
-            this.fileLabel.textContent = '';
-        } else {
-            const validTypeOutput = validFileTypes.map(type => type.split('/')[1]).join(", \n");
-            alert(`Not a valid file type. \nValid file types: \n${validTypeOutput}`);
-            this.deleteFileUI();
-        }
+        let fileReader = new FileReader();
+        fileReader.onload = () => {
+            let fileURL = fileReader.result;
+            //Only Console logging it as of rn.
+            console.log(fileURL);
+        };
+        fileReader.readAsDataURL(this.file);
+        this.ddBoxText.textContent = 'Uploaded';
+        this.ddBoxText2.textContent = '';
+        this.fileLabel.textContent = '';
     }
 
     deleteFileUI() {

@@ -98,12 +98,10 @@ export default class likertQuestion {
         if (this.questionCount !== 1) {
             for (let i = 0, j = this.questionCount; i < this.colNum; i++) {
                 if (i === 0) {
-                    console.log(this.columnDivQuestion.children[j])
                     this.columnDivQuestion.children[j].remove();
                     
                 }
                 else {
-                    console.log(this.radioContainer.children[i-1].children[j]);
                     this.radioContainer.children[i-1].children[j].remove();
                 }
             }
@@ -172,11 +170,10 @@ export default class likertQuestion {
         const wrapper = document.createElement('div');
         wrapper.classList.add('renderSetting');
 
-
         createRenderOption(settings[0].name, settings[0].icon, wrapper, () => this.likertAddScaleRow());
         createRenderOption(settings[1].name, settings[1].icon, wrapper, () => this.likertRemoveScaleRow());
-        createRenderOption(settings[2].name, settings[2].icon, wrapper, () => this.likertAddScaleCow());
-        createRenderOption(settings[3].name, settings[3].icon, wrapper, () => this.likertRemoveScaleCow());
+        createRenderOption(settings[2].name, settings[2].icon, wrapper, () => this.likertAddScaleCol());
+        createRenderOption(settings[3].name, settings[3].icon, wrapper, () => this.likertRemoveScaleCol());
         
         return wrapper;
     }
