@@ -5,7 +5,7 @@ import NavBar from './components/NavBar';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { EditorContext } from './components/EditorContext';
 import { SvgImg } from './custom-Tools/utilsFunction';
-import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
+import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
@@ -89,23 +89,26 @@ function App() {
     if (!activeId) return null;
 
     const iconMap = {
-      radioQuestion: radio_Icon,
-      inputQuestion: Input_Icon,
-      dropdownQuestion: selection_Icon,
-      dateQuestion: calendar_Icon,
-      likertQuestion: likert_icon,
-      checkBoxQuestion: checkBox_icon,
-      fileUploadQuestion: fileUpload_icon
+      calendarBlock: calendar_Icon,
+      checkBoxBlock: checkBox_icon,
+      inputBlock: Input_Icon,
+      likertBlock: likert_icon,
+      questionBlock: question_icon,
+      radioBlock: radio_Icon,
+      dropdownBlock: selection_Icon,
+      fileUploadBlock: fileUpload_icon
+
     };
 
     const textMap = {
-      radioQuestion: 'Radio Block',
-      inputQuestion: 'Input Block',
-      dropdownQuestion: 'Selection Block',
-      dateQuestion: 'Calendar Block',
-      likertQuestion: 'Likert Block',
-      checkBoxQuestion: 'CheckBox Block',
-      fileUploadQuestion: 'Upload Block'
+      calendarBlock: 'Calendar Block',
+      checkBoxBlock: 'CheckBox Block',
+      inputBlock: 'Input Block',
+      likertBlock: 'Likert Block',
+      questionBlock: 'Question Block',
+      radioBlock: 'Radio Block',
+      dropdownBlock: 'Selection Block',
+      fileUploadBlock: 'Upload Block'
     };
 
     return (

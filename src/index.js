@@ -4,15 +4,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import EditorContextProvider from './components/EditorContext';
 import './globalStyle.css'
+import './App.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <div>
+  <div className='all'>
       <EditorContextProvider>
           <App />
       </EditorContextProvider>
-
   </div>
 
 );

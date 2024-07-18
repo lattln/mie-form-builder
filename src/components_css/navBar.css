@@ -5,17 +5,18 @@
     padding: 10px 0px;
     background-color: rgba(255,255,255, 1);
     box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-    margin-bottom: 1%;
     position: sticky; 
     top: 0; 
     z-index: 1000;
     border-radius: 10px;
-    margin: 5px 5px 0px 5px;
+    margin: 1px 3px 0px 3px;
+    min-width: 640px;
 }
 
 .navLogo img {
     margin-left: 25px;
-    height: 60px; 
+    height: 50px; 
+    padding: 5px
 }
 
 .navButtons {
@@ -40,3 +41,14 @@
     background-color: #e0e0e0; 
 }
 
+.warning {
+    background-color: rgba(255, 35, 35, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+
+}
+.warningText {
+    text-align: center;
+}

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import "./css/navBar.css";
+import "../components_css/navBar.css";
 import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
@@ -79,8 +79,13 @@ const NavBar = () => {
     return (
         <div className="navBar">
             <div className="navLogo">
-                <img src={`${process.env.PUBLIC_URL}/MIE512.png`} alt="MIE Logo" />
+                <img src={`${process.env.PUBLIC_URL}/MIELogo_new.png`} alt="MIE Logo" />
             </div>
+
+            <div className="warning globalText">
+                <p className="warningText">v.2.3.8 Alpha</p>
+            </div>
+
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
                 <label htmlFor="fileInput" className="button">Import</label>

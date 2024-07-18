@@ -4,14 +4,14 @@ import Header from '@editorjs/header';
 import DragDrop from 'editorjs-drag-drop';
 import Paragraph from '@editorjs/paragraph';
 import MarkerTool from '../custom-Tools/custom-inline-tools/markerTool/markerTool.js';
-import InputQuestion from "../custom-Tools/custom-block-tools/inputQuestion/inputQuestion.js";
-import RadioQuestion from "../custom-Tools/custom-block-tools/radioQuestion/radioQuestion.js";
-import DropDownQuestion from "../custom-Tools/custom-block-tools/dropdownQuestion/ddQuestion.js"
-import DateQuestion from "../custom-Tools/custom-block-tools/dateQuestion/dateQuestion.js";
-import LikertQuestion from "../custom-Tools/custom-block-tools/likertQuestion/likertQuestion.js";
-import CheckBoxQuestion from "../custom-Tools/custom-block-tools/checkBoxQuestion/checkBoxQuestion.js";
-import FileUploadQuestion from "../custom-Tools/custom-block-tools/fileUploadQuestion/fileUploadQuestion.js";
+import InputBlock from "../custom-Tools/custom-block-tools/inputBlock.js";
+import DropDownBlock from "../custom-Tools/custom-block-tools/selectionBlock.js"
+import CalendarBlock from "../custom-Tools/custom-block-tools/calenderBlock.js";
+import LikertBlock from "../custom-Tools/custom-block-tools/likertBlock.js";
+import FileUploadBlock from "../custom-Tools/custom-block-tools/uploadBlock.js";
+import questionBlock from "../custom-Tools/custom-block-tools/questionBlock.js";
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
+
 
 export const EditorContext = createContext();
 
@@ -56,27 +56,25 @@ function EditorContextProvider(props) {
                 marker: MarkerTool,
 
                 //Custom Block Tools ----------
-                radioQuestion: {
-                    class: RadioQuestion,
+                questionBlock: {
+                    class: questionBlock
                 },
-                inputQuestion: {
-                    class: InputQuestion,
+                inputBlock: {
+                    class: InputBlock,
                 },
-                dropdownQuestion: {
-                    class: DropDownQuestion,
+                dropdownBlock: {
+                    class: DropDownBlock,
                 },
-                dateQuestion: {
-                    class: DateQuestion,
+                calendarBlock: {
+                    class: CalendarBlock,
                 },
-                likertQuestion: {
-                    class: LikertQuestion,
+                likertBlock: {
+                    class: LikertBlock,
                 },
-                checkBoxQuestion: {
-                    class: CheckBoxQuestion,
+                fileUploadBlock: {
+                    class: FileUploadBlock,
                 },
-                fileUploadQuestion: {
-                    class: FileUploadQuestion,
-                },
+
                 
                 //Block Tool
                 header: {

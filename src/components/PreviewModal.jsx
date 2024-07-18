@@ -1,4 +1,4 @@
-import './css/previewModal.css';
+import '../components_css/previewModal.css';
 import { useState } from 'react';
 
 const PreviewModal = ({ isOpen, onClose, jsonRender }) => {

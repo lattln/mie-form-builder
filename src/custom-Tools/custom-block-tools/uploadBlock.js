@@ -1,8 +1,8 @@
-import { cloudUpload_icon, fileUpload_icon } from "../../SVGIcons";
-import { deleteBlockBtn, initalQuestion, setUpPlaceHolder } from "../../utilsFunction";
-import './fileUploadQuestion.css';
+import { cloudUpload_icon, fileUpload_icon } from "../SVGIcons";
+import { deleteBlockBtn, initalQuestion, setUpPlaceHolder } from "../utilsFunction";
+import './css/fileUploadQuestion.css';
 
-export default class fileUploadQuestion{
+export default class uploadBlock{
 
     static get toolbox() {
 
