@@ -1,4 +1,4 @@
 demo [mie form builder
 ](https://lattln.github.io/mie-form-builder/)
 
-![image](https://github.com/lattln/mie-form-builder/assets/56560260/ee97d408-3fa4-49a3-9303-157892eb87d3)
+![image](https://github.com/user-attachments/assets/429e3295-d581-42ed-97bd-4cb2398bc513)
