@@ -47,8 +47,7 @@ const EditSpace = ({ setDropzoneRef, isOverDropzone }) => {
             <div id="editorjs"></div>
           <div id='dropzone' ref={setDropzoneRef} className={dropzoneClass}>
             Drop and drop here to add a new element
-          </div>
-          
+          </div>   
         </div>
       </div>
     </div>

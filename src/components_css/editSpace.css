@@ -2,7 +2,7 @@
     margin-top: 10px;
     display: flex;
     justify-content: space-evenly;
-    height: 100%; 
+    height: 100%;
 }
 
 .editorWrapper {
@@ -32,25 +32,26 @@
     user-select: none;
     height: 390px;
     max-height: 100vh;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
-#editorjs, #editorContainer {
+#editorjs,
+#editorContainer {
     min-width: 100%;
     padding: 10px 0px 10px 0px;
-    flex: 1; 
-    overflow-y: auto; 
+    flex: 1;
+    overflow-y: auto;
 }
 
 
 .clearPageBtn {
-    background-color: rgba(255,0,0,0.6);
+    background-color: rgba(255, 0, 0, 0.6);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
+
 .padding {
     padding: 5px;
 }
-
 
 .dropzone {
     max-width: 79%;
@@ -61,12 +62,14 @@
     text-align: center;
     background-color: #f9f9f9;
 }
-  
+
 .dropzone.active {
     border-color: #66b3ff;
     background-color: #e6f7ff;
 }
 
-.codex-editor__redactor{
-    padding-bottom: 0 !important;
+.codex-editor {
+    .codex-editor__redactor {
+        padding-bottom: 0 !important;
+    }
 }
