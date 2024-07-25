@@ -1,15 +1,21 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { EditorContext } from "./EditorContext";
-import '../custom-Tools/SVGIcons';
+import { useDroppable } from "@dnd-kit/core";
+
 import '../components_css/editSpace.css';
 import { trashCan_Icon, x_icon } from "../custom-Tools/SVGIcons";
-import CustomToolBar from "./CustomToolBar";
 import { SvgImg } from "../custom-Tools/utilsFunction";
 
-const EditSpace = ({ setDropzoneRef, isOverDropzone }) => {
+import { EditorContext } from "./EditorContext";
+import CustomToolBar from "./CustomToolBar";
+
+const EditSpace = ({ isOverDropzone }) => {
   const { editorInstanceRef, initEditor } = useContext(EditorContext);
   const [dropzoneClass, setDropzoneClass] = useState("dropzone")
   const editorRef = useRef(null);
+
+  const {setNodeRef} = useDroppable({
+    id: 'dropzone',
+  });
 
   useEffect(() => {
     if (!editorRef.current) {
@@ -24,15 +30,12 @@ const EditSpace = ({ setDropzoneRef, isOverDropzone }) => {
     }
   };
 
-  useEffect(()=>{ 
-    if(isOverDropzone){
-        setDropzoneClass("dropzone active")
-    } else {
-        setDropzoneClass("dropzone")
-    }
+  useEffect(() => { 
+    setDropzoneClass(isOverDropzone ? "dropzone active" : "dropzone");
+  }, [isOverDropzone]);
 
-  }, [isOverDropzone])
 
+  
   return (
     <div className='editorBody'>
       <div className='editorConfigPanel'>
@@ -44,8 +47,8 @@ const EditSpace = ({ setDropzoneRef, isOverDropzone }) => {
       </div>
       <div className='editorWrapper'>
         <div id='editorContainer'>
-            <div id="editorjs"></div>
-          <div id='dropzone' ref={setDropzoneRef} className={dropzoneClass}>
+          <div id="editorjs"></div>
+          <div ref={setNodeRef} className={dropzoneClass}>
             Drop and drop here to add a new element
           </div>   
         </div>

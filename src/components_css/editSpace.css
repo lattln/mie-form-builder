@@ -38,11 +38,13 @@
 #editorjs,
 #editorContainer {
     min-width: 100%;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0;
     flex: 1;
-    overflow-y: auto;
 }
 
+#editorContainer {
+    overflow-y: auto;
+}
 
 .clearPageBtn {
     background-color: rgba(255, 0, 0, 0.6);

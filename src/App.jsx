@@ -1,36 +1,47 @@
-import { useContext, useEffect, useState, useCallback } from 'react';
-import { DndContext, DragOverlay, useDroppable } from '@dnd-kit/core';
+import { useContext, useState } from 'react';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 
 import EditSpace from './components/EditSpace';
 import NavBar from './components/NavBar';
 import { EditorContext } from './components/EditorContext';
 
 import { SvgImg } from './custom-Tools/utilsFunction';
-
 import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
+
 import './App.css';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
   const [activeId, setActiveId] = useState(null);
-  const { setNodeRef } = useDroppable({ id: 'dropzone' });
   const [isOverDropZone, setIsOverDropzone] = useState(false);
 
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
     console.log('Drag started:', event.active.id);
-    addHoverEventListener()
+  };
+
+  const handleDragOver = (event) => {
+    const { over } = event;
+    if (over && over.id === 'dropzone') {
+      setIsOverDropzone(true);
+    }
+  };
+
+  const handleDragLeave = (event) => {
+    const { over } = event;
+    if (!over || over.id !== 'dropzone') {
+      setIsOverDropzone(false);
+    }
   };
 
   const handleDragEnd = (event) => {
     const { over } = event;
     console.log('Drag ended. Active ID:', event.active.id, 'Over dropzone:', over ? over.id : 'null');
-    if (isOverDropZone) {
+    if (isOverDropZone && over && over.id === 'dropzone') {
       addBlock(event.active.id);
     }
     setActiveId(null);
-    setIsOverDropzone(false)
-    removeHoverEventListener()
+    setIsOverDropzone(false);
 
     let divElement = document.getElementById('editorContainer');
     divElement.scrollTop = divElement.scrollHeight;
@@ -43,40 +54,6 @@ function App() {
       editorInstanceRef.current.blocks.insert(type, {}, {}, blocksCount, true);
     }
   };
-
-  const handleMouseOver = useCallback((event) => {
-    const dropzoneElement = document.getElementById('dropzone');
-    if (dropzoneElement && (event.target === dropzoneElement || dropzoneElement.contains(event.target))) {
-      setIsOverDropzone(true);
-    } else {
-      setIsOverDropzone(false);
-    }
-  }, []);
-
-  const addHoverEventListener = () => {
-    const dropzoneElement = document.getElementById('dropzone');
-    if (dropzoneElement) {
-      dropzoneElement.addEventListener('mouseover', handleMouseOver);
-    }
-  };
-
-  const removeHoverEventListener = () => {
-    const dropzoneElement = document.getElementById('dropzone');
-    if (dropzoneElement) {
-      dropzoneElement.removeEventListener('mouseover', handleMouseOver);
-    }
-  };
-
-  useEffect(() => {
-    const dropzoneElement = document.getElementById('dropzone');
-    if (!dropzoneElement) return;
-
-    dropzoneElement.addEventListener('mouseover', handleMouseOver);
-
-    return () => {
-      dropzoneElement.removeEventListener('mouseover', handleMouseOver);
-    };
-  }, [handleMouseOver]);
 
   const renderOverlay = () => {
     if (!activeId) return null;
@@ -114,9 +91,14 @@ function App() {
   return (
     <div className="app">
       <NavBar />
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDragEnd={handleDragEnd}
+      >
         <DragOverlay className="pass">{renderOverlay()}</DragOverlay>
-        <EditSpace setDropzoneRef={setNodeRef} isOverDropzone ={isOverDropZone}/>
+        <EditSpace isOverDropzone={isOverDropZone} />
       </DndContext>
     </div>
   );
