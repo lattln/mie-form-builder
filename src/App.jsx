@@ -1,87 +1,80 @@
-import { useContext, useState, useCallback, useEffect } from 'react';
-import './App.css';
+import { useContext, useEffect, useState, useCallback } from 'react';
+import { DndContext, DragOverlay, useDroppable } from '@dnd-kit/core';
+
 import EditSpace from './components/EditSpace';
 import NavBar from './components/NavBar';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { EditorContext } from './components/EditorContext';
+
 import { SvgImg } from './custom-Tools/utilsFunction';
+
 import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
+import './App.css';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
   const [activeId, setActiveId] = useState(null);
-  const [overIndex, setOverIndex] = useState(0);
+  const { setNodeRef } = useDroppable({ id: 'dropzone' });
+  const [isOverDropZone, setIsOverDropzone] = useState(false);
 
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
     console.log('Drag started:', event.active.id);
-    addHoverEventListener();
+    addHoverEventListener()
   };
 
   const handleDragEnd = (event) => {
-    const { active } = event;
-    console.log('Drag ended. Active ID:', active.id, 'Over index:', overIndex);
-    if (overIndex !== null) {
-      addBlock(active.id, overIndex);
+    const { over } = event;
+    console.log('Drag ended. Active ID:', event.active.id, 'Over dropzone:', over ? over.id : 'null');
+    if (isOverDropZone) {
+      addBlock(event.active.id);
     }
     setActiveId(null);
-    setOverIndex(0);
-    removeHoverEventListener();
+    setIsOverDropzone(false)
+    removeHoverEventListener()
+
+    let divElement = document.getElementById('editorContainer');
+    divElement.scrollTop = divElement.scrollHeight;
   };
 
-  const addBlock = (type, index) => {
+  const addBlock = (type) => {
     if (editorInstanceRef.current) {
-      console.log('Inserting block type:', type, 'at index:', index);
-      editorInstanceRef.current.blocks.insert(type, {}, {}, index, true);
+      const blocksCount = editorInstanceRef.current.blocks.getBlocksCount();
+      console.log('Inserting block type:', type, 'at index:', blocksCount);
+      editorInstanceRef.current.blocks.insert(type, {}, {}, blocksCount, true);
     }
   };
 
   const handleMouseOver = useCallback((event) => {
-    let blocks = 0;
-    try {
-      blocks = editorInstanceRef.current.blocks.getBlocksCount();
+    const dropzoneElement = document.getElementById('dropzone');
+    if (dropzoneElement && (event.target === dropzoneElement || dropzoneElement.contains(event.target))) {
+      setIsOverDropzone(true);
+    } else {
+      setIsOverDropzone(false);
     }
-    catch {
-      console.log(`Block not iniated or 0`);
-      blocks = 0;
-    }
-    
-    if (blocks === 0) {
-      setOverIndex(0);
-      return;
-    }
-    for (let i = 0; i < blocks; i++) {
-      const block = editorInstanceRef.current.blocks.getBlockByIndex(i);
-      if (block.holder === event.target || block.holder.contains(event.target)) {
-        console.log(`hovering over Index ${i}`);
-        setOverIndex(i);
-        break;
-      }
-    }
-  }, [editorInstanceRef]);
+  }, []);
 
   const addHoverEventListener = () => {
-    const editorElement = document.getElementById('editorjs');
-    if (editorElement) {
-      editorElement.addEventListener('mouseover', handleMouseOver);
+    const dropzoneElement = document.getElementById('dropzone');
+    if (dropzoneElement) {
+      dropzoneElement.addEventListener('mouseover', handleMouseOver);
     }
   };
 
   const removeHoverEventListener = () => {
-    const editorElement = document.getElementById('editorjs');
-    if (editorElement) {
-      editorElement.removeEventListener('mouseover', handleMouseOver);
+    const dropzoneElement = document.getElementById('dropzone');
+    if (dropzoneElement) {
+      dropzoneElement.removeEventListener('mouseover', handleMouseOver);
     }
   };
 
   useEffect(() => {
-    const editorElement = document.getElementById('editorjs');
-    if (!editorElement) return;
+    const dropzoneElement = document.getElementById('dropzone');
+    if (!dropzoneElement) return;
 
-    editorElement.addEventListener('mouseover', handleMouseOver);
+    dropzoneElement.addEventListener('mouseover', handleMouseOver);
 
     return () => {
-      editorElement.removeEventListener('mouseover', handleMouseOver);
+      dropzoneElement.removeEventListener('mouseover', handleMouseOver);
     };
   }, [handleMouseOver]);
 
@@ -97,7 +90,6 @@ function App() {
       radioBlock: radio_Icon,
       dropdownBlock: selection_Icon,
       fileUploadBlock: fileUpload_icon
-
     };
 
     const textMap = {
@@ -124,7 +116,7 @@ function App() {
       <NavBar />
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <DragOverlay className="pass">{renderOverlay()}</DragOverlay>
-        <EditSpace />
+        <EditSpace setDropzoneRef={setNodeRef} isOverDropzone ={isOverDropZone}/>
       </DndContext>
     </div>
   );

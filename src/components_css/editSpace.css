@@ -35,13 +35,13 @@
     overflow-y: auto; 
 }
 
-#editorjs {
-    min-height: 650px;
+#editorjs, #editorContainer {
     min-width: 100%;
     padding: 10px 0px 10px 0px;
     flex: 1; 
     overflow-y: auto; 
 }
+
 
 .clearPageBtn {
     background-color: rgba(255,0,0,0.6);
@@ -49,4 +49,24 @@
 }
 .padding {
     padding: 5px;
+}
+
+
+.dropzone {
+    max-width: 79%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 25px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+  
+.dropzone.active {
+    border-color: #66b3ff;
+    background-color: #e6f7ff;
+}
+
+.codex-editor__redactor{
+    padding-bottom: 0 !important;
 }
