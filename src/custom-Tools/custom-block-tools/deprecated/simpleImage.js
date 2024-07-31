@@ -1,5 +1,5 @@
 import './simpleImage.css';
-import { setUpPlaceHolder } from '../utilsFunction';
+import { setUpPlaceHolder } from '../../utilsFunction';
 
 export default class SimpleImage {
 

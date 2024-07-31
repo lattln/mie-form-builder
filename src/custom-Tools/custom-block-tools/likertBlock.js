@@ -1,130 +1,167 @@
 import { add_icon, likert_icon, remove_icon } from '../SVGIcons';
-import { setUpPlaceHolder, deleteBlockBtn, initalRating, initalQuestion, createRenderOption, multiAppend, makeElement } from '../utilsFunction';
+import { deleteBlockBtn, initalQuestion, initalRating, setUpPlaceHolder, createRenderOption, makeElement, multiAppend } from '../utilsFunction';
 import './css/likertQuestion.css';
 
 export default class likertBlock {
 
     static get toolbox() {
         return {
-            title: 'Question - Likert',
+            title: 'Likert Block',
             icon: likert_icon
         };
     }
 
-    constructor({data, api}) {
+    constructor({ data, api }) {
         this.data = data || {};
         this.api = api;
-        this.outerWrapper = null;
         this.wrapper = null;
-        this.colNum = this.data.labelRatingScale ? this.data.labelRatingScale.length + 1 : 4;
-        this.questionCount = 0;
-        this.radioContainer = null;
-        this.columnDivQuestion = null;
+        this.blockWrapper = null;
+        this.blocks = [];
+        this.scale = this.data.scale || 5; // Default scale to 5
+        this.firstQuestionRatings = this.data.ratings ? this.data.ratings.slice() : Array(this.scale).fill(initalRating); // Store ratings of the first question
+        console.log(this.data);
     }
 
     render() {
-        this.outerWrapper = makeElement('div', ['customBlockTool']);
-        this.wrapper = makeElement('div', ['customBlockTool-innerContainer', 'likertQuestion']);
-        this.radioContainer = makeElement('div', ['likertQuestion-radioContainer']);
+        this.wrapper = makeElement('div', ['customBlockTool']);
+        this.blockWrapper = makeElement('div', ['customBlockTool-innerContainer']);
+        
+        deleteBlockBtn(this.wrapper, this.api);
 
-        if (!this.data.labelRatingScale) {
-            this.likertInitalRowAndColSetter();
-            this.likertAddScaleRow();
+        if (this.data.questions && this.data.questions.length > 0) {
+            this.data.questions.forEach((question, index) => {
+                this.addQuestion({ question }, index);
+            });
         } else {
-            this.likertInitalRowAndColSetter(this.data.labelRatingScale);
-            (this.data.allQuestions || []).forEach((index) => this.likertAddScaleRow(index));
+            this.addQuestion();
         }
 
-        this.wrapper.appendChild(this.radioContainer);
-        deleteBlockBtn(this.outerWrapper, this.api);
-        this.outerWrapper.appendChild(this.wrapper);
-        return this.outerWrapper;
+        const addQuestionBtn = makeElement('button', ['add-question-btn']);
+        addQuestionBtn.innerHTML = `${add_icon} Add Question`;
+        addQuestionBtn.onclick = () => this.addQuestion();
+
+        multiAppend(this.wrapper, [this.blockWrapper, addQuestionBtn]);
+        return this.wrapper;
     }
 
-    likertInitalRowAndColSetter = (index) => {
-        const elements = [];
-        for (let i = 0; i < this.colNum; i++) {
-            if (i === 0) {
-                const spaceHolder = makeElement('p');
-                spaceHolder.textContent = 'Question';
-                this.columnDivQuestion = makeElement('div', ['likertQuestion-columnDivQuestion']);
-                this.columnDivQuestion.appendChild(spaceHolder);
-                this.wrapper.appendChild(this.columnDivQuestion);
+    addQuestion(blockData = {}, index) {
+        const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
+        const questionText = makeElement('p', ['customBlockTool-questionPadding']);
+        questionText.contentEditable = true;
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
+
+        const radioContainer = makeElement('div', ['likertQuestion-radioContainer']);
+        const ratings = blockData.ratings || this.firstQuestionRatings.slice();
+
+        ratings.forEach((rating, i) => {
+            const columnDiv = makeElement('div', ['likertQuestion-columnDiv']);
+            const ratingText = makeElement('div', ['likertQuestion-ratingText']);
+
+            if (this.blocks.length === 0) { // Only make editable for the first question
+                ratingText.contentEditable = true;
+                ratingText.addEventListener('input', this.updateAllRatings.bind(this, i));
+                setUpPlaceHolder(ratingText, initalRating, rating);
+                this.firstQuestionRatings[i] = ratingText;
             } else {
+                ratingText.textContent = this.firstQuestionRatings[i].textContent || this.firstQuestionRatings[i];
+            }
+
+            const radioInput = makeElement('input');
+            radioInput.type = 'radio';
+            radioInput.name = `question-${this.blocks.length}`;
+
+            columnDiv.appendChild(ratingText);
+            columnDiv.appendChild(radioInput);
+            radioContainer.appendChild(columnDiv);
+        });
+
+        const deleteQuestionBtn = makeElement('button', ['delete-question-btn']);
+        deleteQuestionBtn.innerHTML = `${remove_icon} Remove Question`;
+        deleteQuestionBtn.onclick = () => this.removeLikertQuestion(blockContainer);
+
+        multiAppend(blockContainer, [questionText, radioContainer, deleteQuestionBtn]);
+        multiAppend(this.blockWrapper, [blockContainer]);
+
+        const block = { blockContainer, questionText, radioContainer, ratings };
+
+        if (typeof index === 'undefined') {
+            this.blocks.push(block);
+        } else {
+            this.blocks[index] = block;
+        }
+        this.updateBlockData();
+    }
+
+    updateAllRatings(index) {
+        const textContent = this.firstQuestionRatings[index].textContent;
+        this.blocks.forEach((block, blockIndex) => {
+            if (blockIndex > 0) { // Skip the first block as it contains the editable ratings
+                const ratingText = block.radioContainer.children[index].querySelector('.likertQuestion-ratingText');
+                ratingText.textContent = textContent;
+            }
+        });
+    }
+
+    removeLikertQuestion(blockContainer) {
+        const index = this.blocks.findIndex(block => block.blockContainer === blockContainer);
+        if (index > -1) {
+            this.blocks.splice(index, 1);
+            blockContainer.remove();
+            this.updateBlockData();
+        }
+    }
+
+    updateBlockData() {
+        this.blocks.forEach((block, index) => {
+            block.radioContainer.querySelectorAll('input').forEach(input => {
+                input.name = `question-${index}`;
+            });
+
+            if (index > 0) {
+                block.radioContainer.querySelectorAll('.likertQuestion-ratingText').forEach((ratingText, i) => {
+                    ratingText.textContent = this.firstQuestionRatings[i].textContent || this.firstQuestionRatings[i];
+                });
+            }
+        });
+    }
+
+    adjustScale(increase) {
+        if (increase && this.scale < 7) {
+            this.scale += 2;
+        } else if (!increase && this.scale > 3) {
+            this.scale -= 2;
+        }
+        this.updateScale();
+    }
+
+    updateScale() {
+        this.blocks.forEach(block => {
+            const { radioContainer } = block;
+            while (radioContainer.children.length < this.scale) {
                 const columnDiv = makeElement('div', ['likertQuestion-columnDiv']);
                 const ratingText = makeElement('div', ['likertQuestion-ratingText']);
-                ratingText.contentEditable = true;
-                setUpPlaceHolder(ratingText, initalRating, index ? index[i-1] : null);
-                columnDiv.appendChild(ratingText);
-                elements.push(columnDiv);
-            }
-        }
-        multiAppend(this.radioContainer, elements);
-    }
 
-    likertAddScaleRow = (index) => {
+                if (this.blocks.length === 0) { // Only make editable for the first question
+                    ratingText.contentEditable = true;
+                    ratingText.addEventListener('input', this.updateAllRatings.bind(this, radioContainer.children.length));
+                    setUpPlaceHolder(ratingText, initalRating, '');
+                    this.firstQuestionRatings.push(ratingText);
+                } else {
+                    ratingText.textContent = this.firstQuestionRatings[radioContainer.children.length].textContent || this.firstQuestionRatings[radioContainer.children.length];
+                }
 
-        for (let i = 0; i < this.colNum; i++) {
-            if (i === 0) {
-                const questionText = makeElement('p');
-                questionText.contentEditable = true;
-                setUpPlaceHolder(questionText, initalQuestion, index);
-                this.columnDivQuestion.appendChild(questionText);
-            } else {
                 const radioInput = makeElement('input');
                 radioInput.type = 'radio';
-                radioInput.name = `question-${this.questionCount}`;
-                this.radioContainer.children[i-1].appendChild(radioInput);
-            }
-        }
-        this.questionCount++;
-    }
+                radioInput.name = radioContainer.querySelector('input').name;
 
-    likertRemoveScaleRow = () => {
-        if (this.questionCount > 1) {
-            for (let i = 0, j = this.questionCount; i < this.colNum; i++) {
-                if (i === 0) {
-                    this.columnDivQuestion.children[j].remove();
-                } else {
-                    this.radioContainer.children[i-1].children[j].remove();
-                }
+                columnDiv.appendChild(ratingText);
+                columnDiv.appendChild(radioInput);
+                radioContainer.appendChild(columnDiv);
             }
-            this.questionCount--;
-        }
-    }
-
-    likertAddScaleCol = () => {
-        if (this.radioContainer.children.length < 7) {
-            const elements = [];
-            for (let i = 0; i < 2; i++) {
-                const columnDiv = makeElement('div', ['likertQuestion-columnDiv']);
-                for (let j = 0; j <= this.questionCount; j++) {
-                    if (j === 0) {
-                        const questionText = makeElement('p');
-                        questionText.contentEditable = true;
-                        setUpPlaceHolder(questionText, initalRating, null);
-                        columnDiv.appendChild(questionText);
-                    } else {
-                        const radioInput = makeElement('input');
-                        radioInput.type = 'radio';
-                        radioInput.name = `question-${j-1}`;
-                        columnDiv.appendChild(radioInput);
-                    }
-                }
-                elements.push(columnDiv);
+            while (radioContainer.children.length > this.scale) {
+                radioContainer.lastChild.remove();
             }
-            multiAppend(this.radioContainer, elements);
-            this.colNum += 2;
-        }
-    }
-
-    likertRemoveScaleCol = () => {
-        if (this.radioContainer.children.length > 3) {
-            for (let i = 0; i < 2; i++) {
-                this.radioContainer.lastChild.remove();
-            }
-            this.colNum -= 2;
-        }
+        });
     }
 
     renderSettings() {
@@ -132,39 +169,36 @@ export default class likertBlock {
             {
                 name: 'Add Question',
                 icon: add_icon,
-                action: this.likertAddScaleRow
+                action: () => this.addQuestion()
+            },
+            {
+                name: 'Increase Scale',
+                icon: add_icon,
+                action: () => this.adjustScale(true)
+            },
+            {
+                name: 'Decrease Scale',
+                icon: remove_icon,
+                action: () => this.adjustScale(false)
             },
             {
                 name: 'Remove Question',
                 icon: remove_icon,
-                action: this.likertRemoveScaleRow
-            },
-            {
-                name: 'Add Rating',
-                icon: add_icon,
-                action: this.likertAddScaleCol
-            },
-            {
-                name: 'Remove Rating',
-                icon: remove_icon,
-                action: this.likertRemoveScaleCol
+                action: () => this.removeLikertQuestion(this.blocks[this.blocks.length - 1].blockContainer)
             }
         ];
-    
+
         const renderWrapper = makeElement('div', ['renderSetting']);
         settings.forEach(setting => createRenderOption(setting.name, setting.icon, renderWrapper, setting.action.bind(this)));
-    
+
         return renderWrapper;
     }
-    
 
     save() {
-        const allQuestions = Array.from(this.columnDivQuestion.children).slice(1)
-                                    .map(child => child.textContent);
+        return {
 
-        const labelRatingScale = Array.from(this.radioContainer.children)
-                                    .map(child => child.children[0].textContent);
-
-        return { allQuestions, labelRatingScale };
+            ratings: this.firstQuestionRatings.map(rating => rating.textContent),  
+            questions: this.blocks.map(block => block.questionText.textContent)
+        };
     }
 }

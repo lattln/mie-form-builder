@@ -20,9 +20,8 @@ const CustomToolBar = () => {
             <DraggableItem id='inputBlock' icon={Input_Icon} text='Input Block' />
             <DraggableItem id='likertBlock' icon={likert_icon} text='Likert Block' />
             <DraggableItem id='questionBlock' icon={question_icon} text='Question Block' />
-            <DraggableItem id='dropdownBlock' icon={selection_Icon} text='Selection Block' />
+            <DraggableItem id='selectionBlock' icon={selection_Icon} text='Selection Block' />
             <DraggableItem id='fileUploadBlock' icon={fileUpload_icon} text='Upload Block' />
-
         </div>
     )
 }

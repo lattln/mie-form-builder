@@ -1,13 +1,20 @@
 body {
     margin: 0;
     background: rgba(235, 235, 235, .9);
+
 }
 
 #root, .app, .all  {
-    height: 87vh;
+    height: 88vh;
 }
 
 
 .pass {
     pointer-events: none; 
+}
+
+* {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
