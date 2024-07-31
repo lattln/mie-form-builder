@@ -5,7 +5,7 @@ export default class selectionBlock {
 
     static get toolbox() {
         return {
-            title: 'Question - DropDown',
+            title: 'Selection Block',
             icon: selection_Icon
         };
     }

@@ -82,15 +82,16 @@ const NavBar = () => {
                 <img src={`${process.env.PUBLIC_URL}/MIELogo_new.png`} alt="MIE Logo" />
             </div>
 
-            <div className="warning globalText">
-                <p className="warningText">v.2.3.8 Alpha</p>
+            <div className="version">
+                <p>v.2.3.8 Alpha</p>
             </div>
 
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
-                <label htmlFor="fileInput" className="button">Import</label>
-                <button onClick={exportData}>Export</button>
-                <button onClick={handlePreview}>Preview</button>
+                <label htmlFor="fileInput" className="button mieColor-blue">Import</label>
+                <button className="button mieColor-yellow" onClick={handlePreview} >Preview</button>
+                <button className="button mieColor-green" onClick={exportData}>Export</button>
+                
             </div>
             <PreviewModal isOpen={isModalOpen} onClose={handleClose}  jsonRender={jsonData}/>
 

@@ -6,7 +6,7 @@ export default class inputBlock {
     static get toolbox() {
 
         return {
-            title: 'Question - UserInput',
+            title: 'Input Block',
             icon: Input_Icon
         }
     }

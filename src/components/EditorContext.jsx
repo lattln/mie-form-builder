@@ -5,7 +5,7 @@ import DragDrop from 'editorjs-drag-drop';
 import Paragraph from '@editorjs/paragraph';
 import MarkerTool from '../custom-Tools/custom-inline-tools/markerTool/markerTool.js';
 import InputBlock from "../custom-Tools/custom-block-tools/inputBlock.js";
-import DropDownBlock from "../custom-Tools/custom-block-tools/selectionBlock.js"
+import SelectionBlock from "../custom-Tools/custom-block-tools/selectionBlock.js"
 import CalendarBlock from "../custom-Tools/custom-block-tools/calenderBlock.js";
 import LikertBlock from "../custom-Tools/custom-block-tools/likertBlock.js";
 import FileUploadBlock from "../custom-Tools/custom-block-tools/uploadBlock.js";
@@ -62,8 +62,8 @@ function EditorContextProvider(props) {
                 inputBlock: {
                     class: InputBlock,
                 },
-                dropdownBlock: {
-                    class: DropDownBlock,
+                selectionBlock: {
+                    class: SelectionBlock,
                 },
                 calendarBlock: {
                     class: CalendarBlock,

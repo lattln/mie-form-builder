@@ -1,137 +1,126 @@
 import { cloudUpload_icon, fileUpload_icon } from "../SVGIcons";
-import { deleteBlockBtn, initalQuestion, setUpPlaceHolder } from "../utilsFunction";
+import { deleteBlockBtn, initalQuestion, setUpPlaceHolder, makeElement, multiAppend } from "../utilsFunction";
 import './css/fileUploadQuestion.css';
 
-export default class uploadBlock{
+export default class uploadBlock {
 
     static get toolbox() {
-
         return {
-            title: 'Question - Upload',
+            title: 'Upload Block',
             icon: fileUpload_icon
         };
     }
 
     constructor({ data, api }) {
-        //CONSTRUCTOR OPTIONAL/AS needed
         this.data = data || {};
         this.api = api;
         this.wrapper = null;
-        this.file = null;
-        this.ddBoxText = null;
-        this.ddBoxText2 = null;
-        this.fileLabel = null;
-        this.validType = true;
-        
+        this.blockWrapper = null;
+        this.blocks = [];
     }
 
     render() {
-        this.wrapper = document.createElement('div');
-        this.wrapper.classList.add('customBlockTool');
+        this.wrapper = makeElement('div', ['customBlockTool']);
+        this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
+        
         deleteBlockBtn(this.wrapper, this.api);
+        this.block(this.data[0]);
+        
+        multiAppend(this.wrapper, [this.blockWrapper]);
+        return this.wrapper;
+    }
 
-        const UQContainer = document.createElement('div');
-        UQContainer.classList.add('customBlockTool-innerContainer');
-
-        const questionText = document.createElement('p');
-        questionText.classList.add("customBlockTool-questionPadding");
+    block(blockData = {}) {
+        const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
+        const questionText = makeElement('p', ['customBlockTool-questionPadding']);
         questionText.contentEditable = true;
-        setUpPlaceHolder(questionText, initalQuestion, this.data.question);
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
 
-        const ddBoxArea = document.createElement('div');
-        ddBoxArea.classList.add('fileUpload-ddBoxArea');
-
-        const ddBoxImg = document.createElement('span');
+        const ddBoxArea = makeElement('div', ['fileUpload-ddBoxArea']);
+        const ddBoxImg = makeElement('span');
         ddBoxImg.innerHTML = cloudUpload_icon;
 
-        this.ddBoxText = document.createElement('p');
-        this.ddBoxText.classList.add('fileUpload-ddBoxText');
-        this.ddBoxText.textContent = 'Drag & Drop';
+        const ddBoxText = makeElement('p', ['fileUpload-ddBoxText']);
+        ddBoxText.textContent = 'Drag & Drop';
 
-        this.ddBoxText2 = document.createElement('p');
-        this.ddBoxText2.classList.add('fileUpload-ddBoxText');
-        this.ddBoxText2.textContent = 'or';
+        const ddBoxText2 = makeElement('p', ['fileUpload-ddBoxText']);
+        ddBoxText2.textContent = 'or';
 
-        const fileInput = document.createElement('input');
+        const fileInput = makeElement('input');
         fileInput.type = 'file';
         fileInput.style.display = 'none';
-        fileInput.id ='userDocInput';
+        fileInput.id = 'userDocInput';
         fileInput.accept = '.pdf,.docx';
 
-        this.fileLabel = document.createElement('label');
-        this.fileLabel.classList.add("fileUpload-ddBoxLabel");
-        this.fileLabel.textContent = 'Browse';
-        this.fileLabel.htmlFor = 'userDocInput';
+        const fileLabel = makeElement('label', ['fileUpload-ddBoxLabel']);
+        fileLabel.textContent = 'Browse';
+        fileLabel.htmlFor = 'userDocInput';
 
-        ddBoxArea.appendChild(ddBoxImg);
-        ddBoxArea.appendChild(this.ddBoxText);
-        ddBoxArea.appendChild(this.ddBoxText2);
-        ddBoxArea.appendChild(fileInput);
-        ddBoxArea.appendChild(this.fileLabel);
-        
-        UQContainer.appendChild(questionText);
-        UQContainer.appendChild(ddBoxArea);
+        multiAppend(ddBoxArea, [ddBoxImg, ddBoxText, ddBoxText2, fileInput, fileLabel]);
+        multiAppend(blockContainer, [questionText, ddBoxArea]);
+        multiAppend(this.wrapper, [blockContainer]);
 
-        this.wrapper.appendChild(UQContainer);
+        this.blocks.push({ questionText, fileInput, ddBoxText, ddBoxText2, fileLabel, ddBoxArea });
 
+        this.addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel);
+    }
 
+    addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel) {
         ddBoxArea.addEventListener('dragover', (event) => {
-            this.ddBoxText.textContent = "Release to upload"
-            this.ddBoxText2.textContent = '';
-            this.fileLabel.textContent = '';
-            ddBoxArea.classList.add('active');
             event.preventDefault();
-        })
+            this.updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, 'Release to upload', '', '');
+            ddBoxArea.classList.add('active');
+        });
 
         ddBoxArea.addEventListener('dragleave', () => {
-            this.ddBoxText.textContent = "Drag & Drop"
-            this.ddBoxText2.textContent = 'or';
-            this.fileLabel.textContent = 'Browse';
+            this.resetDdBoxText(ddBoxText, ddBoxText2, fileLabel);
             ddBoxArea.classList.remove('active');
-        })
+        });
 
         ddBoxArea.addEventListener('drop', (event) => {
             event.preventDefault();
             this.file = event.dataTransfer.files[0];
-            this.handleFile();
-        })
+            this.handleFile(ddBoxText, ddBoxText2, fileLabel);
+        });
 
         fileInput.addEventListener('change', (event) => {
             this.file = event.target.files[0];
-            this.handleFile();
-
-        })
-
-
-        return this.wrapper;
-
+            this.handleFile(ddBoxText, ddBoxText2, fileLabel);
+        });
     }
-    handleFile() {
-        let fileReader = new FileReader();
+
+    handleFile(ddBoxText, ddBoxText2, fileLabel) {
+        const fileReader = new FileReader();
         fileReader.onload = () => {
-            let fileURL = fileReader.result;
-            //Only Console logging it as of rn.
+            const fileURL = fileReader.result;
             console.log(fileURL);
         };
         fileReader.readAsDataURL(this.file);
-        this.ddBoxText.textContent = 'Uploaded';
-        this.ddBoxText2.textContent = '';
-        this.fileLabel.textContent = '';
+        this.updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, 'Uploaded', '', '');
+    }
+
+    updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, text1, text2, labelText) {
+        ddBoxText.textContent = text1;
+        ddBoxText2.textContent = text2;
+        fileLabel.textContent = labelText;
+    }
+
+    resetDdBoxText(ddBoxText, ddBoxText2, fileLabel) {
+        this.updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, 'Drag & Drop', 'or', 'Browse');
     }
 
     deleteFileUI() {
         this.validType = false;
-        this.ddBoxText.textContent = "Drag & Drop";
-            this.ddBoxText2.textContent = 'or';
-            this.fileLabel.textContent = 'Browse';
-            this.wrapper.querySelector('.fileUpload-ddBoxArea').classList.remove('active');
-            this.file = '';
+        this.blocks.forEach(block => {
+            this.resetDdBoxText(block.ddBoxText, block.ddBoxText2, block.fileLabel);
+            block.ddBoxArea.classList.remove('active');
+        });
+        this.file = null;
     }
 
     save() {
-        const question = this.wrapper.querySelector('p').textContent;
-        return {
-            question
-        };
+        return this.blocks.map(block => ({
+            question: block.questionText.textContent
+        }));
     }
 }

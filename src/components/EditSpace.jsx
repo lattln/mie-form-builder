@@ -12,18 +12,14 @@ import { useDroppable } from '@dnd-kit/core';
 const EditSpace = () => {
         const { editorInstanceRef, initEditor } = useContext(EditorContext);
         const editorRef = useRef(null)
-        
         const { setNodeRef } = useDroppable({
             id: 'editorjs',
         });
 
-
         useEffect(() => {
-        
             if (!editorRef.current) {
                 initEditor();
                 editorRef.current = true;
-    
             }
         }, [initEditor]);
 
@@ -42,10 +38,8 @@ const EditSpace = () => {
                 </div>
                 <div className='editorWrapper'>
                     <div id='editorjs' ref={setNodeRef}>
-                        
                     </div>
                 </div>
-                
             </div>
         );
     }

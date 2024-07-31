@@ -1,34 +1,61 @@
 .likertQuestion {
     display: flex;
+    flex-direction: column;
     margin-top: .3em;
-    
+    width: 100%;
+}
+
+.likertQuestion-columnDivQuestion {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-right: 10px;
+    flex-shrink: 0;
 }
 
 .likertQuestion-columnDivQuestion p {
     margin: 0;
     padding: 5px 10px 10px 0px;
-    margin-right: 100px;
     cursor: default;
+    word-wrap: break-word;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 .likertQuestion-columnDivQuestion [contenteditable] {
     min-height: 40px;
-    max-height: 40px;
-    max-width: 200px;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
+
 .likertQuestion-columnDiv {
     display: flex;
     flex-direction: column;
-
+    flex: 1;
+    align-items: center;
+    padding: 5px;
 }
-.likertQuestion-columnDiv input {
-    margin: 5px 40px 37px 0px;
+
+.likertQuestion-columnDiv input, .likertQuestion-columnDiv p, .likertQuestion-ratingText {
+    margin: 8px 0 37px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
-.likertQuestion-columnDiv p, .likertQuestion-ratingText {
-    padding: 5px 10px 10px 0px;
-    margin: 0;
-
+.likertQuestion-ratingText {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    text-align: center;
+    word-wrap: break-word;
+    max-width: 100%;
+    justify-content: center;
+    overflow-wrap: break-word;
 }
 
 .likertQuestion-radioContainer {
@@ -38,8 +65,7 @@
     margin-right: -20px;
 }
 
-.renderSetting p{
+.renderSetting p {
     margin: 0;
     font-size: 15px;
 }
-

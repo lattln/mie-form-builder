@@ -95,7 +95,7 @@ function App() {
       likertBlock: likert_icon,
       questionBlock: question_icon,
       radioBlock: radio_Icon,
-      dropdownBlock: selection_Icon,
+      selectionBlock: selection_Icon,
       fileUploadBlock: fileUpload_icon
 
     };
@@ -107,7 +107,7 @@ function App() {
       likertBlock: 'Likert Block',
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',
-      dropdownBlock: 'Selection Block',
+      selectionBlock: 'Selection Block',
       fileUploadBlock: 'Upload Block'
     };
 
