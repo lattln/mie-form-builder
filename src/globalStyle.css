@@ -46,7 +46,6 @@
 
 .deleteBlockBtn:hover {
     background-color: rgba(201, 201, 204, .35);
-    border: dashed rgba(10, 10, 230, .5);
 }
 
 /* CUSTOM BLOCK SETTINGS */
