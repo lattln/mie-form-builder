@@ -58,6 +58,12 @@
     min-width: 50%;
 }
 
+.customBlockTool * {
+    pointer-events: none;
+}
+.deleteBlockBtn-container button {
+    pointer-events: all;
+}
 .customBlockTool-innerContainer {
     padding-top: 5px;
     margin-left: 10px;

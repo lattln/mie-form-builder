@@ -1,21 +1,26 @@
 import { useContext, useState, useCallback, useEffect } from 'react';
+import { debounce } from 'lodash';
 import './App.css';
 import EditSpace from './components/EditSpace';
 import NavBar from './components/NavBar';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { EditorContext } from './components/EditorContext';
 import { SvgImg } from './custom-Tools/utilsFunction';
-import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
+import {
+  calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon,
+  likert_icon, question_icon, radio_Icon, selection_Icon
+} from './custom-Tools/SVGIcons';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
   const [activeId, setActiveId] = useState(null);
-  const [overIndex, setOverIndex] = useState(0);
+  const [overIndex, setOverIndex] = useState(null);
+  const [dragStarted, setDragStarted] = useState(false); 
 
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
+    setDragStarted(true); 
     console.log('Drag started:', event.active.id);
-    addHoverEventListener();
   };
 
   const handleDragEnd = (event) => {
@@ -25,8 +30,8 @@ function App() {
       addBlock(active.id, overIndex);
     }
     setActiveId(null);
-    setOverIndex(0);
-    removeHoverEventListener();
+    setOverIndex(null);
+    setDragStarted(false); 
   };
 
   const addBlock = (type, index) => {
@@ -36,54 +41,39 @@ function App() {
     }
   };
 
+  const debouncedSetOverIndex = debounce((index) => {
+    setOverIndex(index);
+  }, 100); 
+
   const handleMouseOver = useCallback((event) => {
-    let blocks = 0;
-    try {
-      blocks = editorInstanceRef.current.blocks.getBlocksCount();
-    }
-    catch {
-      console.log(`Block not iniated or 0`);
-      blocks = 0;
-    }
-    
+    console.log(event.target);
+    let blocks = editorInstanceRef.current?.blocks.getBlocksCount() ?? 0;
     if (blocks === 0) {
-      setOverIndex(0);
+      debouncedSetOverIndex(0);
       return;
     }
     for (let i = 0; i < blocks; i++) {
       const block = editorInstanceRef.current.blocks.getBlockByIndex(i);
       if (block.holder === event.target || block.holder.contains(event.target)) {
         console.log(`hovering over Index ${i}`);
-        setOverIndex(i);
+        debouncedSetOverIndex(i);
         break;
       }
     }
-  }, [editorInstanceRef]);
-
-  const addHoverEventListener = () => {
-    const editorElement = document.getElementById('editorjs');
-    if (editorElement) {
-      editorElement.addEventListener('mouseover', handleMouseOver);
-    }
-  };
-
-  const removeHoverEventListener = () => {
-    const editorElement = document.getElementById('editorjs');
-    if (editorElement) {
-      editorElement.removeEventListener('mouseover', handleMouseOver);
-    }
-  };
+  }, [editorInstanceRef, debouncedSetOverIndex]);
 
   useEffect(() => {
     const editorElement = document.getElementById('editorjs');
-    if (!editorElement) return;
+    if (!editorElement || !dragStarted) return; 
 
     editorElement.addEventListener('mouseover', handleMouseOver);
 
     return () => {
-      editorElement.removeEventListener('mouseover', handleMouseOver);
+      if (dragStarted) {
+        editorElement.removeEventListener('mouseover', handleMouseOver);
+      }
     };
-  }, [handleMouseOver]);
+  }, [handleMouseOver, dragStarted]);
 
   const renderOverlay = () => {
     if (!activeId) return null;
@@ -91,19 +81,18 @@ function App() {
     const iconMap = {
       calendarBlock: calendar_Icon,
       checkBoxBlock: checkBox_icon,
-      inputBlock: Input_Icon,
+      inputBlock: input_Icon,
       likertBlock: likert_icon,
       questionBlock: question_icon,
       radioBlock: radio_Icon,
       selectionBlock: selection_Icon,
       fileUploadBlock: fileUpload_icon
-
     };
 
     const textMap = {
       calendarBlock: 'Calendar Block',
       checkBoxBlock: 'CheckBox Block',
-      inputBlock: 'Input Block',
+      inputBlock: 'input Block',
       likertBlock: 'Likert Block',
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',

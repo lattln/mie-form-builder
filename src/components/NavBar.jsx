@@ -83,7 +83,7 @@ const NavBar = () => {
             </div>
 
             <div className="version">
-                <p>v.2.3.8 Alpha</p>
+                <p>v.2.3.10 Alpha</p>
             </div>
 
             <div className="navButtons">

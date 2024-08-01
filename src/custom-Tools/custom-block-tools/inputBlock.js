@@ -1,4 +1,4 @@
-import { add_table, Input_Icon, sub_table } from '../SVGIcons';
+import { add_table, input_Icon, sub_table } from '../SVGIcons';
 import {setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalGlobal, createRenderOption, maxCol, minCol, makeElement, multiAppend} from '../utilsFunction';
 
 
@@ -7,7 +7,7 @@ export default class inputBlock {
 
         return {
             title: 'Input Block',
-            icon: Input_Icon
+            icon: input_Icon
         }
     }
 

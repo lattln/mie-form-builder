@@ -18,3 +18,9 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+
+
+.highlighted-block {
+  background-color: rgba(255, 235, 59, 0.5); /* Light yellow background for visibility */
+  border: 2px dashed red; /* Red dashed border */
+}
