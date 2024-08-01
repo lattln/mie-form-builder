@@ -43,10 +43,15 @@ function App() {
 
   const debouncedSetOverIndex = debounce((index) => {
     setOverIndex(index);
+    console.log('Debounced set over index:', index);
   }, 100); 
 
+  const debouncedMouseLeave = debounce(() => {
+    setOverIndex(null);
+    console.log('Mouse left the editor area after delay, setting index to null');
+  }, 100);
+
   const handleMouseOver = useCallback((event) => {
-    console.log(event.target);
     let blocks = editorInstanceRef.current?.blocks.getBlocksCount() ?? 0;
     if (blocks === 0) {
       debouncedSetOverIndex(0);
@@ -55,7 +60,6 @@ function App() {
     for (let i = 0; i < blocks; i++) {
       const block = editorInstanceRef.current.blocks.getBlockByIndex(i);
       if (block.holder === event.target || block.holder.contains(event.target)) {
-        console.log(`hovering over Index ${i}`);
         debouncedSetOverIndex(i);
         break;
       }
@@ -64,16 +68,20 @@ function App() {
 
   useEffect(() => {
     const editorElement = document.getElementById('editorjs');
-    if (!editorElement || !dragStarted) return; 
+    const editorWrapperElement = document.querySelector('.editorWrapper'); // Adjust selector as needed
+
+    if (!editorElement || !dragStarted) return;
 
     editorElement.addEventListener('mouseover', handleMouseOver);
+    editorWrapperElement.addEventListener('mouseleave', debouncedMouseLeave);
 
     return () => {
       if (dragStarted) {
         editorElement.removeEventListener('mouseover', handleMouseOver);
+        editorWrapperElement.removeEventListener('mouseleave', debouncedMouseLeave);
       }
     };
-  }, [handleMouseOver, dragStarted]);
+  }, [handleMouseOver, dragStarted, debouncedMouseLeave]);
 
   const renderOverlay = () => {
     if (!activeId) return null;
@@ -92,7 +100,7 @@ function App() {
     const textMap = {
       calendarBlock: 'Calendar Block',
       checkBoxBlock: 'CheckBox Block',
-      inputBlock: 'input Block',
+      inputBlock: 'Input Block',
       likertBlock: 'Likert Block',
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',
