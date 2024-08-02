@@ -17,6 +17,7 @@ export const EditorContext = createContext();
 function EditorContextProvider(props) {
     const editorInstanceRef = useRef(null);
     const [totalBlocks, setTotalBlocks] = useState(null)
+    const [blockEvent, setBlockEvent] = useState(null)
 
     const onBlocksChanged = (blocks) => {
         setTotalBlocks(blocks)
@@ -24,9 +25,10 @@ function EditorContextProvider(props) {
 
     const initEditor = () => {
         const editor = new EditorJS({
-            onChange: (api) => {
+            onChange: (api, event) => {
                 const totalBlocks = api.blocks.getBlocksCount()
                 onBlocksChanged(totalBlocks)
+                setBlockEvent(event.type)
             },
 
             onReady: () => {
@@ -105,7 +107,7 @@ function EditorContextProvider(props) {
         editorInstanceRef.current = editor
     };
     return (
-        <EditorContext.Provider value={{ initEditor, editorInstanceRef, totalBlocks }}>
+        <EditorContext.Provider value={{ initEditor, editorInstanceRef, totalBlocks, blockEvent }}>
             {props.children}
         </EditorContext.Provider>
     );

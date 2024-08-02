@@ -9,7 +9,7 @@ import { EditorContext } from "./EditorContext";
 import CustomToolBar from "./CustomToolBar";
 
 const EditSpace = ({ isOverDropzone, dropzoneRefs, updateDropzones, activeDropzoneId }) => {
-  const { editorInstanceRef, initEditor, totalBlocks } = useContext(EditorContext);
+  const { editorInstanceRef, initEditor, totalBlocks, blockEvent } = useContext(EditorContext);
   const [dropzoneClass, setDropzoneClass] = useState("dropzone");
   const editorRef = useRef(null);
   const { setNodeRef } = useDroppable({ id: "dropzone" });
@@ -43,7 +43,7 @@ const EditSpace = ({ isOverDropzone, dropzoneRefs, updateDropzones, activeDropzo
         ? "dropzone existing-dropzone active"
         : "dropzone existing-dropzone";
     });
-  }, [dropzoneClass, totalBlocks, activeDropzoneId, dropzoneRefs]);
+  }, [dropzoneClass, totalBlocks, activeDropzoneId, dropzoneRefs, blockEvent]);
 
   const clearPage = () => {
     editorInstanceRef.current?.clear();
