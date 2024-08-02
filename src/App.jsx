@@ -18,17 +18,23 @@ function App() {
   const [dragStarted, setDragStarted] = useState(false); 
 
   const handleDragStart = (event) => {
+    const editorBlocks = document.querySelectorAll('.ce-block');
     setActiveId(event.active.id);
     setDragStarted(true); 
     console.log('Drag started:', event.active.id);
+    editorBlocks.forEach(block => block.classList.add('hoverEffect'));
+
   };
 
   const handleDragEnd = (event) => {
+    const editorBlocks = document.querySelectorAll('.ce-block');
     const { active } = event;
     console.log('Drag ended. Active ID:', active.id, 'Over index:', overIndex);
     if (overIndex !== null) {
       addBlock(active.id, overIndex);
     }
+
+    editorBlocks.forEach(block => block.classList.remove('hoverEffect'));
     setActiveId(null);
     setOverIndex(null);
     setDragStarted(false); 
@@ -68,7 +74,7 @@ function App() {
 
   useEffect(() => {
     const editorElement = document.getElementById('editorjs');
-    const editorWrapperElement = document.querySelector('.editorWrapper'); // Adjust selector as needed
+    const editorWrapperElement = document.querySelector('.editorWrapper');
 
     if (!editorElement || !dragStarted) return;
 

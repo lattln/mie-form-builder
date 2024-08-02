@@ -49,9 +49,10 @@
 }
 
 /* CUSTOM BLOCK SETTINGS */
-.ce-block:hover{
-    border: 1px dashed rgba(73, 182, 255, .5);
-    background-color: rgba(73, 182, 255, 0.05);
+.hoverEffect:hover{
+    border-top: 2px dashed rgba(73, 182, 255, .5);
+    background-color: rgba(73, 172, 255, .025);
+    padding-top: .5rem;
 }
 
 .customBlockTool {
