@@ -3,7 +3,7 @@ import { Input_Icon, calendar_Icon, checkBox_icon, fileUpload_icon, likert_icon,
 export const iconMap = {
     calendarBlock: calendar_Icon,
     checkBoxBlock: checkBox_icon,
-    inputBlock: Input_Icon,
+    // inputBlock: Input_Icon,
     likertBlock: likert_icon,
     questionBlock: question_icon,
     radioBlock: radio_Icon,

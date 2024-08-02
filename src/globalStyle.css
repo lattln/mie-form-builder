@@ -48,7 +48,7 @@
     background-color: rgba(201, 201, 204, .35);
 }
 
-/* CUSTOM BLOCK SETTINGS */
+
 .customBlockTool {
     margin: 0;
     padding-bottom: 10px;
@@ -68,7 +68,6 @@
 .customBlockTool-questionPadding {
     padding-bottom: 10px;
 }
-
 
 .customBlockTool:hover {
     background-color: rgba(201, 201, 205, .48);
