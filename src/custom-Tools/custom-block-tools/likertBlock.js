@@ -1,4 +1,4 @@
-import { add_icon, likert_icon, remove_icon } from '../SVGIcons';
+import { add_icon, likert_icon, remove_icon, trashCan_Icon } from '../SVGIcons';
 import { deleteBlockBtn, initalQuestion, initalRating, setUpPlaceHolder, createRenderOption, makeElement, multiAppend } from '../utilsFunction';
 import './css/likertQuestion.css';
 
@@ -24,7 +24,7 @@ export default class likertBlock {
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
-        this.blockWrapper = makeElement('div', ['customBlockTool-innerContainer']);
+        this.blockWrapper = makeElement('div', []);
         
         deleteBlockBtn(this.wrapper, this.api);
 
@@ -45,7 +45,7 @@ export default class likertBlock {
     }
 
     addQuestion(blockData = {}, index) {
-        const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
+        const blockContainer = makeElement('div', ['customBlockTool-innerContainer', 'questionBlock']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
         questionText.contentEditable = true;
         setUpPlaceHolder(questionText, initalQuestion, blockData.question);
@@ -75,11 +75,17 @@ export default class likertBlock {
             radioContainer.appendChild(columnDiv);
         });
 
-        const deleteQuestionBtn = makeElement('button', ['delete-question-btn']);
-        deleteQuestionBtn.innerHTML = `${remove_icon} Remove Question`;
-        deleteQuestionBtn.onclick = () => this.removeLikertQuestion(blockContainer);
+        const deleteQuestionBtnContainer = makeElement('div', ['deteteQuestionBtn-container']);
+        
+        // Only add delete button if it's not the first question
+        if (this.blocks.length > 0) {
+            const deleteQuestionBtn = makeElement('button', ['deleteBlockBtn', 'centerItems']);
+            deleteQuestionBtn.innerHTML = `${trashCan_Icon} Remove Question`;
+            deleteQuestionBtnContainer.onclick = () => this.removeLikertQuestion(blockContainer);
+            multiAppend(deleteQuestionBtnContainer, [deleteQuestionBtn]);
+        }
 
-        multiAppend(blockContainer, [questionText, radioContainer, deleteQuestionBtn]);
+        multiAppend(blockContainer, [deleteQuestionBtnContainer, questionText, radioContainer]);
         multiAppend(this.blockWrapper, [blockContainer]);
 
         const block = { blockContainer, questionText, radioContainer, ratings };
@@ -104,7 +110,7 @@ export default class likertBlock {
 
     removeLikertQuestion(blockContainer) {
         const index = this.blocks.findIndex(block => block.blockContainer === blockContainer);
-        if (index > -1) {
+        if (index > 0) { // Prevent removing the first question block
             this.blocks.splice(index, 1);
             blockContainer.remove();
             this.updateBlockData();
@@ -196,7 +202,6 @@ export default class likertBlock {
 
     save() {
         return {
-
             ratings: this.firstQuestionRatings.map(rating => rating.textContent),  
             questions: this.blocks.map(block => block.questionText.textContent)
         };

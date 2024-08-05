@@ -49,6 +49,31 @@
 }
 
 /* CUSTOM BLOCK SETTINGS */
+.centerItems {
+    display: flex;
+    align-items: center;
+}
+
+.questionBlock {
+    background-color: rgba(201, 201, 205, .48);
+    box-shadow:  inset 0 0 2px rgba(201 , 201 , 205 , .5);
+}
+
+.deleteQuestionBtn{ 
+    border: 0 ;
+    background: transparent;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.deteteQuestionBtn-container {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-right: 2em;
+    padding: 0;
+}
+
 .hoverEffect:hover{
     border-top: 2px dashed rgba(73, 182, 255, .5);
     background-color: rgba(73, 172, 255, .025);
@@ -68,7 +93,7 @@
     padding-top: 5px;
     margin-left: 10px;
     margin-right: 20px;
-    width: 100%;
+    width: calc(100% - 10px);
 }
 
 .customBlockTool-questionPadding {
