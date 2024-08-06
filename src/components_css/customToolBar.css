@@ -1,16 +1,9 @@
 .customTools {
     display: flex;
     flex-direction: column;
-
-
 }
 
-@media (max-width: 634px) {
-    .editorConfigPanel {
-        
-    }
-    
-}
+
 .tool {
     margin-bottom: 5px;
     text-align: left;
