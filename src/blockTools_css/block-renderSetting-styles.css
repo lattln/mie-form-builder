@@ -1,0 +1,47 @@
+.renderSetting {
+    margin-bottom: -5px;
+    border-radius: 5px;
+}
+
+.renderSetting-option {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2px 0px 2px 2px;
+    border-radius: 5px;
+}
+.renderSetting-option:hover {
+    background-color: #eff2f5;
+}
+
+.renderSetting-button {
+    border: 1px solid rgba(201, 201, 204, .48);
+    background-color: rgba(255, 255,255, .9);
+    border-radius: 5px;
+    padding: 3px;
+    margin: 0;
+}
+
+.renderSetting-label {
+    padding-left: 5px;
+    color: black;
+}
+
+.renderSetting-input {
+    max-width: 120px;
+    border: 1px solid rgba(201, 201, 204, .48);
+    border-radius: 5px;
+    padding: 7px;
+    height: 100%;
+    font-size: .8em;
+
+}
+
+.renderSetting-input:focus {
+    outline: none;
+}
+
+.renderSetting p {
+    margin: 0;
+    font-size: .9em;
+}

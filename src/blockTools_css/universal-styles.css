@@ -1,0 +1,38 @@
+
+.inlineSpace {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inlineEvenSpace {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.ce-block__content, .ce-toolbar__content {
+    max-width: 85%;
+}
+
+.text-placeholder {
+    color: darkgray;
+}
+
+.deleteBlockBtn-container {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 0;
+    background-color: rgba(201, 201, 205, .48);
+}
+
+.deleteBlockBtn {
+    border: 0 ;
+    background: transparent;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.deleteBlockBtn:hover {
+    background-color: rgba(201, 201, 204, .35);
+}

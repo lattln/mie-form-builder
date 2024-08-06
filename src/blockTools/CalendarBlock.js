@@ -1,8 +1,7 @@
-import { calendar_Icon } from '../SVGIcons.js';
-import { deleteBlockBtn, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../utilsFunction.js';
+import { calendar_Icon } from '../Utility/SVGIcons.js';
+import { deleteBlockBtn, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../Utility/utilsFunction.js';
 
-export default class calendarBlock {
-
+export default class CalendarBlock{
     static get toolbox() {
         return {
             title: 'Calender Block',

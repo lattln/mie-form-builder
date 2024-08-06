@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import EditorContextProvider from './components/EditorContext';
-import './globalStyle.css'
+import '../src/blockTools_css/block-renderSetting-styles.css';
+import '../src/blockTools_css/block-styles.css';
+import '../src/blockTools_css/universal-styles.css';
 import './App.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <div className='all'>
+  <div className='root'>
       <EditorContextProvider>
           <App />
       </EditorContextProvider>

@@ -1,8 +1,7 @@
-import { add_icon, add_table, selection_Icon, sub_table, trashCan_Icon } from '../SVGIcons';
-import { createRenderBtn, createRenderOption, deleteBlockBtn, initalGlobal, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../utilsFunction';
+import { add_icon, add_table, selection_Icon, sub_table, trashCan_Icon } from '../Utility/SVGIcons';
+import { createRenderBtn, createRenderOption, deleteBlockBtn, initalGlobal, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../Utility/utilsFunction.js';
 
-export default class selectionBlock {
-
+export default class SelectionBlock {
     static get toolbox() {
         return {
             title: 'Selection Block',

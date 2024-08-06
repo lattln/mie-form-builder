@@ -1,7 +1,7 @@
-import { add_icon, checkBox_icon, question_icon, radio_Icon, remove_icon, trashCan_Icon } from "../SVGIcons";
-import { createRenderOption, deleteBlockBtn, initalOption, initalQuestion, makeElement, maxCol, minCol, multiAppend, setUpPlaceHolder } from "../utilsFunction";
+import { add_icon, checkBox_icon, question_icon, radio_Icon, remove_icon, trashCan_Icon } from "../Utility/SVGIcons";
+import { createRenderOption, deleteBlockBtn, initalOption, initalQuestion, makeElement, maxCol, minCol, multiAppend, setUpPlaceHolder } from "../Utility/utilsFunction";
 
-export default class combinedBlock {
+export default class QuestionBlock {
 
     static get toolbox() {
         return {
@@ -136,13 +136,13 @@ export default class combinedBlock {
 
     switchToCheckBox() {
         this.isCheckBox = true;
-        combinedBlock.toolbox.icon = checkBox_icon;
+        QuestionBlock.toolbox.icon = checkBox_icon;
         this.updateOptionTypes();
     }
 
     switchToRadio() {
         this.isCheckBox = false;
-        combinedBlock.toolbox.icon = radio_Icon;
+        QuestionBlock.toolbox.icon = radio_Icon;
         this.updateOptionTypes();
     }
 

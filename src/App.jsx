@@ -1,15 +1,12 @@
 import { useContext, useState, useCallback, useEffect } from 'react';
-import { debounce } from 'lodash';
-import './App.css';
-import EditSpace from './components/EditSpace';
-import NavBar from './components/NavBar';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { EditorContext } from './components/EditorContext';
-import { SvgImg } from './custom-Tools/utilsFunction';
-import {
-  calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon,
-  likert_icon, question_icon, radio_Icon, selection_Icon
-} from './custom-Tools/SVGIcons';
+import { debounce } from 'lodash';
+import NavBar from './components/NavBar';
+import EditSpace from './components/EditSpace';
+import { SvgImg } from './Utility/utilsFunction';
+import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './Utility/SVGIcons';
+import './App.css';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
@@ -100,7 +97,7 @@ function App() {
       questionBlock: question_icon,
       radioBlock: radio_Icon,
       selectionBlock: selection_Icon,
-      fileUploadBlock: fileUpload_icon
+      UploadBlock: fileUpload_icon
     };
 
     const textMap = {
@@ -111,7 +108,7 @@ function App() {
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',
       selectionBlock: 'Selection Block',
-      fileUploadBlock: 'Upload Block'
+      UploadBlock: 'Upload Block'
     };
 
     return (

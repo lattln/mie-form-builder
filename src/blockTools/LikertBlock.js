@@ -1,9 +1,8 @@
-import { add_icon, likert_icon, remove_icon, trashCan_Icon } from '../SVGIcons';
-import { deleteBlockBtn, initalQuestion, initalRating, setUpPlaceHolder, createRenderOption, makeElement, multiAppend } from '../utilsFunction';
-import './css/likertQuestion.css';
+import { add_icon, likert_icon, remove_icon, trashCan_Icon } from '../Utility/SVGIcons';
+import { deleteBlockBtn, initalQuestion, initalRating, setUpPlaceHolder, createRenderOption, makeElement, multiAppend } from '../Utility/utilsFunction.js';
+import '../blockTools_css/likertQuestion.css';
 
-export default class likertBlock {
-
+export default class LikertBlock {
     static get toolbox() {
         return {
             title: 'Likert Block',

@@ -3,13 +3,15 @@ import EditorJS from "@editorjs/editorjs";
 import Header from '@editorjs/header';
 import DragDrop from 'editorjs-drag-drop';
 import Paragraph from '@editorjs/paragraph';
-import MarkerTool from '../custom-Tools/custom-inline-tools/markerTool/markerTool.js';
-import InputBlock from "../custom-Tools/custom-block-tools/inputBlock.js";
-import SelectionBlock from "../custom-Tools/custom-block-tools/selectionBlock.js"
-import CalendarBlock from "../custom-Tools/custom-block-tools/calenderBlock.js";
-import LikertBlock from "../custom-Tools/custom-block-tools/likertBlock.js";
-import FileUploadBlock from "../custom-Tools/custom-block-tools/uploadBlock.js";
-import questionBlock from "../custom-Tools/custom-block-tools/questionBlock.js";
+
+//Custom Block tools
+import CalendarBlock from "../blockTools/CalendarBlock.js";
+import InputBlock from "../blockTools/InputBlock.js";
+import LikertBlock from "../blockTools/LikertBlock.js";
+import QuestionBlock from "../blockTools/QuestionBlock.js";
+import SelectionBlock from "../blockTools/SelectionBlock.js";
+import UploadBlock from "../blockTools/UploadBlock.js";
+
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 
 
@@ -52,12 +54,12 @@ function EditorContextProvider(props) {
                     }
                 },
 
-                //InlineTool
-                marker: MarkerTool,
+                // //InlineTool
+                // marker: MarkerTool,
 
                 //Custom Block Tools ----------
                 questionBlock: {
-                    class: questionBlock
+                    class: QuestionBlock
                 },
                 inputBlock: {
                     class: InputBlock,
@@ -71,15 +73,15 @@ function EditorContextProvider(props) {
                 likertBlock: {
                     class: LikertBlock,
                 },
-                fileUploadBlock: {
-                    class: FileUploadBlock,
+                UploadBlock: {
+                    class: UploadBlock,
                 },
 
                 
                 //Block Tool
                 header: {
                     class: Header,
-                    inlineToolbar: ['bold', 'italic', 'link', 'marker'],
+                    inlineToolbar: ['bold', 'italic', 'link'],
                     tunes: ['textAlignmentTune'],
                     config: {
                         placeholder: "Enter a header",
@@ -88,7 +90,7 @@ function EditorContextProvider(props) {
 
                 paragraph: {
                     class: Paragraph,
-                    inlineToolbar: ['bold', 'italic', 'link', 'marker'],
+                    inlineToolbar: ['bold', 'italic', 'link'],
                     tunes: ['textAlignmentTune']
                 },
 

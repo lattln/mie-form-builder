@@ -1,10 +1,9 @@
-import { add_table, input_Icon, sub_table } from '../SVGIcons';
-import {setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalGlobal, createRenderOption, maxCol, minCol, makeElement, multiAppend} from '../utilsFunction';
+import { add_table, input_Icon, sub_table } from '../Utility/SVGIcons';
+import {setUpPlaceHolder, deleteBlockBtn, initalQuestion, initalGlobal, createRenderOption, maxCol, minCol, makeElement, multiAppend} from '../Utility/utilsFunction.js';
 
 
-export default class inputBlock {
+export default class InputBlock {
     static get toolbox() {
-
         return {
             title: 'Input Block',
             icon: input_Icon

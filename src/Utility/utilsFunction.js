@@ -1,5 +1,4 @@
-import './SVGIcons';
-import { trashCan_Icon } from './SVGIcons';
+import  {trashCan_Icon} from '../Utility/SVGIcons';
 
 export const initalQuestion ='Enter a question... ';
 export const initalOption ='Enter Option... ';
