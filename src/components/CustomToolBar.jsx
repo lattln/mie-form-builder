@@ -9,7 +9,7 @@ import { EditorContext } from "./EditorContext";
 const DraggableItem = ({id, icon, text}) => {
     const { attributes, listeners, setNodeRef } = useDraggable({id});
     return (
-        <div ref={setNodeRef} {...listeners} {...attributes} className='customToolBar-button tool inlineSpace'>
+        <div ref={setNodeRef} {...listeners} {...attributes} className='customToolBar-button'>
             <SvgImg icon={icon} text={text}/> <SvgImg icon={draggable_icon}/>
         </div>
     );
@@ -40,7 +40,7 @@ const CustomToolBar = () => {
 
     return (
         <div className='customTools editorConfigPanel'>
-            <button className ='clearPageBtn customToolBar-button inlineSpace' onClick={clearPage}>
+            <button className ='clearPageBtn customToolBar-button' onClick={clearPage}>
                 <SvgImg icon={trashCan_Icon} text={'Clear Page'} /> <SvgImg icon={x_icon}/>
             </button>
             <DraggableItem id='calendarBlock' icon={calendar_Icon} text='Calendar Block' />

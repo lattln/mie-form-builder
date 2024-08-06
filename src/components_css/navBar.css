@@ -13,19 +13,10 @@
     width: 100%;
 }
 
-
 .navLogo img{
     margin-left: 1em;
     height: 50px
 }
-
-@media (max-width: 379px) {
-    .navLogo img{
-        height: clamp(10px, 30px, 30px);
-    }
-    
-}
-
 
 .navButtons {
     margin-right: 1em;
@@ -44,10 +35,28 @@
     color: black;
 }
 
+.version {
+    font-size: 1em;
+}
+
 @media (max-width: 634px ) {
-    .button {
+    .navBar {
         display: block;
-        font-size: .8em;
+        text-align: center;
+        font-size: .9em;
+    }
+    .navLogo img {
+        height: 40px;
+    }
+    .version {
+        font-size: clamp(.8em, .9em, 1em);
+    }
+    
+}
+
+@media (max-width: 380px) {
+    .navLogo img {
+        height: 35px;
     }
     
 }

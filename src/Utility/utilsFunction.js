@@ -80,18 +80,31 @@ export function SvgImg({icon, text}) {
     const svg = new Blob([svgStr], {type: 'image/svg+xml'});
     const url = URL.createObjectURL(svg)
 
-
     const inlineStyle = {
-        display: 'flex'
+        display: 'flex',
     }
 
-    const margin = {
-        margin: 0,
-        marginLeft: 5
+    const style = {
+        display: 'flex',
+        flex: 'row',
+        margin: '0px',
+        marginLeft: '5px',
+        width: '7em'
     }
+
+    if (text === undefined) {
+        return (
+         <div style = {inlineStyle}>
+            <img src = {url} alt='icon'></img>
+            
+         </div>   
+        )
+    }
+
     return (
+
         <div style={inlineStyle}>
-            <img src={url} alt='icon'/> <p style={margin}>{text}</p>
+            <img src={url} alt='icon'/> <p style={style}> {text}</p>
         </div>
     )
 }
