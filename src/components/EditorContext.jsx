@@ -1,8 +1,9 @@
 import {createContext, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
-import Header from '@editorjs/header';
 import DragDrop from 'editorjs-drag-drop';
-import Paragraph from '@editorjs/paragraph';
+
+//import Header from '@editorjs/header';
+//import Paragraph from '@editorjs/paragraph';
 
 //Custom Block tools
 import CalendarBlock from "../blockTools/CalendarBlock.js";
@@ -32,11 +33,14 @@ function EditorContextProvider(props) {
                         console.error("Fail to int dragdrop", error);
                     }
                 }, 1000);
+
             },
+            
+            
 
             holder: 'editorjs',
-            placeholder: 'MIE form creator',
-            autofocus: true,
+            placeholder: 'add to form here.',
+            autofocus: false,
 
             //ALL TOOLS \/\/\/\/\/\/\/
             //FOR EASE OF TRACKING --> ORDER BELOW
@@ -76,23 +80,24 @@ function EditorContextProvider(props) {
                 UploadBlock: {
                     class: UploadBlock,
                 },
+                
 
                 
                 //Block Tool
-                header: {
-                    class: Header,
-                    inlineToolbar: ['bold', 'italic', 'link'],
-                    tunes: ['textAlignmentTune'],
-                    config: {
-                        placeholder: "Enter a header",
-                    }
-                },
+                // header: {
+                //     class: Header,
+                //     inlineToolbar: ['bold', 'italic', 'link'],
+                //     tunes: ['textAlignmentTune'],
+                //     config: {
+                //         placeholder: "Enter a header",
+                //     }
+                // },
 
-                paragraph: {
-                    class: Paragraph,
-                    inlineToolbar: ['bold', 'italic', 'link'],
-                    tunes: ['textAlignmentTune']
-                },
+                // paragraph: {
+                //     class: Paragraph,
+                //     inlineToolbar: ['bold', 'italic', 'link'],
+                //     tunes: ['textAlignmentTune']
+                // },
 
             }
         });

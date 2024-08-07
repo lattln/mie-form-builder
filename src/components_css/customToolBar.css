@@ -10,8 +10,10 @@
     border-radius: 10px;
     user-select: none;
     height: 27em;
-    width: 22vw;
-    overflow-y: auto; 
+    position: sticky;
+    z-index: 8;
+    top: 85px;
+
 }
 
 .customToolBar-button {

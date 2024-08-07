@@ -40,7 +40,7 @@ function App() {
   const addBlock = (type, index) => {
     if (editorInstanceRef.current) {
       console.log('Inserting block type:', type, 'at index:', index);
-      editorInstanceRef.current.blocks.insert(type, {}, {}, index, true);
+      editorInstanceRef.current.blocks.insert(type, {}, {}, index, false);
     }
   };
 
@@ -112,7 +112,7 @@ function App() {
     };
 
     return (
-      <div className="customToolBar-button tool inlineSpace pass">
+      <div className="drag-overlay">
         <SvgImg icon={iconMap[activeId]} text={textMap[activeId]} />
         <SvgImg icon={draggable_icon} />
       </div>

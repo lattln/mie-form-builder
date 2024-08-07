@@ -17,11 +17,11 @@ const DraggableItem = ({id, icon, text}) => {
 
 const CustomToolBar = () => {
     const { editorInstanceRef } = useContext(EditorContext);
-    const [isComputer, setIsComputer] = useState(window.innerWidth > 900);
+    const [isComputer, setIsComputer] = useState(window.innerWidth > 1030);
 
     useEffect(() => {
         const handleResize = () => {
-            setIsComputer(window.innerWidth > 900);
+            setIsComputer(window.innerWidth > 1030);
         };
         window.addEventListener('resize', handleResize);
         return () => {

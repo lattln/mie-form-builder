@@ -1,6 +1,5 @@
 import { add_icon, likert_icon, remove_icon, trashCan_Icon } from '../Utility/SVGIcons';
 import { deleteBlockBtn, initalQuestion, initalRating, setUpPlaceHolder, createRenderOption, makeElement, multiAppend } from '../Utility/utilsFunction.js';
-import '../blockTools_css/likertQuestion.css';
 
 export default class LikertBlock {
     static get toolbox() {
@@ -23,7 +22,7 @@ export default class LikertBlock {
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
-        this.blockWrapper = makeElement('div', []);
+        this.blockWrapper = makeElement('div', ['likertQuestion-container']);
         
         deleteBlockBtn(this.wrapper, this.api);
 
@@ -44,19 +43,19 @@ export default class LikertBlock {
     }
 
     addQuestion(blockData = {}, index) {
-        const blockContainer = makeElement('div', ['customBlockTool-innerContainer', 'questionBlock']);
-        const questionText = makeElement('p', ['customBlockTool-questionPadding']);
+        const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
+        const questionText = makeElement('p', []);
         questionText.contentEditable = true;
         setUpPlaceHolder(questionText, initalQuestion, blockData.question);
 
-        const radioContainer = makeElement('div', ['likertQuestion-radioContainer']);
+        const radioContainer = makeElement('div', ['likert-radioContainer', 'inlineSpace']);
         const ratings = blockData.ratings || this.firstQuestionRatings.slice();
 
         ratings.forEach((rating, i) => {
-            const columnDiv = makeElement('div', ['likertQuestion-columnDiv']);
-            const ratingText = makeElement('div', ['likertQuestion-ratingText']);
+            const columnDiv = makeElement('div', ['likert-rating-container']);
+            const ratingText = makeElement('div', ['likert-ratingText']);
 
-            if (this.blocks.length === 0) { // Only make editable for the first question
+            if (this.blocks.length === 0) {
                 ratingText.contentEditable = true;
                 ratingText.addEventListener('input', this.updateAllRatings.bind(this, i));
                 setUpPlaceHolder(ratingText, initalRating, rating);
@@ -74,17 +73,18 @@ export default class LikertBlock {
             radioContainer.appendChild(columnDiv);
         });
 
-        const deleteQuestionBtnContainer = makeElement('div', ['deteteQuestionBtn-container']);
         
-        // Only add delete button if it's not the first question
+        
         if (this.blocks.length > 0) {
+            const deleteQuestionBtnContainer = makeElement('div', ['deleteQuestionBtn-container']);
             const deleteQuestionBtn = makeElement('button', ['deleteBlockBtn', 'centerItems']);
-            deleteQuestionBtn.innerHTML = `${trashCan_Icon} Remove Question`;
+            deleteQuestionBtn.innerHTML = ` Remove Question ${trashCan_Icon}`;
             deleteQuestionBtnContainer.onclick = () => this.removeLikertQuestion(blockContainer);
             multiAppend(deleteQuestionBtnContainer, [deleteQuestionBtn]);
+            multiAppend(blockContainer, [deleteQuestionBtnContainer]);
         }
 
-        multiAppend(blockContainer, [deleteQuestionBtnContainer, questionText, radioContainer]);
+        multiAppend(blockContainer, [questionText, radioContainer]);
         multiAppend(this.blockWrapper, [blockContainer]);
 
         const block = { blockContainer, questionText, radioContainer, ratings };
@@ -100,8 +100,8 @@ export default class LikertBlock {
     updateAllRatings(index) {
         const textContent = this.firstQuestionRatings[index].textContent;
         this.blocks.forEach((block, blockIndex) => {
-            if (blockIndex > 0) { // Skip the first block as it contains the editable ratings
-                const ratingText = block.radioContainer.children[index].querySelector('.likertQuestion-ratingText');
+            if (blockIndex > 0) {
+                const ratingText = block.radioContainer.children[index].querySelector('.likert-ratingText');
                 ratingText.textContent = textContent;
             }
         });
@@ -109,7 +109,7 @@ export default class LikertBlock {
 
     removeLikertQuestion(blockContainer) {
         const index = this.blocks.findIndex(block => block.blockContainer === blockContainer);
-        if (index > 0) { // Prevent removing the first question block
+        if (index > 0) {
             this.blocks.splice(index, 1);
             blockContainer.remove();
             this.updateBlockData();
@@ -123,7 +123,7 @@ export default class LikertBlock {
             });
 
             if (index > 0) {
-                block.radioContainer.querySelectorAll('.likertQuestion-ratingText').forEach((ratingText, i) => {
+                block.radioContainer.querySelectorAll('.likert-ratingText').forEach((ratingText, i) => {
                     ratingText.textContent = this.firstQuestionRatings[i].textContent || this.firstQuestionRatings[i];
                 });
             }
@@ -140,13 +140,14 @@ export default class LikertBlock {
     }
 
     updateScale() {
-        this.blocks.forEach(block => {
+        this.blocks.forEach((block, blockIndex) => {
             const { radioContainer } = block;
-            while (radioContainer.children.length < this.scale) {
-                const columnDiv = makeElement('div', ['likertQuestion-columnDiv']);
-                const ratingText = makeElement('div', ['likertQuestion-ratingText']);
 
-                if (this.blocks.length === 0) { // Only make editable for the first question
+            while (radioContainer.children.length < this.scale) {
+                const columnDiv = makeElement('div', ['likert-rating-container']);
+                const ratingText = makeElement('div', ['likert-ratingText']);
+
+                if (blockIndex === 0) { // Only make editable for the first question
                     ratingText.contentEditable = true;
                     ratingText.addEventListener('input', this.updateAllRatings.bind(this, radioContainer.children.length));
                     setUpPlaceHolder(ratingText, initalRating, '');
@@ -163,8 +164,12 @@ export default class LikertBlock {
                 columnDiv.appendChild(radioInput);
                 radioContainer.appendChild(columnDiv);
             }
+
             while (radioContainer.children.length > this.scale) {
                 radioContainer.lastChild.remove();
+                if (blockIndex === 0) {
+                    this.firstQuestionRatings.pop(); // Keep first question ratings updated
+                }
             }
         });
     }

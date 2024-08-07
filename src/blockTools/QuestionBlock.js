@@ -1,5 +1,6 @@
 import { add_icon, checkBox_icon, question_icon, radio_Icon, remove_icon, trashCan_Icon } from "../Utility/SVGIcons";
 import { createRenderOption, deleteBlockBtn, initalOption, initalQuestion, makeElement, maxCol, minCol, multiAppend, setUpPlaceHolder } from "../Utility/utilsFunction";
+import '../blockTools_css/block-styles.css'
 
 export default class QuestionBlock {
 
@@ -40,24 +41,20 @@ export default class QuestionBlock {
             return;
         }
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
-        const questionText = makeElement('p', ['customBlockTool-questionPadding']);
+        const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
         questionText.contentEditable = true;
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question);
-        const optionsContainer = makeElement('div', ['CBQ-optionsContainer', 'customBlockTool-columnAllign']);
+        const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
 
         multiAppend(blockContainer, [questionText, optionsContainer]);
 
-        const blockControls = makeElement('div', ['block-controls']);
-        const addChoiceBtn = makeElement('button', ['radioQuestion-removeButton']);
+        const blockControls = makeElement('div', ['control-container']);
+        const addChoiceBtn = makeElement('button', ['style-button-transparent']);
         addChoiceBtn.innerHTML = add_icon;
-        addChoiceBtn.onclick = () => this.addOption(optionsContainer, optionIndex);
+        blockControls.onclick = () => this.addOption(optionsContainer, optionIndex);
 
-        const removeChoiceBtn = makeElement('button', ['radioQuestion-removeButton']);
-        removeChoiceBtn.innerHTML = remove_icon;
-        removeChoiceBtn.onclick = () => this.removeOption({ optionsContainer, optionIndex });
-
-        multiAppend(blockControls, [addChoiceBtn, removeChoiceBtn]);
+        multiAppend(blockControls, [addChoiceBtn]);
         multiAppend(blockContainer, [blockControls])
         multiAppend(this.blockWrapper, [blockContainer]);
 
@@ -74,20 +71,19 @@ export default class QuestionBlock {
     }
 
     addOption(optionsContainer, optionIndex, optionText = '') {
-        const optionElement = makeElement('div', ['customBlockTool-padding', 'customBlockTool-option-container']);
-        const inputElement = makeElement('input', ['customBlockTool-input']);
-        const labelElement = makeElement('label', ['customBlockTool-label']);
+        const optionElement = makeElement('div', ['customBlockTool-option']);
+        const inputElement = makeElement('input', ['questionBlock-input']);
+        const labelElement = makeElement('label', ['questionBlock-label']);
 
-        //For future even  though its disable
         inputElement.type = this.isCheckBox ? 'checkbox' : 'radio';
         inputElement.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${this.blocks.length}`;
         inputElement.id = `${inputElement.name}${this.id}-${optionIndex.value}`;
-        inputElement.disabled = true; // Disable the input
+        inputElement.disabled = true; 
         labelElement.htmlFor = inputElement.id;
         labelElement.contentEditable = true;
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText);
 
-        const removeBtn = makeElement('button', ['radioQuestion-removeButton']);
+        const removeBtn = makeElement('button', ['style-button-transparent']);
         removeBtn.innerHTML = trashCan_Icon;
         removeBtn.onclick = () => { optionElement.remove(); optionIndex.value--; };
 
@@ -106,12 +102,12 @@ export default class QuestionBlock {
     renderSettings() {
         const settings = [
             {
-                name: 'Add Block',
+                name: 'Add Column',
                 icon: add_icon,
                 action: () => this.Block()
             },
             {
-                name: 'Remove Last Block',
+                name: 'Remove Column',
                 icon: remove_icon,
                 action: () => this.removeLastBlock()
             },

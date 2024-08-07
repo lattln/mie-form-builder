@@ -4,11 +4,12 @@ import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
 const NavBar = () => {
-
+    const version = 'v 2.4.02';
+    
     const { editorInstanceRef } = useContext(EditorContext);
     const [isModalOpen, setModalOpen] = useState(false);
     const [jsonData, setJsonData] = useState('');
-
+    
 
         const exportData = async () => {
             if (editorInstanceRef.current) {
@@ -83,7 +84,7 @@ const NavBar = () => {
             </div>
 
             <div className="version">
-                <p>v.2.4.01 Test Version</p>
+                <p>{version}</p>
             </div>
 
             <div className="navButtons">

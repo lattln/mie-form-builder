@@ -2,36 +2,61 @@
     margin-top: 10px;
     display: flex;
     justify-content: space-evenly;
-    height: 100%; 
 }
 
 .editorWrapper {
-    min-height: 100%;
-    width: 76vw;
-    background: rgba(255, 255, 255, 0.9);
-    padding-top: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* border-left: rgba(0, 0, 0, 0.2) 2px solid; */
+    /* box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.3); */
+    width: 65vw;
     display: flex;
     flex-direction: column;
-}
-@media (max-width: 900px) {
-    .editorWrapper {
-        width: 95vw;
-    }
     
 }
 
 
 #editorjs {
-    min-height: 650px;
-    min-width: 100%;
-    padding: 10px 0px 10px 0px;
-    flex: 1; 
-    overflow-y: auto; 
+    display: flex;
+    flex-direction: column;
+    width: calc(100%);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 100%;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 649px) {
+}
+
+@media (max-width: 1030px) {
+    .editorWrapper {
+        width: 95vw;
+        box-shadow: none;
+        border: non;
+    }
+    
+}
+
+.ce-block {
+    border: rgba(128, 128, 128, .5) 1px dashed;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+}
+
+.hoverEffect:hover{
+    border: 1px dashed rgba(73, 182, 255, .5);
+    background-color: rgba(73, 172, 255, .025);
+}
+
+.drag-overlay {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    background-color: #e4e4e4; 
+    padding: 15px 20px;
+    border-radius: 5px;
+    position: fixed;
+    z-index: 10;
 }
 
 
-.padding {
-    padding: 5px;
-}

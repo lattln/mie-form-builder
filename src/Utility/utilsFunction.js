@@ -1,3 +1,4 @@
+
 import  {trashCan_Icon} from '../Utility/SVGIcons';
 
 export const initalQuestion ='Enter a question... ';
@@ -9,11 +10,9 @@ export const minCol = 1;
 
 export function setUpPlaceHolder(element, defaultparm, importedData) {
     const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
-
     let defaultText = defaultparm;
-
     importedData = importedData !== null || undefined ? importedData : defaultparm ;
-
+    
     if (isInput) {
         if (!element.value) {
             element.placeholder = importedData
@@ -25,17 +24,12 @@ export function setUpPlaceHolder(element, defaultparm, importedData) {
         else if (!importedData || importedData === defaultparm) {
             element.textContent = defaultText; 
             element.classList.add('text-placeholder');
-
         }
-        
-    
-        
     }
 
     ['click', 'focus'].forEach(function(e) {
         element.addEventListener(e, () => {
             if (!isInput && element.textContent === defaultText) {
-            
                 setTimeout(() => {
                     element.textContent = '';
                     element.classList.remove('text-placeholder');
@@ -81,7 +75,7 @@ export function SvgImg({icon, text}) {
     const url = URL.createObjectURL(svg)
 
     const inlineStyle = {
-        display: 'flex',
+        display: 'flex'
     }
 
     const style = {
@@ -89,22 +83,24 @@ export function SvgImg({icon, text}) {
         flex: 'row',
         margin: '0px',
         marginLeft: '5px',
-        width: '7em'
+        width: '10em'
     }
 
-    if (text === undefined) {
+    const img = {
+        height: '24px'
+    }
+
+    if (text === undefined || null) {
         return (
-         <div style = {inlineStyle}>
-            <img src = {url} alt='icon'></img>
-            
-         </div>   
+            <div style = {inlineStyle}>
+                <img  style = {img} src = {url} alt='icon'></img>
+            </div>   
         )
     }
 
     return (
-
         <div style={inlineStyle}>
-            <img src={url} alt='icon'/> <p style={style}> {text}</p>
+            <img style = {img} src={url} alt='icon'/> <p style={style}> {text}</p>
         </div>
     )
 }

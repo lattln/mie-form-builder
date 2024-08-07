@@ -39,7 +39,7 @@ export default class CalendarBlock{
         dateInput.type = 'date'
 
         multiAppend(blockContainer, [questionText, dateInput]);
-        multiAppend(this.wrapper, [blockContainer]);
+        multiAppend(this.blockWrapper, [blockContainer]);
         this.blocks.push({questionText, dateInput})
     }
 
