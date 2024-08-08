@@ -34,7 +34,7 @@ function convertToFHIR(jsonData) {
             block.data.questions.forEach(question => {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: question.question,
+                    text: question.question, 
                     type: "choice",
                     answerOption: ratings,
                     initial: [{ valueInteger: parseInt(question.selectedRating) }]
@@ -48,21 +48,21 @@ function convertToFHIR(jsonData) {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
                     text: data.question,
-                    type: data.type === "checkbox" ? "choice" : "string",
+                    type: "choice",
                     answerOption: answerOption,
                     initial: initialAnswers
                 });
                 linkId++;
             });
         } else if (block.type === "selectionBlock") {
-            block.data.blocks.forEach(blockData => {
-                const answerOption = blockData.options.map(option => ({ valueString: option }));
+            block.data.forEach(data => {
+                const answerOption = data.options.map(option => ({ valueString: option }));
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: blockData.question,
+                    text: data.question,
                     type: "choice",
                     answerOption: answerOption,
-                    initial: [{ valueString: blockData.selected }]
+                    initial: [{ valueString: data.selected }]
                 });
                 linkId++;
             });

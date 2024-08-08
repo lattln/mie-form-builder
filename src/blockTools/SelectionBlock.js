@@ -26,8 +26,8 @@ export default class SelectionBlock {
 
         deleteBlockBtn(this.wrapper, this.api);
 
-        if (this.data.blocks && this.data.blocks.length) {
-            this.data.blocks.forEach(blockData => this.block(blockData));
+        if (this.data && this.data.length > 0) {
+            this.data.forEach(blockData => this.block(blockData));
         } else {
             this.block();
         }
@@ -123,7 +123,7 @@ export default class SelectionBlock {
 
         this.blockQuestionContainer.appendChild(blockContainer);
 
-        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [], selectedOption: blockData.selectedOption || '' };
+        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [], selectedOption: blockData.selected || '' };
 
         if (blockData.options) {
             blockData.options.forEach(option => this.addOptions(block, option));
@@ -149,7 +149,7 @@ export default class SelectionBlock {
             this.removeOption(block, optionValue, optionElement, optionWrapper);
         });
 
-        multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn])
+        multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn]);
 
         block.optionsContainer.appendChild(optionWrapper);
         block.selectOption.appendChild(optionElement);
@@ -176,12 +176,10 @@ export default class SelectionBlock {
     }
 
     save() {
-        return {
-            blocks: this.blocks.map(block => ({
-                question: block.questionText.textContent,
-                options: block.options.map(option => option.value),
-                selected: block.selectOption.value || null
-            }))
-        };
+        return this.blocks.map(block => ({
+            question: block.questionText.textContent,
+            options: block.options.map(option => option.value),
+            selected: block.selectOption.value || null
+        }));
     }
 }

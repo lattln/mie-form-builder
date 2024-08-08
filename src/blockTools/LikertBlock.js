@@ -28,7 +28,7 @@ export default class LikertBlock {
 
         if (this.data.questions && this.data.questions.length > 0) {
             this.data.questions.forEach((question, index) => {
-                this.addQuestion({ question }, index);
+                this.addQuestion({ question: question.question, selectedRating: question.selectedRating }, index);
             });
         } else {
             this.addQuestion();
@@ -68,6 +68,10 @@ export default class LikertBlock {
             radioInput.type = 'radio';
             radioInput.name = `question-${this.blocks.length}`;
             radioInput.value = ratingText.textContent || rating;
+    
+            if (blockData.selectedRating && parseInt(blockData.selectedRating) === parseInt(rating)) {
+                radioInput.checked = true;
+            }
     
             columnDiv.appendChild(ratingText);
             columnDiv.appendChild(radioInput);
