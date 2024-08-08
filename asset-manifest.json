@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mie-form-builder/static/css/main.5071447c.css",
-    "main.js": "/mie-form-builder/static/js/main.983576df.js",
+    "main.js": "/mie-form-builder/static/js/main.a82c4e00.js",
     "static/js/453.ceb1615a.chunk.js": "/mie-form-builder/static/js/453.ceb1615a.chunk.js",
     "index.html": "/mie-form-builder/index.html",
     "main.5071447c.css.map": "/mie-form-builder/static/css/main.5071447c.css.map",
-    "main.983576df.js.map": "/mie-form-builder/static/js/main.983576df.js.map",
+    "main.a82c4e00.js.map": "/mie-form-builder/static/js/main.a82c4e00.js.map",
     "453.ceb1615a.chunk.js.map": "/mie-form-builder/static/js/453.ceb1615a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5071447c.css",
-    "static/js/main.983576df.js"
+    "static/js/main.a82c4e00.js"
   ]
 }
