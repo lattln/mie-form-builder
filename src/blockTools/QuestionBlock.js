@@ -19,6 +19,7 @@ export default class QuestionBlock {
         this.blocks = [];
         this.id = block.id;
         this.isCheckBox = true; 
+        this.renderSettingWrapper = null;
     }
 
     render() {
@@ -67,7 +68,7 @@ export default class QuestionBlock {
             }
         }
         
-        this.blocks.push({ blockContainer, questionText, optionsContainer, optionIndex, type: this.isCheckBox ? 'checkbox' : 'radio' });
+        this.blocks.push({ blockContainer, questionText, optionsContainer, optionIndex, type: this.isCheckBox ? 'checkbox' : 'radio', blockId: this.blocks.length });
     }
 
     addOption(optionsContainer, optionIndex, optionText = '') {
@@ -76,9 +77,8 @@ export default class QuestionBlock {
         const labelElement = makeElement('label', ['questionBlock-label']);
 
         inputElement.type = this.isCheckBox ? 'checkbox' : 'radio';
-        inputElement.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${this.blocks.length}`;
+        inputElement.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${this.blocks[this.blocks.length - 1].blockId}`;
         inputElement.id = `${inputElement.name}${this.id}-${optionIndex.value}`;
-        inputElement.disabled = true; 
         labelElement.htmlFor = inputElement.id;
         labelElement.contentEditable = true;
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText);
@@ -112,34 +112,24 @@ export default class QuestionBlock {
                 action: () => this.removeLastBlock()
             },
             {
-                name: 'Switch to Checkbox',
-                icon: checkBox_icon,
-                action: () => this.switchToCheckBox()
-            },
-            {
-                name: 'Switch to Radio',
-                icon: radio_Icon,
-                action: () => this.switchToRadio()
+                name: this.isCheckBox ? 'Switch to Radio' : 'Switch to Checkbox',
+                icon: this.isCheckBox ? radio_Icon : checkBox_icon,
+                action: () => this.toggleOptionType()
             }
         ];
 
-        const renderWrapper = makeElement('div', ['renderSetting']);
+        this.renderSettingWrapper = makeElement('div', ['renderSetting']);
 
-        settings.forEach(setting => createRenderOption(setting.name, setting.icon, renderWrapper, setting.action.bind(this)));
+        settings.forEach(setting => createRenderOption(setting.name, setting.icon, this.renderSettingWrapper, setting.action.bind(this)));
 
-        return renderWrapper;
+        return this.renderSettingWrapper;
     }
 
-    switchToCheckBox() {
-        this.isCheckBox = true;
-        QuestionBlock.toolbox.icon = checkBox_icon;
+    toggleOptionType() {
+        this.isCheckBox = !this.isCheckBox;
+        QuestionBlock.toolbox.icon = this.isCheckBox ? checkBox_icon : radio_Icon;
         this.updateOptionTypes();
-    }
-
-    switchToRadio() {
-        this.isCheckBox = false;
-        QuestionBlock.toolbox.icon = radio_Icon;
-        this.updateOptionTypes();
+        this.updateRenderSettings();
     }
 
     updateOptionTypes() {
@@ -147,11 +137,21 @@ export default class QuestionBlock {
             const inputs = block.optionsContainer.querySelectorAll('input');
             inputs.forEach(input => {
                 input.type = this.isCheckBox ? 'checkbox' : 'radio';
-                input.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${this.blocks.length}`;
-                input.disabled = true;
+                input.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${block.blockId}`;
             });
             block.type = this.isCheckBox ? 'checkbox' : 'radio'; 
         });
+    }
+
+    updateRenderSettings() {
+        if (this.renderSettingWrapper) {
+            const parent = this.renderSettingWrapper.parentNode;
+            if (parent) {
+                parent.removeChild(this.renderSettingWrapper);
+            }
+            this.renderSettingWrapper = this.renderSettings();
+            parent.appendChild(this.renderSettingWrapper);
+        }
     }
 
     removeLastBlock() {
@@ -162,11 +162,14 @@ export default class QuestionBlock {
     }
 
     save() {
-        return this.blocks.map(block => ({
-            type: block.type, 
-            question: block.questionText.textContent,
-            options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent)
-        }));
+        return this.blocks.map(block => {
+            const selectedOptions = Array.from(block.optionsContainer.querySelectorAll('input')).filter(input => input.checked).map(input => input.labels[0].textContent);
+            return {
+                type: block.type, 
+                question: block.questionText.textContent,
+                options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
+                selected: block.type === 'radio' ? selectedOptions[0] || null : selectedOptions
+            };
+        });
     }
 }
-

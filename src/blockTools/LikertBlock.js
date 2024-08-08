@@ -34,7 +34,7 @@ export default class LikertBlock {
             this.addQuestion();
         }
 
-        const addQuestionBtn = makeElement('button', ['add-question-btn']);
+        const addQuestionBtn = makeElement('button', ['blockControl-container', 'customBlockTool-innerContainer', 'centerAllChild', 'padding-bottom']);
         addQuestionBtn.innerHTML = `${add_icon} Add Question`;
         addQuestionBtn.onclick = () => this.addQuestion();
 
@@ -47,14 +47,14 @@ export default class LikertBlock {
         const questionText = makeElement('p', []);
         questionText.contentEditable = true;
         setUpPlaceHolder(questionText, initalQuestion, blockData.question);
-
+    
         const radioContainer = makeElement('div', ['likert-radioContainer', 'inlineSpace']);
         const ratings = blockData.ratings || this.firstQuestionRatings.slice();
-
+    
         ratings.forEach((rating, i) => {
             const columnDiv = makeElement('div', ['likert-rating-container']);
             const ratingText = makeElement('div', ['likert-ratingText']);
-
+    
             if (this.blocks.length === 0) {
                 ratingText.contentEditable = true;
                 ratingText.addEventListener('input', this.updateAllRatings.bind(this, i));
@@ -63,18 +63,17 @@ export default class LikertBlock {
             } else {
                 ratingText.textContent = this.firstQuestionRatings[i].textContent || this.firstQuestionRatings[i];
             }
-
+    
             const radioInput = makeElement('input');
             radioInput.type = 'radio';
             radioInput.name = `question-${this.blocks.length}`;
-
+            radioInput.value = ratingText.textContent || rating;
+    
             columnDiv.appendChild(ratingText);
             columnDiv.appendChild(radioInput);
             radioContainer.appendChild(columnDiv);
         });
-
-        
-        
+    
         if (this.blocks.length > 0) {
             const deleteQuestionBtnContainer = makeElement('div', ['deleteQuestionBtn-container']);
             const deleteQuestionBtn = makeElement('button', ['deleteBlockBtn', 'centerItems']);
@@ -83,12 +82,12 @@ export default class LikertBlock {
             multiAppend(deleteQuestionBtnContainer, [deleteQuestionBtn]);
             multiAppend(blockContainer, [deleteQuestionBtnContainer]);
         }
-
+    
         multiAppend(blockContainer, [questionText, radioContainer]);
         multiAppend(this.blockWrapper, [blockContainer]);
-
+    
         const block = { blockContainer, questionText, radioContainer, ratings };
-
+    
         if (typeof index === 'undefined') {
             this.blocks.push(block);
         } else {
@@ -96,7 +95,7 @@ export default class LikertBlock {
         }
         this.updateBlockData();
     }
-
+    
     updateAllRatings(index) {
         const textContent = this.firstQuestionRatings[index].textContent;
         this.blocks.forEach((block, blockIndex) => {
@@ -206,8 +205,11 @@ export default class LikertBlock {
 
     save() {
         return {
-            ratings: this.firstQuestionRatings.map(rating => rating.textContent),  
-            questions: this.blocks.map(block => block.questionText.textContent)
+            ratings: this.firstQuestionRatings.map(rating => rating.textContent),
+            questions: this.blocks.map(block => ({
+                question: block.questionText.textContent,
+                selectedRating: Array.from(block.radioContainer.querySelectorAll('input')).find(input => input.checked)?.value || null
+            }))
         };
     }
 }

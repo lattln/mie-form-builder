@@ -113,16 +113,21 @@ export default class SelectionBlock {
         setUpPlaceHolder(questionText, initalQuestion, blockData.question);
 
         const selectOption = makeElement('select', ['customBlockTool-select']);
+        selectOption.addEventListener('change', () => {
+            block.selectedOption = selectOption.value;
+        });
+
         const optionsContainer = makeElement('div', ['options-container']);
 
         multiAppend(blockContainer, [questionText, selectOption, optionsContainer]);
 
         this.blockQuestionContainer.appendChild(blockContainer);
 
-        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [] };
+        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [], selectedOption: blockData.selectedOption || '' };
 
         if (blockData.options) {
             blockData.options.forEach(option => this.addOptions(block, option));
+            selectOption.value = block.selectedOption; // Set the initial selected option
         }
 
         this.blocks.push(block);
@@ -167,7 +172,6 @@ export default class SelectionBlock {
             option.value = index;
             option.textContent = `Block ${index + 1}`;
             multiAppend(this.blockSelector, [option]);
-
         });
     }
 
@@ -175,7 +179,8 @@ export default class SelectionBlock {
         return {
             blocks: this.blocks.map(block => ({
                 question: block.questionText.textContent,
-                options: block.options.map(option => option.value)
+                options: block.options.map(option => option.value),
+                selected: block.selectOption.value || null
             }))
         };
     }

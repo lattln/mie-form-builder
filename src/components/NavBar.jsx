@@ -4,8 +4,8 @@ import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
 const NavBar = () => {
-    const version = 'v 2.4.02';
-    
+    const version = 'v 2.4.04';
+
     const { editorInstanceRef } = useContext(EditorContext);
     const [isModalOpen, setModalOpen] = useState(false);
     const [jsonData, setJsonData] = useState('');

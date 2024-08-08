@@ -86,6 +86,7 @@ export default class InputBlock {
     save() {
         return this.blocks.map(block => ({
             question: block.questionText.textContent,
+            answer: block.inputField.value
         }));
     }
     

@@ -9,6 +9,15 @@
     justify-content: space-evenly;
 }
 
+.centerAllChild {
+    display: flex;
+    justify-content: center;
+    
+}
+.padding-bottom {
+    padding-bottom: 5px;
+}
+
 @media (max-width: 700px) {
     .inlineEvenSpace {
         display: flex;

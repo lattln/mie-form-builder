@@ -62,8 +62,8 @@
 
 }
 
-.previewModal-content p{
-    margin-left: 1.5em;
+.previewModal-content p, .previewModal-content pre{
+    margin-left: 10vw;
     text-align: left;
 }
 
