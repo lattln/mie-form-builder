@@ -21,7 +21,7 @@ export default class QuestionBlock {
         this.blockWrapper = null;
         this.blocks = [];
         this.id = block.id;
-        this.isCheckBox = this.data.type === 'checkbox';  // Set the block type from data
+        this.isCheckBox = this.data.type === 'checkbox';  
         this.renderSettingWrapper = null;
         this.readOnly = readOnly;
     }
@@ -31,7 +31,7 @@ export default class QuestionBlock {
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
 
         if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+            deleteBlockBtn(this.wrapper, this.api);  
         }
 
         if (Array.isArray(this.data.blocks)) {
@@ -50,7 +50,7 @@ export default class QuestionBlock {
         }
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly;  
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
         const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
@@ -98,8 +98,8 @@ export default class QuestionBlock {
         inputElement.name = this.isCheckBox ? `checkbox-${blockId}` : `radio-${blockId}`;
         inputElement.id = `${inputElement.name}-${this.id}-${optionIndex.value}`;
         labelElement.htmlFor = inputElement.id;
-        labelElement.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
-        inputElement.disabled = !this.readOnly;  // Disable interaction in readOnly mode
+        labelElement.contentEditable = !this.readOnly;  
+        inputElement.disabled = !this.readOnly; 
 
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText, !this.readOnly);
 
@@ -127,7 +127,7 @@ export default class QuestionBlock {
     }
 
     renderSettings() {
-        if (this.readOnly) return;  // Hide settings in readOnly mode
+        if (this.readOnly) return;  
 
         const settings = [
             {

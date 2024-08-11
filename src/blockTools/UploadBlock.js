@@ -28,7 +28,7 @@ export default class UploadBlock {
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
         
         if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+            deleteBlockBtn(this.wrapper, this.api);  
         }
 
         this.block(this.data[0]);
@@ -40,7 +40,7 @@ export default class UploadBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly; 
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
@@ -59,7 +59,7 @@ export default class UploadBlock {
         fileInput.style.display = 'none';
         fileInput.id = 'userDocInput';
         fileInput.accept = '.pdf,.docx';
-        fileInput.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+        fileInput.disabled = !this.readOnly;  
 
         const fileLabel = makeElement('label', ['fileUpload-ddBoxLabel']);
         fileLabel.textContent = 'Browse';
@@ -77,7 +77,7 @@ export default class UploadBlock {
     }
 
     addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel) {
-        // Event listeners for drag and drop, only added in editable mode
+
         ddBoxArea.addEventListener('dragover', (event) => {
             event.preventDefault();
             this.updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, 'Release to upload', '', '');

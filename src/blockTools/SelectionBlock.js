@@ -30,7 +30,7 @@ export default class SelectionBlock {
         this.blockQuestionContainer = makeElement('div', ['inlineEvenSpace']);
 
         if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+            deleteBlockBtn(this.wrapper, this.api);  
         }
 
         if (this.data && this.data.length > 0) {
@@ -44,8 +44,7 @@ export default class SelectionBlock {
     }
 
     renderSettings() {
-        if (this.readOnly) return;  // Hide settings in readOnly mode
-
+        if (this.readOnly) return;  
         const settings = [
             { 
                 name: 'Add selection',
@@ -117,12 +116,12 @@ export default class SelectionBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly; 
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
         const selectOption = makeElement('select', ['customBlockTool-select']);
-        selectOption.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+        selectOption.disabled = !this.readOnly;  
         selectOption.addEventListener('change', () => {
             block.selectedOption = selectOption.value;
         });
@@ -141,7 +140,7 @@ export default class SelectionBlock {
 
         if (blockData.options) {
             blockData.options.forEach(option => this.addOptions(block, option));
-            selectOption.value = block.selectedOption; // Set the initial selected option
+            selectOption.value = block.selectedOption; 
         }
 
         this.blocks.push(block);

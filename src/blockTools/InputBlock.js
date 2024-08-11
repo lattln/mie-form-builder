@@ -48,10 +48,10 @@ export default class InputBlock {
 
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly;  
 
         const inputField = makeElement('input', ['customBlockTool-input']);
-        inputField.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+        inputField.disabled = !this.readOnly; 
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
         setUpPlaceHolder(inputField, initalGlobal + 'answer..', null, !this.readOnly);

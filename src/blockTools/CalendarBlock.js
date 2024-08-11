@@ -38,13 +38,13 @@ export default class CalendarBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly;  
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
         const dateInput = makeElement('input', ['customBlockTool-date']);
         dateInput.type = 'date';
-        dateInput.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+        dateInput.disabled = !this.readOnly;  
 
         multiAppend(blockContainer, [questionText, dateInput]);
         multiAppend(this.blockWrapper, [blockContainer]);

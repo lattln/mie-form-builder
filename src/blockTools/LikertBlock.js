@@ -19,7 +19,7 @@ export default class LikertBlock {
         this.wrapper = null;
         this.blockWrapper = null;
         this.blocks = [];
-        this.scale = this.data.scale || 5;  // Default scale to 5
+        this.scale = this.data.scale || 5;  
         this.firstQuestionRatings = this.data.ratings ? this.data.ratings.slice() : Array(this.scale).fill(initalRating);  // Store ratings of the first question
         this.readOnly = readOnly;
     }
@@ -29,7 +29,7 @@ export default class LikertBlock {
         this.blockWrapper = makeElement('div', ['likertQuestion-container']);
         
         if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+            deleteBlockBtn(this.wrapper, this.api);  
         }
 
         if (this.data.questions && this.data.questions.length > 0) {
@@ -55,7 +55,7 @@ export default class LikertBlock {
     addQuestion(blockData = {}, index) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', []);
-        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        questionText.contentEditable = !this.readOnly; 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
     
         const radioContainer = makeElement('div', ['likert-radioContainer', 'inlineSpace']);
@@ -66,7 +66,7 @@ export default class LikertBlock {
             const ratingText = makeElement('div', ['likert-ratingText']);
     
             if (this.blocks.length === 0) {
-                ratingText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+                ratingText.contentEditable = !this.readOnly; 
                 ratingText.addEventListener('input', this.updateAllRatings.bind(this, i));
                 setUpPlaceHolder(ratingText, initalRating, rating, !this.readOnly);
                 this.firstQuestionRatings[i] = ratingText;
@@ -78,7 +78,7 @@ export default class LikertBlock {
             radioInput.type = 'radio';
             radioInput.name = `question-${this.blocks.length}`;
             radioInput.value = ratingText.textContent || rating;
-            radioInput.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+            radioInput.disabled = !this.readOnly;  
     
             if (blockData.selectedRating && parseInt(blockData.selectedRating) === parseInt(rating)) {
                 radioInput.checked = true;
@@ -161,8 +161,8 @@ export default class LikertBlock {
                 const columnDiv = makeElement('div', ['likert-rating-container']);
                 const ratingText = makeElement('div', ['likert-ratingText']);
 
-                if (blockIndex === 0) {  // Only make editable for the first question
-                    ratingText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+                if (blockIndex === 0) {  
+                    ratingText.contentEditable = !this.readOnly;  
                     ratingText.addEventListener('input', this.updateAllRatings.bind(this, radioContainer.children.length));
                     setUpPlaceHolder(ratingText, initalRating, '', !this.readOnly);
                     this.firstQuestionRatings.push(ratingText);
@@ -173,7 +173,7 @@ export default class LikertBlock {
                 const radioInput = makeElement('input');
                 radioInput.type = 'radio';
                 radioInput.name = radioContainer.querySelector('input').name;
-                radioInput.disabled = !this.readOnly;  // Enable interaction in readOnly mode
+                radioInput.disabled = !this.readOnly; 
 
                 columnDiv.appendChild(ratingText);
                 columnDiv.appendChild(radioInput);
@@ -183,15 +183,14 @@ export default class LikertBlock {
             while (radioContainer.children.length > this.scale) {
                 radioContainer.lastChild.remove();
                 if (blockIndex === 0) {
-                    this.firstQuestionRatings.pop();  // Keep first question ratings updated
+                    this.firstQuestionRatings.pop();  
                 }
             }
         });
     }
 
     renderSettings() {
-        if (this.readOnly) return;  // Hide settings in readOnly mode
-
+        if (this.readOnly) return;  
         const settings = [
             {
                 name: 'Add Question',
