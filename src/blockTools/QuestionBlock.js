@@ -3,32 +3,39 @@ import { createRenderOption, deleteBlockBtn, initalOption, initalQuestion, makeE
 import '../blockTools_css/block-styles.css'
 
 export default class QuestionBlock {
-
     static get toolbox() {
         return {
             title: 'Question Block',
-            icon: question_icon // Default icon
+            icon: question_icon
         };
     }
 
-    constructor({ block, data, api,  }) {
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor({ block, data, api, readOnly }) {
         this.data = data || {};
         this.api = api;
         this.wrapper = null;
         this.blockWrapper = null;
         this.blocks = [];
         this.id = block.id;
-        this.isCheckBox = true; 
+        this.isCheckBox = this.data.type === 'checkbox';  // Set the block type from data
         this.renderSettingWrapper = null;
+        this.readOnly = readOnly;
     }
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
-        deleteBlockBtn(this.wrapper, this.api);
 
-        if (Array.isArray(this.data)) {
-            this.data.forEach(blockData => this.Block(blockData));
+        if (!this.readOnly) {
+            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+        }
+
+        if (Array.isArray(this.data.blocks)) {
+            this.data.blocks.forEach(blockData => this.Block(blockData));
         } else {
             this.Block();
         }
@@ -43,51 +50,71 @@ export default class QuestionBlock {
         }
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
-        questionText.contentEditable = true;
+        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
 
-        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
         const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
 
         multiAppend(blockContainer, [questionText, optionsContainer]);
 
-        const blockControls = makeElement('div', ['control-container']);
-        const addChoiceBtn = makeElement('button', ['style-button-transparent']);
-        addChoiceBtn.innerHTML = add_icon;
-        blockControls.onclick = () => this.addOption(optionsContainer, optionIndex);
+        if (!this.readOnly) {
+            const blockControls = makeElement('div', ['control-container']);
+            const addChoiceBtn = makeElement('button', ['style-button-transparent']);
+            addChoiceBtn.innerHTML = add_icon;
+            addChoiceBtn.onclick = () => this.addOption(optionsContainer, optionIndex, '', blockId);
+            multiAppend(blockControls, [addChoiceBtn]);
+            multiAppend(blockContainer, [blockControls]);
+        }
 
-        multiAppend(blockControls, [addChoiceBtn]);
-        multiAppend(blockContainer, [blockControls])
         multiAppend(this.blockWrapper, [blockContainer]);
 
         const optionIndex = { value: 0 };
+        const blockId = this.blocks.length;
+
         if (blockData.options) {
-            blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option));
+            blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option, blockId));
         } else {
             for (let i = 0; i < 3; i++) {
-                this.addOption(optionsContainer, optionIndex);
+                this.addOption(optionsContainer, optionIndex, '', blockId);
             }
         }
-        
-        this.blocks.push({ blockContainer, questionText, optionsContainer, optionIndex, type: this.isCheckBox ? 'checkbox' : 'radio', blockId: this.blocks.length });
+
+        this.blocks.push({
+            blockContainer,
+            questionText,
+            optionsContainer,
+            optionIndex,
+            type: this.isCheckBox ? 'checkbox' : 'radio',
+            blockId: blockId
+        });
     }
 
-    addOption(optionsContainer, optionIndex, optionText = '') {
+    addOption(optionsContainer, optionIndex, optionText = '', blockId) {
         const optionElement = makeElement('div', ['customBlockTool-option']);
         const inputElement = makeElement('input', ['questionBlock-input']);
         const labelElement = makeElement('label', ['questionBlock-label']);
 
         inputElement.type = this.isCheckBox ? 'checkbox' : 'radio';
-        inputElement.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${this.blocks[this.blocks.length - 1].blockId}`;
-        inputElement.id = `${inputElement.name}${this.id}-${optionIndex.value}`;
+        inputElement.name = this.isCheckBox ? `checkbox-${blockId}` : `radio-${blockId}`;
+        inputElement.id = `${inputElement.name}-${this.id}-${optionIndex.value}`;
         labelElement.htmlFor = inputElement.id;
-        labelElement.contentEditable = true;
-        setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText);
+        labelElement.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+        inputElement.disabled = !this.readOnly;  // Disable interaction in readOnly mode
 
-        const removeBtn = makeElement('button', ['style-button-transparent']);
-        removeBtn.innerHTML = trashCan_Icon;
-        removeBtn.onclick = () => { optionElement.remove(); optionIndex.value--; };
+        setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText, !this.readOnly);
 
-        multiAppend(optionElement, [inputElement, labelElement, removeBtn]);
+        if (!this.readOnly) {
+            const removeBtn = makeElement('button', ['style-button-transparent']);
+            removeBtn.innerHTML = trashCan_Icon;
+            removeBtn.onclick = () => {
+                optionElement.remove();
+                optionIndex.value--;
+            };
+            multiAppend(optionElement, [inputElement, labelElement, removeBtn]);
+        } else {
+            multiAppend(optionElement, [inputElement, labelElement]);
+        }
+
         multiAppend(optionsContainer, [optionElement]);
         optionIndex.value++;
     }
@@ -100,6 +127,8 @@ export default class QuestionBlock {
     }
 
     renderSettings() {
+        if (this.readOnly) return;  // Hide settings in readOnly mode
+
         const settings = [
             {
                 name: 'Add Column',
@@ -127,7 +156,6 @@ export default class QuestionBlock {
 
     toggleOptionType() {
         this.isCheckBox = !this.isCheckBox;
-        QuestionBlock.toolbox.icon = this.isCheckBox ? checkBox_icon : radio_Icon;
         this.updateOptionTypes();
         this.updateRenderSettings();
     }
@@ -137,9 +165,9 @@ export default class QuestionBlock {
             const inputs = block.optionsContainer.querySelectorAll('input');
             inputs.forEach(input => {
                 input.type = this.isCheckBox ? 'checkbox' : 'radio';
-                input.name = this.isCheckBox ? `checkbox-${this.blocks.length}` : `radio-${block.blockId}`;
+                input.name = this.isCheckBox ? `checkbox-${block.blockId}` : `radio-${block.blockId}`;
             });
-            block.type = this.isCheckBox ? 'checkbox' : 'radio'; 
+            block.type = this.isCheckBox ? 'checkbox' : 'radio';
         });
     }
 

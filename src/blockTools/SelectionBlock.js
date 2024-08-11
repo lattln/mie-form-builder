@@ -9,7 +9,11 @@ export default class SelectionBlock {
         };
     }
 
-    constructor({ data, api }) {
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor({ data, api, readOnly }) {
         this.data = data || {};
         this.api = api;
         this.wrapper = null;
@@ -18,13 +22,16 @@ export default class SelectionBlock {
         this.maxBlocks = 3;
         this.currentBlockIndex = 0;
         this.blockSelector = null;
+        this.readOnly = readOnly;
     }
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockQuestionContainer = makeElement('div', ['inlineEvenSpace']);
 
-        deleteBlockBtn(this.wrapper, this.api);
+        if (!this.readOnly) {
+            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+        }
 
         if (this.data && this.data.length > 0) {
             this.data.forEach(blockData => this.block(blockData));
@@ -37,6 +44,8 @@ export default class SelectionBlock {
     }
 
     renderSettings() {
+        if (this.readOnly) return;  // Hide settings in readOnly mode
+
         const settings = [
             { 
                 name: 'Add selection',
@@ -65,7 +74,7 @@ export default class SelectionBlock {
             this.currentBlockIndex = event.target.value;
         });
 
-        setUpPlaceHolder(selectionInput, initalGlobal + 'an option..', null);
+        setUpPlaceHolder(selectionInput, initalGlobal + 'an option..', null, !this.readOnly);
 
         createRenderBtn(renderOptionContainer, settings[0].icon, renderWrapper, () => {
             const currentBlock = this.blocks[this.currentBlockIndex];
@@ -80,6 +89,7 @@ export default class SelectionBlock {
                 selectionInput.value = '';
             }
         });
+
         settings.slice(1).forEach(setting => {
             createRenderOption(setting.name, setting.icon, renderWrapper, setting.action);
         });
@@ -88,7 +98,6 @@ export default class SelectionBlock {
         multiAppend(renderWrapper, [this.blockSelector, renderOptionContainer]);
         return renderWrapper;
     }
-    
 
     addcolumn() {
         if (this.blockQuestionContainer.children.length < this.maxBlocks) {
@@ -108,18 +117,23 @@ export default class SelectionBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = true;
+        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
 
-        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
         const selectOption = makeElement('select', ['customBlockTool-select']);
+        selectOption.disabled = !this.readOnly;  // Enable interaction in readOnly mode
         selectOption.addEventListener('change', () => {
             block.selectedOption = selectOption.value;
         });
 
         const optionsContainer = makeElement('div', ['options-container']);
 
-        multiAppend(blockContainer, [questionText, selectOption, optionsContainer]);
+        multiAppend(blockContainer, [questionText, selectOption]);
+
+        if (!this.readOnly) {
+            blockContainer.appendChild(optionsContainer);
+        }
 
         this.blockQuestionContainer.appendChild(blockContainer);
 
@@ -143,15 +157,17 @@ export default class SelectionBlock {
         optionElement.textContent = optionValue;
 
         const optionWrapper = makeElement('div', ['optionWrapper']);
-        const deleteBtn = makeElement('button', ['deleteBlockBtn']);
-        deleteBtn.innerHTML = trashCan_Icon;
-        deleteBtn.addEventListener('click', () => {
-            this.removeOption(block, optionValue, optionElement, optionWrapper);
-        });
 
-        multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn]);
-
-        block.optionsContainer.appendChild(optionWrapper);
+        if (!this.readOnly) {
+            const deleteBtn = makeElement('button', ['deleteBlockBtn']);
+            deleteBtn.innerHTML = trashCan_Icon;
+            deleteBtn.addEventListener('click', () => {
+                this.removeOption(block, optionValue, optionElement, optionWrapper);
+            });
+            multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn]);
+            block.optionsContainer.appendChild(optionWrapper);
+        }
+        
         block.selectOption.appendChild(optionElement);
         block.options.push({ value: optionValue, element: optionElement, wrapper: optionWrapper });
     }

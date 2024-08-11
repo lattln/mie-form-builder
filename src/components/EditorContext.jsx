@@ -33,35 +33,19 @@ function EditorContextProvider(props) {
                         console.error("Fail to int dragdrop", error);
                     }
                 }, 1000);
-
             },
-            
-            
 
             holder: 'editorjs',
             placeholder: 'add to form here.',
             autofocus: false,
-
-            //ALL TOOLS \/\/\/\/\/\/\/
-            //FOR EASE OF TRACKING --> ORDER BELOW
-            // TUNE
-            // INLINE TOOL
-            // CUSTOM BLOCK
-            // BUILTIN BLOCK TOOL
             tools: {
 
-                //Tune
                 textAlignmentTune: {
                     class: AlignmentTuneTool,
                     config: {
                         default: "left",
                     }
                 },
-
-                // //InlineTool
-                // marker: MarkerTool,
-
-                //Custom Block Tools ----------
                 questionBlock: {
                     class: QuestionBlock
                 },
@@ -80,25 +64,6 @@ function EditorContextProvider(props) {
                 UploadBlock: {
                     class: UploadBlock,
                 },
-                
-
-                
-                //Block Tool
-                // header: {
-                //     class: Header,
-                //     inlineToolbar: ['bold', 'italic', 'link'],
-                //     tunes: ['textAlignmentTune'],
-                //     config: {
-                //         placeholder: "Enter a header",
-                //     }
-                // },
-
-                // paragraph: {
-                //     class: Paragraph,
-                //     inlineToolbar: ['bold', 'italic', 'link'],
-                //     tunes: ['textAlignmentTune']
-                // },
-
             }
         });
         editorInstanceRef.current = editor

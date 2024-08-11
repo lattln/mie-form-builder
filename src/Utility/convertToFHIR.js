@@ -9,68 +9,83 @@ function convertToFHIR(jsonData) {
     let linkId = 1;
 
     jsonData.blocks.forEach(block => {
-        if (block.type === "calendarBlock") {
+        console.log('Processing block:', block);
+
+        // Calendar Block
+        if (block.type === "calendarBlock" && Array.isArray(block.data)) {
             block.data.forEach(data => {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: data.question,
+                    text: data.question || "Enter a question...",
                     type: "date",
-                    initial: [{ valueDate: data.date }]
+                    initial: [{ valueDate: data.date || null }]
                 });
                 linkId++;
             });
-        } else if (block.type === "inputBlock") {
+
+        // Input Block
+        } else if (block.type === "inputBlock" && Array.isArray(block.data)) {
             block.data.forEach(data => {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: data.question,
+                    text: data.question || "Enter a question...",
                     type: "string",
-                    initial: [{ valueString: data.answer }]
+                    initial: [{ valueString: data.answer || "" }]
                 });
                 linkId++;
             });
-        } else if (block.type === "likertBlock") {
-            const ratings = block.data.ratings.map(rating => ({ valueInteger: parseInt(rating) }));
+
+        // Likert Block
+        } else if (block.type === "likertBlock" && block.data && Array.isArray(block.data.questions)) {
             block.data.questions.forEach(question => {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: question.question, 
+                    text: question.question || "Enter a question...",
                     type: "choice",
-                    answerOption: ratings,
-                    initial: [{ valueInteger: parseInt(question.selectedRating) }]
+                    answerOption: block.data.ratings.map(rating => ({ valueInteger: parseInt(rating) })),
+                    initial: [{ valueInteger: question.selectedRating ? parseInt(question.selectedRating) : null }]
                 });
                 linkId++;
             });
-        } else if (block.type === "questionBlock") {
+
+        // Question Block (for radio and checkbox questions)
+        } else if (block.type === "questionBlock" && Array.isArray(block.data)) {
             block.data.forEach(data => {
                 const answerOption = data.options.map(option => ({ valueString: option }));
-                const initialAnswers = data.selected.map(selected => ({ valueString: selected }));
+                const initialAnswers = Array.isArray(data.selected) && data.selected.length > 0
+                    ? data.selected.map(selected => ({ valueString: selected }))
+                    : [{ valueString: null }];
+
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: data.question,
-                    type: "choice",
+                    text: data.question || "Enter a question...",
+                    type: data.type === 'radio' ? "choice" : "boolean",
                     answerOption: answerOption,
                     initial: initialAnswers
                 });
                 linkId++;
             });
-        } else if (block.type === "selectionBlock") {
+
+        // Selection Block
+        } else if (block.type === "selectionBlock" && Array.isArray(block.data)) {
             block.data.forEach(data => {
                 const answerOption = data.options.map(option => ({ valueString: option }));
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: data.question,
+                    text: data.question || "Enter a question...",
                     type: "choice",
                     answerOption: answerOption,
-                    initial: [{ valueString: data.selected }]
+                    initial: [{ valueString: data.selected || "" }]
                 });
                 linkId++;
             });
-        } else if (block.type === "uploadBlock") {
+
+        // Upload Block
+        } else if (block.type === "uploadBlock" && Array.isArray(block.data)) {
             block.data.forEach(data => {
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
-                    text: data.question,
+                    text: data.question || "Enter a question...",
                     type: "attachment"
                 });
                 linkId++;

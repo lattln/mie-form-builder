@@ -10,19 +10,27 @@ export default class UploadBlock {
         };
     }
 
-    constructor({ data, api }) {
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor({ data, api, readOnly }) {
         this.data = data || {};
         this.api = api;
         this.wrapper = null;
         this.blockWrapper = null;
         this.blocks = [];
+        this.readOnly = readOnly;
     }
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
         
-        deleteBlockBtn(this.wrapper, this.api);
+        if (!this.readOnly) {
+            deleteBlockBtn(this.wrapper, this.api);  // Only show delete button in editable mode
+        }
+
         this.block(this.data[0]);
         
         multiAppend(this.wrapper, [this.blockWrapper]);
@@ -32,8 +40,9 @@ export default class UploadBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = true;
-        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
+        questionText.contentEditable = !this.readOnly;  // Enable editing in non-readOnly mode
+
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
         const ddBoxArea = makeElement('div', ['fileUpload-ddBoxArea']);
         const ddBoxImg = makeElement('span');
@@ -50,6 +59,7 @@ export default class UploadBlock {
         fileInput.style.display = 'none';
         fileInput.id = 'userDocInput';
         fileInput.accept = '.pdf,.docx';
+        fileInput.disabled = !this.readOnly;  // Enable interaction in readOnly mode
 
         const fileLabel = makeElement('label', ['fileUpload-ddBoxLabel']);
         fileLabel.textContent = 'Browse';
@@ -59,12 +69,15 @@ export default class UploadBlock {
         multiAppend(blockContainer, [questionText, ddBoxArea]);
         multiAppend(this.wrapper, [blockContainer]);
 
-        this.blocks.push({ questionText, fileInput, ddBoxText, ddBoxText2, fileLabel, ddBoxArea });
+        if (!this.readOnly) {
+            this.addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel);
+        }
 
-        this.addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel);
+        this.blocks.push({ questionText, fileInput, ddBoxText, ddBoxText2, fileLabel, ddBoxArea });
     }
 
     addEventListeners(ddBoxArea, fileInput, ddBoxText, ddBoxText2, fileLabel) {
+        // Event listeners for drag and drop, only added in editable mode
         ddBoxArea.addEventListener('dragover', (event) => {
             event.preventDefault();
             this.updateDdBoxText(ddBoxText, ddBoxText2, fileLabel, 'Release to upload', '', '');

@@ -25,6 +25,12 @@ const EditSpace = () => {
             <div className = 'editorBody'>
                 <CustomToolBar />
                 <div className='editorWrapper'>
+
+                    <label className="switch"> 
+                        <input type="checkbox"/>
+                        <span className="slider round"></span>
+                    </label>
+
                     <div id='editorjs' ref={setNodeRef}>
                     </div>
                 </div>

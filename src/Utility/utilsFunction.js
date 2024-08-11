@@ -8,7 +8,7 @@ export const initalGlobal = 'Enter ';
 export const maxCol = 3;
 export const minCol = 1;
 
-export function setUpPlaceHolder(element, defaultparm, importedData) {
+export function setUpPlaceHolder(element, defaultparm, importedData, mode ) {
     const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
     let defaultText = defaultparm;
     importedData = importedData !== null || undefined ? importedData : defaultparm ;
@@ -26,34 +26,37 @@ export function setUpPlaceHolder(element, defaultparm, importedData) {
             element.classList.add('text-placeholder');
         }
     }
-
-    ['click', 'focus'].forEach(function(e) {
-        element.addEventListener(e, () => {
-            if (!isInput && element.textContent === defaultText) {
-                setTimeout(() => {
-                    element.textContent = '';
-                    element.classList.remove('text-placeholder');
-                    element.focus();  
-                }, 100); 
-            } else if (isInput && element.value.trim() === '') {
-                setTimeout(() => {
-                    element.placeholder = ''; 
-                    element.focus();  
-                }, 100); 
-            }
+    if (mode) {
+        ['click', 'focus'].forEach(function(e) {
+            element.addEventListener(e, () => {
+                if (!isInput && element.textContent === defaultText) {
+                    setTimeout(() => {
+                        element.textContent = '';
+                        element.classList.remove('text-placeholder');
+                        element.focus();  
+                    }, 100); 
+                } else if (isInput && element.value.trim() === '') {
+                    setTimeout(() => {
+                        element.placeholder = ''; 
+                        element.focus();  
+                    }, 100); 
+                }
+            })
         })
-    })
 
-    element.addEventListener('blur', () => {
-        if (!isInput && element.textContent.trim() === '') {
-            element.textContent = defaultText;
-            element.classList.add('text-placeholder');
-        } else if (isInput && element.value.trim() === '') {
-            element.placeholder = defaultText;
-        }
-    });
+        element.addEventListener('blur', () => {
+            if (!isInput && element.textContent.trim() === '') {
+                element.textContent = defaultText;
+                element.classList.add('text-placeholder');
+            } else if (isInput && element.value.trim() === '') {
+                element.placeholder = defaultText;
+            }
+        });
+    }
+    else {
+        element.classList.add('cursor-pointer');
+    }
 }
-
 
 export function deleteBlockBtn(wrapper, api) {
     const delContainer = makeElement('div', ['deleteBlockBtn-container']);

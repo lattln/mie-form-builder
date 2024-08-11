@@ -90,7 +90,7 @@ const NavBar = () => {
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
                 <label htmlFor="fileInput" className="button mieColor-blue">Import</label>
-                <button className="button mieColor-yellow" onClick={handlePreview} >Preview</button>
+                <button className="button mieColor-yellow" onClick={handlePreview} >Preview Data</button>
                 <button className="button mieColor-green" onClick={exportData}>Export</button>
                 
             </div>
