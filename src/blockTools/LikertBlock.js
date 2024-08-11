@@ -28,9 +28,7 @@ export default class LikertBlock {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['likertQuestion-container']);
         
-        if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  
-        }
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
         if (this.data.questions && this.data.questions.length > 0) {
             this.data.questions.forEach((question, index) => {

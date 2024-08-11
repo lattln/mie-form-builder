@@ -58,17 +58,25 @@ export function setUpPlaceHolder(element, defaultparm, importedData, mode ) {
     }
 }
 
-export function deleteBlockBtn(wrapper, api) {
+export function deleteBlockBtn(wrapper, api, readOnly) {
     const delContainer = makeElement('div', ['deleteBlockBtn-container']);
     const deleteBtn = makeElement('button', ['deleteBlockBtn']);
 
     deleteBtn.innerHTML = trashCan_Icon;
-    deleteBtn.addEventListener('click', () => api.blocks.delete());
+
+    if (!readOnly) {
+        deleteBtn.addEventListener('click', () => api.blocks.delete());
+    } else {
+        deleteBtn.disabled = true; 
+        deleteBtn.classList.add('disabled'); 
+        deleteBtn.style.opacity = '0';  
+    }
 
     delContainer.appendChild(deleteBtn);
     wrapper.appendChild(delContainer);
-
 }
+
+
 
 
 export function SvgImg({icon, text}) {

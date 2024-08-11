@@ -2,11 +2,11 @@ import '../components_css/previewModal.css';
 import { useState } from 'react';
 
 const PreviewModal = ({ isOpen, onClose, jsonRender }) => {
-    const [view, setView] = useState('form');
+    const [view, setView] = useState('json');
 
 
-    const handleFormClick = () => {
-        setView('form');
+    const handleFHIRClick = () => {
+        setView('fhir');
     };
 
     const handleJSONClick = () => {
@@ -18,12 +18,12 @@ const PreviewModal = ({ isOpen, onClose, jsonRender }) => {
     return (
         <div className="previewModal-overlay">
             <div className="previewModal-contentAllign">
-                <div className="previewModal-header">
-                    <button onClick={handleFormClick} className={view === 'form' ? 'activeTab' : ''}>Form</button>
+                <div className="previewModal-header"> 
                     <button onClick={handleJSONClick} className={view === 'json' ? 'activeTab' : ''}>JSON</button>
+                    <button onClick={handleFHIRClick} className={view === 'fhir' ? 'activeTab' : ''}>FHIR</button>
                 </div>
                 <div className="previewModal-content">
-                    {view === 'form' && <pre>Work in Progress</pre>}
+                    {view === 'fhir' && <pre>Work in Progress</pre>}
                     {view === 'json' && <pre>{jsonRender}</pre>}
                 </div>
             </div>

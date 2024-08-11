@@ -30,9 +30,7 @@ export default class QuestionBlock {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
 
-        if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  
-        }
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
         if (Array.isArray(this.data.blocks)) {
             this.data.blocks.forEach(blockData => this.Block(blockData));
@@ -50,7 +48,7 @@ export default class QuestionBlock {
         }
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
-        questionText.contentEditable = !this.readOnly;  
+        questionText.contentEditable = !this.readOnly; 
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
         const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
@@ -99,7 +97,7 @@ export default class QuestionBlock {
         inputElement.id = `${inputElement.name}-${this.id}-${optionIndex.value}`;
         labelElement.htmlFor = inputElement.id;
         labelElement.contentEditable = !this.readOnly;  
-        inputElement.disabled = !this.readOnly; 
+        inputElement.disabled = !this.readOnly;  
 
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText, !this.readOnly);
 
@@ -127,7 +125,7 @@ export default class QuestionBlock {
     }
 
     renderSettings() {
-        if (this.readOnly) return;  
+        if (this.readOnly) return;  // Hide settings in readOnly mode
 
         const settings = [
             {
@@ -190,14 +188,17 @@ export default class QuestionBlock {
     }
 
     save() {
-        return this.blocks.map(block => {
-            const selectedOptions = Array.from(block.optionsContainer.querySelectorAll('input')).filter(input => input.checked).map(input => input.labels[0].textContent);
-            return {
-                type: block.type, 
-                question: block.questionText.textContent,
-                options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
-                selected: block.type === 'radio' ? selectedOptions[0] || null : selectedOptions
-            };
-        });
+        return {
+            type: this.isCheckBox ? 'checkbox' : 'radio',
+            blocks: this.blocks.map(block => {
+                const selectedOptions = Array.from(block.optionsContainer.querySelectorAll('input')).filter(input => input.checked).map(input => input.labels[0].textContent);
+                return {
+                    question: block.questionText.textContent,
+                    options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
+                    selected: block.type === 'radio' ? selectedOptions[0] || null : selectedOptions
+                };
+            })
+        };
     }
+
 }

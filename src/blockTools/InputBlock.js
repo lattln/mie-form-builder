@@ -26,9 +26,7 @@ export default class InputBlock {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
 
-        if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);
-        }
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
         if (Array.isArray(this.data)) {
             this.data.forEach(blockData => {

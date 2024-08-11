@@ -12,7 +12,13 @@
 .centerAllChild {
     display: flex;
     justify-content: center;
+    align-content: center;
     
+}
+
+.setColumn {
+    display: flex;
+    flex-direction: column;
 }
 .padding-bottom {
     padding-bottom: 5px;

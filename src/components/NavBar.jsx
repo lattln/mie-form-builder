@@ -4,11 +4,12 @@ import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
 const NavBar = () => {
-    const version = 'v 2.4.04';
+    const version = 'v 2.4.06';
 
     const { editorInstanceRef } = useContext(EditorContext);
     const [isModalOpen, setModalOpen] = useState(false);
     const [jsonData, setJsonData] = useState('');
+    const [tempFlag, setTempFlag] = useState(false);
     
 
         const exportData = async () => {
@@ -37,6 +38,10 @@ const NavBar = () => {
 
         const handlePreview = async () => {
             if (editorInstanceRef.current) {
+                if (editorInstanceRef.current.readOnly.isEnabled === true) {
+                    editorInstanceRef.current.readOnly.toggle();
+                    setTempFlag(true);
+                }
                 const data = await editorInstanceRef.current.save();
                 const jsonData = JSON.stringify(data, null, 2);
                 setJsonData(jsonData);
@@ -48,9 +53,12 @@ const NavBar = () => {
         }
 
         const handleClose = () => {
+            if (tempFlag === true) {
+                editorInstanceRef.current.readOnly.toggle();
+                setTempFlag(false);
+            }
                 document.body.classList.remove('disable-scroll');
                 setModalOpen(false);
-                
             }
 
         const handleImport = (event) => {

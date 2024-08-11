@@ -26,9 +26,8 @@ export default class CalendarBlock {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockWrapper = makeElement('div', ['inlineEvenSpace']);
         
-        if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  
-        }
+
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);  
         this.block(this.data[0]);
         
         multiAppend(this.wrapper, [this.blockWrapper]);

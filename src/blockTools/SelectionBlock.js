@@ -29,9 +29,7 @@ export default class SelectionBlock {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockQuestionContainer = makeElement('div', ['inlineEvenSpace']);
 
-        if (!this.readOnly) {
-            deleteBlockBtn(this.wrapper, this.api);  
-        }
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
         if (this.data && this.data.length > 0) {
             this.data.forEach(blockData => this.block(blockData));

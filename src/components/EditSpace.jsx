@@ -4,6 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import {EditorContext} from "./EditorContext";
 import CustomToolBar from "./CustomToolBar";
 import '../components_css/editSpace.css';
+import ToggleReadOnly from "./ToggleReadOnly";
 
 const EditSpace = () => {
         const { initEditor } = useContext(EditorContext);
@@ -19,18 +20,14 @@ const EditSpace = () => {
             }
         }, [initEditor]);
 
+
         
 
         return (
             <div className = 'editorBody'>
-                <CustomToolBar />
+                <CustomToolBar /> 
                 <div className='editorWrapper'>
-
-                    <label className="switch"> 
-                        <input type="checkbox"/>
-                        <span className="slider round"></span>
-                    </label>
-
+                <div><ToggleReadOnly /> Toggle Read Only </div>
                     <div id='editorjs' ref={setNodeRef}>
                     </div>
                 </div>

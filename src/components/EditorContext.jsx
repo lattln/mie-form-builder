@@ -38,6 +38,7 @@ function EditorContextProvider(props) {
             holder: 'editorjs',
             placeholder: 'add to form here.',
             autofocus: false,
+            readOnly: false,
             tools: {
 
                 textAlignmentTune: {
