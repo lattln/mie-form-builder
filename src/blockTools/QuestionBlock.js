@@ -1,6 +1,6 @@
 import { add_icon, checkBox_icon, question_icon, radio_Icon, remove_icon, trashCan_Icon } from "../Utility/SVGIcons";
 import { createRenderOption, deleteBlockBtn, initalOption, initalQuestion, makeElement, maxCol, minCol, multiAppend, setUpPlaceHolder } from "../Utility/utilsFunction";
-import '../blockTools_css/block-styles.css'
+import '../blockTools_css/block-styles.css';
 
 export default class QuestionBlock {
     static get toolbox() {
@@ -21,7 +21,7 @@ export default class QuestionBlock {
         this.blockWrapper = null;
         this.blocks = [];
         this.id = block.id;
-        this.isCheckBox = this.data.type === 'checkbox';  
+        this.isCheckBox = this.data.type === 'checkbox';
         this.renderSettingWrapper = null;
         this.readOnly = readOnly;
     }
@@ -48,7 +48,7 @@ export default class QuestionBlock {
         }
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
-        questionText.contentEditable = !this.readOnly; 
+        questionText.contentEditable = !this.readOnly;
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
         const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
@@ -70,7 +70,7 @@ export default class QuestionBlock {
         const blockId = this.blocks.length;
 
         if (blockData.options) {
-            blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option, blockId));
+            blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option, blockId, blockData.selected));
         } else {
             for (let i = 0; i < 3; i++) {
                 this.addOption(optionsContainer, optionIndex, '', blockId);
@@ -87,7 +87,7 @@ export default class QuestionBlock {
         });
     }
 
-    addOption(optionsContainer, optionIndex, optionText = '', blockId) {
+    addOption(optionsContainer, optionIndex, optionText = '', blockId, selectedOptions = []) {
         const optionElement = makeElement('div', ['customBlockTool-option']);
         const inputElement = makeElement('input', ['questionBlock-input']);
         const labelElement = makeElement('label', ['questionBlock-label']);
@@ -96,10 +96,17 @@ export default class QuestionBlock {
         inputElement.name = this.isCheckBox ? `checkbox-${blockId}` : `radio-${blockId}`;
         inputElement.id = `${inputElement.name}-${this.id}-${optionIndex.value}`;
         labelElement.htmlFor = inputElement.id;
-        labelElement.contentEditable = !this.readOnly;  
+        labelElement.contentEditable = !this.readOnly;
         inputElement.disabled = !this.readOnly;  
 
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText, !this.readOnly);
+
+        // Handle selected options during import/re-render
+        if (this.isCheckBox && Array.isArray(selectedOptions) && selectedOptions.includes(optionText)) {
+            inputElement.checked = true;
+        } else if (!this.isCheckBox && selectedOptions === optionText) {
+            inputElement.checked = true;
+        }
 
         if (!this.readOnly) {
             const removeBtn = makeElement('button', ['style-button-transparent']);
@@ -125,7 +132,7 @@ export default class QuestionBlock {
     }
 
     renderSettings() {
-        if (this.readOnly) return;  // Hide settings in readOnly mode
+        if (this.readOnly) return;
 
         const settings = [
             {
@@ -195,10 +202,9 @@ export default class QuestionBlock {
                 return {
                     question: block.questionText.textContent,
                     options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
-                    selected: block.type === 'radio' ? selectedOptions[0] || null : selectedOptions
+                    selected: this.isCheckBox ? selectedOptions : selectedOptions[0] || null
                 };
             })
         };
     }
-
 }

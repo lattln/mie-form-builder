@@ -19,8 +19,8 @@ export default class LikertBlock {
         this.wrapper = null;
         this.blockWrapper = null;
         this.blocks = [];
-        this.scale = this.data.scale || 5;  
-        this.firstQuestionRatings = this.data.ratings ? this.data.ratings.slice() : Array(this.scale).fill(initalRating);  // Store ratings of the first question
+        this.scale = this.data.ratings ? this.data.ratings.length : 5;
+        this.firstQuestionRatings = this.data.ratings ? this.data.ratings.slice() : Array(this.scale).fill(initalRating);
         this.readOnly = readOnly;
     }
 
@@ -78,7 +78,8 @@ export default class LikertBlock {
             radioInput.value = ratingText.textContent || rating;
             radioInput.disabled = !this.readOnly;  
     
-            if (blockData.selectedRating && parseInt(blockData.selectedRating) === parseInt(rating)) {
+            // Handle selectedRating import and check the appropriate radio button
+            if (blockData.selectedRating && parseInt(blockData.selectedRating) === i) {
                 radioInput.checked = true;
             }
     
@@ -223,7 +224,7 @@ export default class LikertBlock {
             ratings: this.firstQuestionRatings.map(rating => rating.textContent),
             questions: this.blocks.map(block => ({
                 question: block.questionText.textContent,
-                selectedRating: Array.from(block.radioContainer.querySelectorAll('input')).find(input => input.checked)?.value || null
+                selectedRating: Array.from(block.radioContainer.querySelectorAll('input')).findIndex(input => input.checked)
             }))
         };
     }

@@ -49,17 +49,15 @@ function convertToFHIR(jsonData) {
             });
 
         // Question Block (for radio and checkbox questions)
-        } else if (block.type === "questionBlock" && Array.isArray(block.data)) {
-            block.data.forEach(data => {
+        } else if (block.type === "questionBlock" && block.data && Array.isArray(block.data.blocks)) {
+            block.data.blocks.forEach(data => {
                 const answerOption = data.options.map(option => ({ valueString: option }));
-                const initialAnswers = Array.isArray(data.selected) && data.selected.length > 0
-                    ? data.selected.map(selected => ({ valueString: selected }))
-                    : [{ valueString: null }];
+                const initialAnswers = data.selected ? [{ valueString: data.selected }] : [{ valueString: null }];
 
                 fhirQuestionnaire.item.push({
                     linkId: String(linkId),
                     text: data.question || "Enter a question...",
-                    type: data.type === 'radio' ? "choice" : "boolean",
+                    type: block.data.type === 'radio' ? "choice" : "boolean",
                     answerOption: answerOption,
                     initial: initialAnswers
                 });
@@ -76,17 +74,6 @@ function convertToFHIR(jsonData) {
                     type: "choice",
                     answerOption: answerOption,
                     initial: [{ valueString: data.selected || "" }]
-                });
-                linkId++;
-            });
-
-        // Upload Block
-        } else if (block.type === "uploadBlock" && Array.isArray(block.data)) {
-            block.data.forEach(data => {
-                fhirQuestionnaire.item.push({
-                    linkId: String(linkId),
-                    text: data.question || "Enter a question...",
-                    type: "attachment"
                 });
                 linkId++;
             });

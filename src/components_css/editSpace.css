@@ -36,12 +36,7 @@
     
 }
 
-.ce-block {
-    border: rgba(128, 128, 128, .5) 1px dashed;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 5px;
-}
+
 
 .hoverEffect:hover{
     border: 1px dashed rgba(73, 182, 255, .5);

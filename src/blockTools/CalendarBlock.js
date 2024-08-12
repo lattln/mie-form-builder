@@ -43,6 +43,7 @@ export default class CalendarBlock {
 
         const dateInput = makeElement('input', ['customBlockTool-date']);
         dateInput.type = 'date';
+        dateInput.value = blockData.date || '';
         dateInput.disabled = !this.readOnly;  
 
         multiAppend(blockContainer, [questionText, dateInput]);

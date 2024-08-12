@@ -31,9 +31,6 @@
     }
 }
 
-.ce-block__content, .ce-toolbar__content {
-    max-width: 85%;
-}
 
 .text-placeholder {
     color: darkgray;

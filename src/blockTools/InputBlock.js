@@ -49,6 +49,7 @@ export default class InputBlock {
         questionText.contentEditable = !this.readOnly;  
 
         const inputField = makeElement('input', ['customBlockTool-input']);
+        inputField.value = blockData.answer || '';
         inputField.disabled = !this.readOnly; 
 
         setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);

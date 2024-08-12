@@ -4,7 +4,7 @@ import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
 const NavBar = () => {
-    const version = 'v 2.4.06';
+    const version = 'v 2.4.07';
 
     const { editorInstanceRef } = useContext(EditorContext);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -12,41 +12,65 @@ const NavBar = () => {
     const [tempFlag, setTempFlag] = useState(false);
     
 
-        const exportData = async () => {
-            if (editorInstanceRef.current) {
-                    const data = await editorInstanceRef.current.save();
-                    console.log(data);
-                    const jsonData = JSON.stringify(data, null, 2);
-                    const blob = new Blob([jsonData], {type: 'application/json'})
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    const fileName = prompt("You're about to download the export file.\n\n" +
-                                            "Name of file below:", 'JSONFormData');
-                    if (fileName) {
-                        link.download = `${fileName}.json`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }
+    const exportData = async () => {
+        if (editorInstanceRef.current) {
+            let wasReadOnly = editorInstanceRef.current.readOnly.isEnabled;
+    
+            try {
+                if (wasReadOnly) {
+                    editorInstanceRef.current.readOnly.toggle();
                 }
-                else
-                {
-                    console.log("Editor instance is not available");
+
+                const data = await editorInstanceRef.current.save();
+                console.log(data);
+                const jsonData = JSON.stringify(data, null, 2);
+    
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+    
+                const link = document.createElement('a');
+                link.href = url;
+    
+                const fileName = prompt(
+                    "You're about to download the export file.\n\nName of file below:",
+                    'JSONFormData'
+                );
+    
+                if (fileName) {
+                    link.download = `${fileName}.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                 }
+            } catch (error) {
+                console.error("Error during export:", error);
+            } finally {
+
+                if (wasReadOnly) {
+                    setTimeout(() => {
+                        editorInstanceRef.current.readOnly.toggle();
+                    }, 100); 
+                }
+            }
+        } else {
+            console.log("Editor instance is not available");
         }
+    };
+    
+    
+
 
         const handlePreview = async () => {
             if (editorInstanceRef.current) {
                 if (editorInstanceRef.current.readOnly.isEnabled === true) {
                     editorInstanceRef.current.readOnly.toggle();
+                    console.log(tempFlag);
                     setTempFlag(true);
+                    console.log(tempFlag);
                 }
-                const data = await editorInstanceRef.current.save();
-                const jsonData = JSON.stringify(data, null, 2);
-                setJsonData(jsonData);
-
                 document.body.classList.add('disable-scroll');
+                const data = await editorInstanceRef.current.save();
+                setJsonData(data);
                 setModalOpen(true);
                 
             }
@@ -102,7 +126,7 @@ const NavBar = () => {
                 <button className="button mieColor-green" onClick={exportData}>Export</button>
                 
             </div>
-            <PreviewModal isOpen={isModalOpen} onClose={handleClose}  jsonRender={jsonData}/>
+            <PreviewModal isOpen={isModalOpen} onClose={handleClose}  jsonData={jsonData}/>
 
 
         </div>

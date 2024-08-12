@@ -1,3 +1,26 @@
+.ce-block {
+    border: rgba(128, 128, 128, .5) 1px dashed;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.ce-block__content, .ce-toolbar__content {
+    max-width: 85%;
+}
+
+
+.ce-paragraph {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(239, 239, 240, 1);
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 5px;
+    padding-left: 1.5rem;
+}
+
+
 .customBlockTool {
     margin: 0;
     padding-bottom: 10px;
@@ -9,6 +32,7 @@
 .customBlockTool:hover {
     background-color: rgba(239, 239, 240, 0.9);
 }
+
 
 
 .customBlockTool-innerContainer {
