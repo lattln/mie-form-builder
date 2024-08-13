@@ -1,5 +1,4 @@
 .ce-block {
-    border: rgba(128, 128, 128, .5) 1px dashed;
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 5px;
@@ -20,6 +19,10 @@
     padding-left: 1.5rem;
 }
 
+.hoverEffect:hover{
+    border: 1px dashed rgba(73, 182, 255, .5);
+    background-color: rgba(73, 172, 255, .5);
+}
 
 .customBlockTool {
     margin: 0;

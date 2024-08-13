@@ -15,7 +15,7 @@ function App() {
   const [dragStarted, setDragStarted] = useState(false); 
 
   const handleDragStart = (event) => {
-    const editorBlocks = document.querySelectorAll('.ce-block');
+    const editorBlocks = document.querySelectorAll('.ce-block__content');
     setActiveId(event.active.id);
     setDragStarted(true); 
     console.log('Drag started:', event.active.id);
@@ -24,7 +24,7 @@ function App() {
   };
 
   const handleDragEnd = (event) => {
-    const editorBlocks = document.querySelectorAll('.ce-block');
+    const editorBlocks = document.querySelectorAll('.ce-block__content');
     const { active } = event;
     console.log('Drag ended. Active ID:', active.id, 'Over index:', overIndex);
     if (overIndex !== null) {

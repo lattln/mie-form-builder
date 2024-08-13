@@ -36,13 +36,6 @@
     
 }
 
-
-
-.hoverEffect:hover{
-    border: 1px dashed rgba(73, 182, 255, .5);
-    background-color: rgba(73, 172, 255, .025);
-}
-
 .drag-overlay {
     display: flex;
     justify-content: space-between;
