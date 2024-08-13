@@ -4,11 +4,14 @@ import { EditorContext } from './components/EditorContext';
 import { debounce } from 'lodash';
 import NavBar from './components/NavBar';
 import EditSpace from './components/EditSpace';
+import Footer from './components/Footer';
 import { SvgImg } from './Utility/utilsFunction';
 import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './Utility/SVGIcons';
 import './App.css';
 
 function App() {
+
+  const version = '2.4.07_3'
   const { editorInstanceRef } = useContext(EditorContext);
   const [activeId, setActiveId] = useState(null);
   const [overIndex, setOverIndex] = useState(null);
@@ -71,7 +74,7 @@ function App() {
 
   useEffect(() => {
     const editorElement = document.getElementById('editorjs');
-    const editorWrapperElement = document.querySelector('.editorWrapper');
+    const editorWrapperElement = document.querySelector('.codex-editor__redactor');
 
     if (!editorElement || !dragStarted) return;
 
@@ -126,6 +129,7 @@ function App() {
         <DragOverlay className="pass">{renderOverlay()}</DragOverlay>
         <EditSpace />
       </DndContext>
+      <Footer version={version}/>
     </div>
   );
 }

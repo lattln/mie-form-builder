@@ -3,8 +3,9 @@ import { useContext, useEffect, useRef } from "react";
 import { useDroppable } from '@dnd-kit/core';
 import {EditorContext} from "./EditorContext";
 import CustomToolBar from "./CustomToolBar";
-import '../components_css/editSpace.css';
 import ToggleReadOnly from "./ToggleReadOnly";
+import '../components_css/editSpace.css';
+import '../Utility/allQuerySelector.css';
 
 const EditSpace = () => {
         const { initEditor } = useContext(EditorContext);
@@ -27,9 +28,8 @@ const EditSpace = () => {
             <div className = 'editorBody'>
                 <CustomToolBar /> 
                 <div className='editorWrapper'>
-                <div><ToggleReadOnly /> Toggle Read Only </div>
-                    <div id='editorjs' ref={setNodeRef}>
-                    </div>
+                    <ToggleReadOnly /> 
+                    <div id='editorjs' ref={setNodeRef}></div>
                 </div>
             </div>
         );

@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from "react";
-import '../components_css/customToolBar.css';
 import { SvgImg } from '../Utility/utilsFunction';
 import { calendar_Icon, fileUpload_icon, input_Icon, likert_icon, selection_Icon, draggable_icon, question_icon } from '../Utility/SVGIcons';
 import { trashCan_Icon, x_icon } from "../Utility/SVGIcons";
 import { useDraggable } from '@dnd-kit/core';
 import { EditorContext } from "./EditorContext";
+import '../components_css/customToolBar.css';
+import '../Utility/allQuerySelector.css';
 
 const DraggableItem = ({id, icon, text}) => {
     const { attributes, listeners, setNodeRef } = useDraggable({id});

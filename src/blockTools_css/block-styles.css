@@ -36,6 +36,10 @@
     background-color: rgba(239, 239, 240, 0.9);
 }
 
+.codex-editor__redactor {
+    padding-bottom: 0px !important;
+}
+
 
 
 .customBlockTool-innerContainer {

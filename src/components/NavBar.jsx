@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
-import "../components_css/navBar.css";
 import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
+import "../components_css/navBar.css";
+import '../Utility/allQuerySelector.css';
+
+
 const NavBar = () => {
-    const version = 'v 2.4.07';
 
     const { editorInstanceRef } = useContext(EditorContext);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -114,11 +116,6 @@ const NavBar = () => {
             <div className="navLogo">
                 <img src={`${process.env.PUBLIC_URL}/MIELogo_new.png`} alt="MIE Logo" />
             </div>
-
-            <div className="version">
-                <p>{version}</p>
-            </div>
-
             <div className="navButtons">
             <input id="fileInput" type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
                 <label htmlFor="fileInput" className="button mieColor-blue">Import</label>

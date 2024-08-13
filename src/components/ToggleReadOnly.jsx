@@ -1,6 +1,9 @@
 import { useContext, useState} from "react";
 import { EditorContext } from "./EditorContext";
 
+import '../components_css/toggleReadOnly.css';
+import '../Utility/allQuerySelector.css';
+
 
 const ToggleReadOnly = () => {
     const { editorInstanceRef } = useContext(EditorContext);
@@ -21,11 +24,14 @@ const ToggleReadOnly = () => {
     }
 
     return (
-        <div>
-            <label className="switch"> 
-                <input type="checkbox" onClick={handleReadOnly}/>
-                <span className="slider round"></span>
-            </label>
+        <div className="toggleReadOnly-wrapper">
+            <div className="toggleReadOnly">
+                <label className="switch"> 
+                    <input type="checkbox" onClick={handleReadOnly}/>
+                    <span className="slider round"></span>
+                </label>
+                <p className="toggleReadOnly-text"> Toggle ReadOnly </p>
+            </div>
         </div>
     );
 }

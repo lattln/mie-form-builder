@@ -2,6 +2,8 @@
     margin-top: 10px;
     display: flex;
     justify-content: space-evenly;
+    min-height: calc(100vh - (76px + 67px));
+    
 }
 
 .editorWrapper {
@@ -24,18 +26,6 @@
     padding-bottom: 20px;
 }
 
-@media (max-width: 649px) {
-}
-
-@media (max-width: 1030px) {
-    .editorWrapper {
-        width: 95vw;
-        box-shadow: none;
-        border: non;
-    }
-    
-}
-
 .drag-overlay {
     display: flex;
     justify-content: space-between;
@@ -46,5 +36,3 @@
     position: fixed;
     z-index: 10;
 }
-
-
