@@ -65,6 +65,7 @@
     text-align: left;
     user-select: text;
     cursor: text;
+    font-size: 1.05em;
 }
 
 .customBlockTool [contenteditable], input, select:focus {

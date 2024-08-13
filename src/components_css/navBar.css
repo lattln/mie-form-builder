@@ -26,7 +26,7 @@
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.1em;
     user-select: none;
     border: none;
     background-color: transparent;
@@ -36,14 +36,14 @@
 }
 
 .version {
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 @media (max-width: 670px ) {
     .navBar {
         display: block;
         text-align: center;
-        font-size: .9em;
+        font-size: 1em;
     }
     .navLogo img {
         height: 40px;
