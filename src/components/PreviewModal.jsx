@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import convertToFHIR from '../Utility/convertToFHIR';
 
+import '../Utility/allQuerySelector.css';
 import '../components_css/previewModal.css';
 import "../components_css/navBar.css";
-import '../Utility/allQuerySelector.css';
+
 
 const PreviewModal = ({ isOpen, onClose, jsonData }) => {
     const [view, setView] = useState('json');

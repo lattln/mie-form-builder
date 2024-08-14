@@ -4,8 +4,9 @@ import { useDroppable } from '@dnd-kit/core';
 import {EditorContext} from "./EditorContext";
 import CustomToolBar from "./CustomToolBar";
 import ToggleReadOnly from "./ToggleReadOnly";
-import '../components_css/editSpace.css';
+
 import '../Utility/allQuerySelector.css';
+import '../components_css/editSpace.css';
 
 const EditSpace = () => {
         const { initEditor } = useContext(EditorContext);

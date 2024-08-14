@@ -1,4 +1,13 @@
 /* NAVBAR */
+@media (max-width: 1030px) {
+    .editorWrapper {
+        width: 95vw;
+    }
+    .toggleReadOnly {
+        margin-left: calc(100vw - 93.5vw)
+    }
+}
+
 @media (max-width: 670px ) {
     .navBar {
         display: block;
@@ -16,11 +25,3 @@
 }
 
 
-@media (max-width: 1030px) {
-    .editorWrapper {
-        width: 95vw;
-    }
-    .toggleReadOnly {
-        margin-left: calc(100vw - 93.5vw)
-    }
-}

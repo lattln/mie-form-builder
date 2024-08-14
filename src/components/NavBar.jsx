@@ -2,9 +2,8 @@ import { useState, useContext } from "react";
 import { EditorContext } from "./EditorContext";
 import PreviewModal from './PreviewModal';
 
-import "../components_css/navBar.css";
 import '../Utility/allQuerySelector.css';
-
+import "../components_css/navBar.css";
 
 const NavBar = () => {
 

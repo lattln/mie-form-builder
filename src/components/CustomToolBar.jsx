@@ -4,8 +4,10 @@ import { calendar_Icon, fileUpload_icon, input_Icon, likert_icon, selection_Icon
 import { trashCan_Icon, x_icon } from "../Utility/SVGIcons";
 import { useDraggable } from '@dnd-kit/core';
 import { EditorContext } from "./EditorContext";
-import '../components_css/customToolBar.css';
+
 import '../Utility/allQuerySelector.css';
+import '../components_css/customToolBar.css';
+
 
 const DraggableItem = ({id, icon, text}) => {
     const { attributes, listeners, setNodeRef } = useDraggable({id});

@@ -1,5 +1,6 @@
-import '../components_css/footer.css';
 import '../Utility/allQuerySelector.css';
+import '../components_css/footer.css';
+
 
 const Footer = ({version}) => {
 

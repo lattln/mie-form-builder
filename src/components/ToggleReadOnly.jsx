@@ -1,8 +1,8 @@
 import { useContext, useState} from "react";
 import { EditorContext } from "./EditorContext";
 
-import '../components_css/toggleReadOnly.css';
 import '../Utility/allQuerySelector.css';
+import '../components_css/toggleReadOnly.css';
 
 
 const ToggleReadOnly = () => {
