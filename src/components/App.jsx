@@ -1,17 +1,17 @@
 import { useContext, useState, useCallback, useEffect } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { EditorContext } from './components/EditorContext';
+import { EditorContext } from './EditorContext';
 import { debounce } from 'lodash';
-import NavBar from './components/NavBar';
-import EditSpace from './components/EditSpace';
-import Footer from './components/Footer';
-import { SvgImg } from './Utility/utilsFunction';
-import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './Utility/SVGIcons';
-import './App.css';
+import NavBar from './NavBar';
+import EditSpace from './EditSpace';
+import Footer from './Footer';
+import { SvgImg } from '../Utility/utilsFunction';
+import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from '../Utility/SVGIcons';
+import '../components_css/App.css';
 
 function App() {
 
-  const version = '2.4.07_3'
+  const version = '2.4.08';
   const { editorInstanceRef } = useContext(EditorContext);
   const [activeId, setActiveId] = useState(null);
   const [overIndex, setOverIndex] = useState(null);

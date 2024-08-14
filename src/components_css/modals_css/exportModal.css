@@ -1,0 +1,51 @@
+.exportModal-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+.exportModal-header {
+    background-color: rgba(240,240,240, .8);
+    width: 50vw;
+    max-width: 600px;
+    padding: 8px 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+}
+.exportModal-body {
+    background: rgba(240, 240, 240, 1);
+    padding: 20px;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    width: 50vw;
+    max-width: 600px;
+    max-height: 60vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.exportModal-closeButton { 
+    padding: 5px 10px;
+    background-color: rgba(240,240,240, 1); 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 5px 2.5px;
+
+}
+
+.controlButton-container {
+    display: flex;
+    justify-content: flex-end;
+}
