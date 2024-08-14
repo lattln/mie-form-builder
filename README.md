@@ -5,8 +5,10 @@
 Welcome to the MIE Form Builder repository! This project aims to provide a user-friendly and customizable form building tool that can be integrated into various applications, especially in the medical industry.
 
 
-### [live demo v2.4.02](https://lattln.github.io/mie-form-builder/) 
-![image](https://github.com/user-attachments/assets/257b2d3f-9b27-4c10-a4a5-ca4bdf230832)
+### [live demo v2.4.07](https://lattln.github.io/mie-form-builder/) 
+![image](https://github.com/user-attachments/assets/af3a642e-7db0-4bb0-8228-50817bb04383)
+### Mobile adaptation
+![image](https://github.com/user-attachments/assets/9007765b-95f3-4c84-aae2-a3922647b1b7)
 
 
 
