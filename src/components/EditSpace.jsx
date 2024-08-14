@@ -5,7 +5,7 @@ import {EditorContext} from "./EditorContext";
 import CustomToolBar from "./CustomToolBar";
 import ToggleReadOnly from "./ToggleReadOnly";
 
-import '../Utility/allQuerySelector.css';
+
 import '../components_css/editSpace.css';
 
 const EditSpace = () => {

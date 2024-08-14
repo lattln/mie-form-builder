@@ -1,3 +1,5 @@
+
+
 .navBar {
     display: flex;
     justify-content: space-between;
@@ -69,4 +71,20 @@
 }
 .mRed {
     color: rgba(229, 96, 32, 1);
+}
+
+@media (max-width: 670px ) {
+    .navBar {
+        display: block;
+        text-align: center;
+        font-size: 1em;
+    }
+    .navLogo img {
+        height: 35px;
+        margin: 0;
+    }
+    .version {
+        font-size: clamp(.8em, .9em, 1em);
+    }
+
 }

@@ -1,3 +1,4 @@
+
 .editorBody {
     margin-top: 10px;
     display: flex;
@@ -35,4 +36,13 @@
     border-radius: 5px;
     position: fixed;
     z-index: 10;
+}
+
+@media (max-width: 1030px) {
+    .editorWrapper {
+        width: 95vw;
+    }
+    .toggleReadOnly {
+        margin-left: calc(100vw - 93.5vw)
+    }
 }

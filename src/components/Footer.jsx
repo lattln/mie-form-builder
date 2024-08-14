@@ -1,4 +1,4 @@
-import '../Utility/allQuerySelector.css';
+
 import '../components_css/footer.css';
 
 

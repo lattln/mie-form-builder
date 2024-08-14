@@ -5,7 +5,6 @@ import { trashCan_Icon, x_icon } from "../Utility/SVGIcons";
 import { useDraggable } from '@dnd-kit/core';
 import { EditorContext } from "./EditorContext";
 
-import '../Utility/allQuerySelector.css';
 import '../components_css/customToolBar.css';
 
 
