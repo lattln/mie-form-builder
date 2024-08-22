@@ -1,16 +1,19 @@
 import {createContext, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
-import Header from '@editorjs/header';
 import DragDrop from 'editorjs-drag-drop';
-import Paragraph from '@editorjs/paragraph';
-import MarkerTool from '../custom-Tools/custom-inline-tools/markerTool/markerTool.js';
-import InputBlock from "../custom-Tools/custom-block-tools/inputBlock.js";
-import DropDownBlock from "../custom-Tools/custom-block-tools/selectionBlock.js"
-import CalendarBlock from "../custom-Tools/custom-block-tools/calenderBlock.js";
-import LikertBlock from "../custom-Tools/custom-block-tools/likertBlock.js";
-import FileUploadBlock from "../custom-Tools/custom-block-tools/uploadBlock.js";
-import questionBlock from "../custom-Tools/custom-block-tools/questionBlock.js";
+
+//import Header from '@editorjs/header';
+//import Paragraph from '@editorjs/paragraph';
+
+//Custom Block tools
+import CalendarBlock from "../blockTools/CalendarBlock.js";
+import InputBlock from "../blockTools/InputBlock.js";
+import LikertBlock from "../blockTools/LikertBlock.js";
+import QuestionBlock from "../blockTools/QuestionBlock.js";
+import SelectionBlock from "../blockTools/SelectionBlock.js";
+import UploadBlock from "../blockTools/UploadBlock.js";
 import signatureBlock from "../custom-Tools/custom-block-tools/signatureBlock.js";
+
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 
 
@@ -34,37 +37,25 @@ function EditorContextProvider(props) {
             },
 
             holder: 'editorjs',
-            placeholder: 'MIE form creator',
-            autofocus: true,
-
-            //ALL TOOLS \/\/\/\/\/\/\/
-            //FOR EASE OF TRACKING --> ORDER BELOW
-            // TUNE
-            // INLINE TOOL
-            // CUSTOM BLOCK
-            // BUILTIN BLOCK TOOL
+            placeholder: 'add to form here.',
+            autofocus: false,
+            readOnly: false,
             tools: {
 
-                //Tune
                 textAlignmentTune: {
                     class: AlignmentTuneTool,
                     config: {
                         default: "left",
                     }
                 },
-
-                //InlineTool
-                marker: MarkerTool,
-
-                //Custom Block Tools ----------
                 questionBlock: {
-                    class: questionBlock
+                    class: QuestionBlock
                 },
                 inputBlock: {
                     class: InputBlock,
                 },
-                dropdownBlock: {
-                    class: DropDownBlock,
+                selectionBlock: {
+                    class: SelectionBlock,
                 },
                 calendarBlock: {
                     class: CalendarBlock,
@@ -72,29 +63,9 @@ function EditorContextProvider(props) {
                 likertBlock: {
                     class: LikertBlock,
                 },
-                fileUploadBlock: {
-                    class: FileUploadBlock,
+                UploadBlock: {
+                    class: UploadBlock,
                 },
-                signatureBlock: {
-                    class: signatureBlock,
-                },
-                
-                //Block Tool
-                header: {
-                    class: Header,
-                    inlineToolbar: ['bold', 'italic', 'link', 'marker'],
-                    tunes: ['textAlignmentTune'],
-                    config: {
-                        placeholder: "Enter a header",
-                    }
-                },
-
-                paragraph: {
-                    class: Paragraph,
-                    inlineToolbar: ['bold', 'italic', 'link', 'marker'],
-                    tunes: ['textAlignmentTune']
-                },
-
             }
         });
         editorInstanceRef.current = editor
