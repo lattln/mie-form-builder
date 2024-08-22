@@ -10,6 +10,7 @@ import CalendarBlock from "../custom-Tools/custom-block-tools/calenderBlock.js";
 import LikertBlock from "../custom-Tools/custom-block-tools/likertBlock.js";
 import FileUploadBlock from "../custom-Tools/custom-block-tools/uploadBlock.js";
 import questionBlock from "../custom-Tools/custom-block-tools/questionBlock.js";
+import signatureBlock from "../custom-Tools/custom-block-tools/signatureBlock.js";
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 
 
@@ -74,7 +75,9 @@ function EditorContextProvider(props) {
                 fileUploadBlock: {
                     class: FileUploadBlock,
                 },
-
+                signatureBlock: {
+                    class: signatureBlock,
+                },
                 
                 //Block Tool
                 header: {

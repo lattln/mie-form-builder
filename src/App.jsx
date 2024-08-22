@@ -5,7 +5,7 @@ import NavBar from './components/NavBar';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { EditorContext } from './components/EditorContext';
 import { SvgImg } from './custom-Tools/utilsFunction';
-import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from './custom-Tools/SVGIcons';
+import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, Input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon, signature_icon } from './custom-Tools/SVGIcons';
 
 function App() {
   const { editorInstanceRef } = useContext(EditorContext);
@@ -96,8 +96,8 @@ function App() {
       questionBlock: question_icon,
       radioBlock: radio_Icon,
       dropdownBlock: selection_Icon,
-      fileUploadBlock: fileUpload_icon
-
+      fileUploadBlock: fileUpload_icon,
+      signatureBlock: signature_icon
     };
 
     const textMap = {
@@ -108,7 +108,8 @@ function App() {
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',
       dropdownBlock: 'Selection Block',
-      fileUploadBlock: 'Upload Block'
+      fileUploadBlock: 'Upload Block',
+      signatureBlock: 'Signature Block'
     };
 
     return (

@@ -82,3 +82,14 @@ export const x_icon =
 `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
 	<path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m18 18l-6-6m0 0L6 6m6 6l6-6m-6 6l-6 6" />
 </svg>`
+
+export const signature_icon = 
+`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect>
+  <path d="M7 15c1-1 2 1 3 0s2 1 3 0s2 1 3 0" />
+  <path d="M16 7l7-7"></path>
+  <path d="M15 8l7-7"></path>
+</svg>`;
+
+
+

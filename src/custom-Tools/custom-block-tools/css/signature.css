@@ -1,0 +1,24 @@
+/* signature.css */
+
+/* Container for the signature pad */
+.signature-container {
+  padding: 10px; /* Padding around the canvas */
+ 
+  max-width: 500px; /* or any desired max width */
+  margin: 25px 25px 25px 95px;
+}
+
+/* Canvas element for signature */
+.signature-canvas {
+  border: 1px solid rgba(201, 201, 204, .35); /* Light border around the canvas */
+  border-radius: 3px; /* Rounded corners for the canvas */
+  background-color: #fff; /* White background for the canvas */
+ /* cursor: url('../../../../public/icons8-ball-point-pen-24.png'), auto;*/
+ 
+}
+
+.signature-clear-button {
+  margin: 0px 20px 20px 110px;
+  padding: 8px 10px 8px 10px;
+  cursor: pointer;
+}

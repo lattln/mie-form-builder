@@ -1,6 +1,6 @@
 import '../components_css/customToolBar.css';
 import { SvgImg } from '../custom-Tools/utilsFunction';
-import { calendar_Icon, fileUpload_icon, Input_Icon, likert_icon, selection_Icon, draggable_icon, question_icon } from '../custom-Tools/SVGIcons';
+import { calendar_Icon, fileUpload_icon, Input_Icon, likert_icon, selection_Icon, draggable_icon, question_icon, signature_icon } from '../custom-Tools/SVGIcons';
 import { useDraggable } from '@dnd-kit/core';
 
 const DraggableItem = ({id, icon, text}) => {
@@ -22,7 +22,7 @@ const CustomToolBar = () => {
             <DraggableItem id='questionBlock' icon={question_icon} text='Question Block' />
             <DraggableItem id='dropdownBlock' icon={selection_Icon} text='Selection Block' />
             <DraggableItem id='fileUploadBlock' icon={fileUpload_icon} text='Upload Block' />
-
+            <DraggableItem id='signatureBlock' icon={signature_icon} text='Signature Block' />
         </div>
     )
 }
