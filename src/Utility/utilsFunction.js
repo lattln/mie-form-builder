@@ -1,5 +1,5 @@
-import './SVGIcons';
-import { trashCan_Icon } from './SVGIcons';
+
+import  {trashCan_Icon} from '../Utility/SVGIcons';
 
 export const initalQuestion ='Enter a question... ';
 export const initalOption ='Enter Option... ';
@@ -8,13 +8,11 @@ export const initalGlobal = 'Enter ';
 export const maxCol = 3;
 export const minCol = 1;
 
-export function setUpPlaceHolder(element, defaultparm, importedData) {
+export function setUpPlaceHolder(element, defaultparm, importedData, mode ) {
     const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
-
     let defaultText = defaultparm;
-
     importedData = importedData !== null || undefined ? importedData : defaultparm ;
-
+    
     if (isInput) {
         if (!element.value) {
             element.placeholder = importedData
@@ -26,53 +24,59 @@ export function setUpPlaceHolder(element, defaultparm, importedData) {
         else if (!importedData || importedData === defaultparm) {
             element.textContent = defaultText; 
             element.classList.add('text-placeholder');
-
         }
-        
-    
-        
     }
-
-    ['click', 'focus'].forEach(function(e) {
-        element.addEventListener(e, () => {
-            if (!isInput && element.textContent === defaultText) {
-            
-                setTimeout(() => {
-                    element.textContent = '';
-                    element.classList.remove('text-placeholder');
-                    element.focus();  
-                }, 100); 
-            } else if (isInput && element.value.trim() === '') {
-                setTimeout(() => {
-                    element.placeholder = ''; 
-                    element.focus();  
-                }, 100); 
-            }
+    if (mode) {
+        ['click', 'focus'].forEach(function(e) {
+            element.addEventListener(e, () => {
+                if (!isInput && element.textContent === defaultText) {
+                    setTimeout(() => {
+                        element.textContent = '';
+                        element.classList.remove('text-placeholder');
+                        element.focus();  
+                    }, 100); 
+                } else if (isInput && element.value.trim() === '') {
+                    setTimeout(() => {
+                        element.placeholder = ''; 
+                        element.focus();  
+                    }, 100); 
+                }
+            })
         })
-    })
 
-    element.addEventListener('blur', () => {
-        if (!isInput && element.textContent.trim() === '') {
-            element.textContent = defaultText;
-            element.classList.add('text-placeholder');
-        } else if (isInput && element.value.trim() === '') {
-            element.placeholder = defaultText;
-        }
-    });
+        element.addEventListener('blur', () => {
+            if (!isInput && element.textContent.trim() === '') {
+                element.textContent = defaultText;
+                element.classList.add('text-placeholder');
+            } else if (isInput && element.value.trim() === '') {
+                element.placeholder = defaultText;
+            }
+        });
+    }
+    else {
+        element.classList.add('cursor-pointer');
+    }
 }
 
-
-export function deleteBlockBtn(wrapper, api) {
+export function deleteBlockBtn(wrapper, api, readOnly) {
     const delContainer = makeElement('div', ['deleteBlockBtn-container']);
     const deleteBtn = makeElement('button', ['deleteBlockBtn']);
 
     deleteBtn.innerHTML = trashCan_Icon;
-    deleteBtn.addEventListener('click', () => api.blocks.delete());
+
+    if (!readOnly) {
+        deleteBtn.addEventListener('click', () => api.blocks.delete());
+    } else {
+        deleteBtn.disabled = true; 
+        deleteBtn.classList.add('disabled'); 
+        deleteBtn.style.opacity = '0';  
+    }
 
     delContainer.appendChild(deleteBtn);
     wrapper.appendChild(delContainer);
-
 }
+
+
 
 
 export function SvgImg({icon, text}) {
@@ -81,18 +85,33 @@ export function SvgImg({icon, text}) {
     const svg = new Blob([svgStr], {type: 'image/svg+xml'});
     const url = URL.createObjectURL(svg)
 
-
     const inlineStyle = {
         display: 'flex'
     }
 
-    const margin = {
-        margin: 0,
-        marginLeft: 5
+    const style = {
+        display: 'flex',
+        flex: 'row',
+        margin: '0px',
+        marginLeft: '5px',
+        width: '10em'
     }
+
+    const img = {
+        height: '24px'
+    }
+
+    if (text === undefined || null) {
+        return (
+            <div style = {inlineStyle}>
+                <img  style = {img} src = {url} alt='icon'></img>
+            </div>   
+        )
+    }
+
     return (
         <div style={inlineStyle}>
-            <img src={url} alt='icon'/> <p style={margin}>{text}</p>
+            <img style = {img} src={url} alt='icon'/> <p style={style}> {text}</p>
         </div>
     )
 }

@@ -1,16 +1,19 @@
-import { add_icon, add_table, selection_Icon, sub_table, trashCan_Icon } from '../SVGIcons';
-import { createRenderBtn, createRenderOption, deleteBlockBtn, initalGlobal, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../utilsFunction';
+import { add_icon, add_table, selection_Icon, sub_table, trashCan_Icon } from '../Utility/SVGIcons';
+import { createRenderBtn, createRenderOption, deleteBlockBtn, initalGlobal, initalQuestion, makeElement, multiAppend, setUpPlaceHolder } from '../Utility/utilsFunction.js';
 
-export default class selectionBlock {
-
+export default class SelectionBlock {
     static get toolbox() {
         return {
-            title: 'Question - DropDown',
+            title: 'Selection Block',
             icon: selection_Icon
         };
     }
 
-    constructor({ data, api }) {
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor({ data, api, readOnly }) {
         this.data = data || {};
         this.api = api;
         this.wrapper = null;
@@ -19,16 +22,17 @@ export default class selectionBlock {
         this.maxBlocks = 3;
         this.currentBlockIndex = 0;
         this.blockSelector = null;
+        this.readOnly = readOnly;
     }
 
     render() {
         this.wrapper = makeElement('div', ['customBlockTool']);
         this.blockQuestionContainer = makeElement('div', ['inlineEvenSpace']);
 
-        deleteBlockBtn(this.wrapper, this.api);
+        deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
-        if (this.data.blocks && this.data.blocks.length) {
-            this.data.blocks.forEach(blockData => this.block(blockData));
+        if (this.data && this.data.length > 0) {
+            this.data.forEach(blockData => this.block(blockData));
         } else {
             this.block();
         }
@@ -38,6 +42,7 @@ export default class selectionBlock {
     }
 
     renderSettings() {
+        if (this.readOnly) return;  
         const settings = [
             { 
                 name: 'Add selection',
@@ -66,7 +71,7 @@ export default class selectionBlock {
             this.currentBlockIndex = event.target.value;
         });
 
-        setUpPlaceHolder(selectionInput, initalGlobal + 'an option..', null);
+        setUpPlaceHolder(selectionInput, initalGlobal + 'an option..', null, !this.readOnly);
 
         createRenderBtn(renderOptionContainer, settings[0].icon, renderWrapper, () => {
             const currentBlock = this.blocks[this.currentBlockIndex];
@@ -81,6 +86,7 @@ export default class selectionBlock {
                 selectionInput.value = '';
             }
         });
+
         settings.slice(1).forEach(setting => {
             createRenderOption(setting.name, setting.icon, renderWrapper, setting.action);
         });
@@ -89,7 +95,6 @@ export default class selectionBlock {
         multiAppend(renderWrapper, [this.blockSelector, renderOptionContainer]);
         return renderWrapper;
     }
-    
 
     addcolumn() {
         if (this.blockQuestionContainer.children.length < this.maxBlocks) {
@@ -109,21 +114,31 @@ export default class selectionBlock {
     block(blockData = {}) {
         const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
         const questionText = makeElement('p', ['customBlockTool-questionPadding']);
-        questionText.contentEditable = true;
+        questionText.contentEditable = !this.readOnly; 
 
-        setUpPlaceHolder(questionText, initalQuestion, blockData.question);
+        setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
 
         const selectOption = makeElement('select', ['customBlockTool-select']);
+        selectOption.disabled = !this.readOnly;  
+        selectOption.addEventListener('change', () => {
+            block.selectedOption = selectOption.value;
+        });
+
         const optionsContainer = makeElement('div', ['options-container']);
 
-        multiAppend(blockContainer, [questionText, selectOption, optionsContainer]);
+        multiAppend(blockContainer, [questionText, selectOption]);
+
+        if (!this.readOnly) {
+            blockContainer.appendChild(optionsContainer);
+        }
 
         this.blockQuestionContainer.appendChild(blockContainer);
 
-        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [] };
+        const block = { blockContainer, questionText, selectOption, optionsContainer, options: [], selectedOption: blockData.selected || '' };
 
         if (blockData.options) {
             blockData.options.forEach(option => this.addOptions(block, option));
+            selectOption.value = block.selectedOption; 
         }
 
         this.blocks.push(block);
@@ -139,15 +154,17 @@ export default class selectionBlock {
         optionElement.textContent = optionValue;
 
         const optionWrapper = makeElement('div', ['optionWrapper']);
-        const deleteBtn = makeElement('button', ['deleteBlockBtn']);
-        deleteBtn.innerHTML = trashCan_Icon;
-        deleteBtn.addEventListener('click', () => {
-            this.removeOption(block, optionValue, optionElement, optionWrapper);
-        });
 
-        multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn])
-
-        block.optionsContainer.appendChild(optionWrapper);
+        if (!this.readOnly) {
+            const deleteBtn = makeElement('button', ['deleteBlockBtn']);
+            deleteBtn.innerHTML = trashCan_Icon;
+            deleteBtn.addEventListener('click', () => {
+                this.removeOption(block, optionValue, optionElement, optionWrapper);
+            });
+            multiAppend(optionWrapper, [document.createTextNode(optionValue), deleteBtn]);
+            block.optionsContainer.appendChild(optionWrapper);
+        }
+        
         block.selectOption.appendChild(optionElement);
         block.options.push({ value: optionValue, element: optionElement, wrapper: optionWrapper });
     }
@@ -168,16 +185,14 @@ export default class selectionBlock {
             option.value = index;
             option.textContent = `Block ${index + 1}`;
             multiAppend(this.blockSelector, [option]);
-
         });
     }
 
     save() {
-        return {
-            blocks: this.blocks.map(block => ({
-                question: block.questionText.textContent,
-                options: block.options.map(option => option.value)
-            }))
-        };
+        return this.blocks.map(block => ({
+            question: block.questionText.textContent,
+            options: block.options.map(option => option.value),
+            selected: block.selectOption.value || null
+        }));
     }
 }

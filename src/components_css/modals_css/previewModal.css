@@ -1,8 +1,3 @@
-.activeTab {
-    background-color: rgba(240, 240, 240, 1) !important;
-    margin-top: -4px !important;
-}
-
 .previewModal-overlay {
     display: flex;
     flex-direction: column;
@@ -20,11 +15,12 @@
 
 .previewModal-contentAllign 
 {
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: 83%;
-    width: 800px;
+    height:80vh;
+    width: 85%;
     
 }
 .previewModal-header {
@@ -37,7 +33,7 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 12px;
+    font-size: 1em;
 }
 
 .previewModal-header button {
@@ -48,8 +44,6 @@
 
 }
 
-
-
 .previewModal-header button:hover {
     background-color: rgba(240,240,240, .8);
 }
@@ -58,8 +52,7 @@
     background: rgba(240,240,240, 1);
     padding: 20px;
     border-radius: 0px 5px 5px 5px;
-    width: 100%;
-
+    width: calc(100% - 40px);
     position: relative;
     height: 100%;
     overflow-y: auto;
@@ -67,8 +60,9 @@
 
 }
 
-.previewModal-content pre, p {
-    margin-left: 20px;
+.previewModal-content p, .previewModal-content pre{
+    margin-left: 10vw;
+    text-align: left;
 }
 
 .previewModal-closeButton {
@@ -78,7 +72,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 1em;
 
 }
 
@@ -90,4 +84,8 @@
     overflow: hidden;
     position: fixed;
     width: 100%;
+}
+.activeTab {
+    background-color: rgba(240, 240, 240, 1) !important;
+    margin-top: -4px;
 }

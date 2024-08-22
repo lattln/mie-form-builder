@@ -1,0 +1,81 @@
+
+.inlineSpace {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inlineEvenSpace {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.centerAllChild {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    
+}
+
+.setColumn {
+    display: flex;
+    flex-direction: column;
+}
+.padding-bottom {
+    padding-bottom: 5px;
+}
+
+@media (max-width: 700px) {
+    .inlineEvenSpace {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+.text-placeholder {
+    color: darkgray;
+}
+
+.deleteQuestionBtn-container {
+    border-top: 1px dashed rgba(0, 0, 0, .7);
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 0;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.deleteBlockBtn-container {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 0;
+    background-color: rgba(201, 201, 205, .48);
+}
+
+.deleteBlockBtn {
+    border: 0 ;
+    background: transparent;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.deleteBlockBtn:hover {
+    background-color: rgba(201, 201, 204, .35);
+}
+
+.style-button-transparent {
+    border: none;
+    background-color: transparent;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+
+

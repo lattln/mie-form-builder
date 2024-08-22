@@ -1,3 +1,5 @@
+
+
 .navBar {
     display: flex;
     justify-content: space-between;
@@ -10,45 +12,79 @@
     z-index: 1000;
     border-radius: 10px;
     margin: 1px 3px 0px 3px;
-    min-width: 640px;
+    width: 100%;
 }
 
-.navLogo img {
-    margin-left: 25px;
-    height: 50px; 
-    padding: 5px
+.navLogo img{
+    margin-left: 1em;
+    height: 50px
 }
 
 .navButtons {
-    margin-right: 25px;
+    margin-right: 1em;
 }
-.navButtons button, .button {
+.button {
     margin-left: 10px;
     padding: 10px 20px;
-    background-color: #f0f0f0; 
-    border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: black;
+    font-size: 1.1em;
     user-select: none;
+    border: none;
+    background-color: transparent;
+    border-bottom: solid transparent;
+    transition: border-bottom 0.3s ease;
+    color: black;
 }
 
-.navButtons button:hover, .button:hover {
-    background-color: #e0e0e0; 
+.version {
+    font-size: 1.1em;
 }
 
-.warning {
-    background-color: rgba(255, 35, 35, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-right: 20px;
+.mieColor-blue.button:hover {
+    border: none;
+    border-bottom: solid rgba(6,156,212,1);
+}
+.mieColor-green:hover {
+    border: none;
+    border-bottom: solid rgba(0, 166, 81,1);
+}
+.mieColor-yellow:hover {
+    border: none;
+    border-bottom: solid rgba(255, 209, 0, 1);
+}
+.mieColor-red {
+    background-color: rgba(229, 96, 32, 1);
 
 }
-.warningText {
-    text-align: center;
+
+.mBlue {
+    color: rgba(6,156,212,1);
+}
+
+.mGreen {
+    color: rgba(0, 166, 81,1);
+}
+
+.mYellow {
+    color: rgba(255, 209, 0, 1);;
+}
+.mRed {
+    color: rgba(229, 96, 32, 1);
+}
+
+@media (max-width: 670px ) {
+    .navBar {
+        display: block;
+        text-align: center;
+        font-size: 1em;
+    }
+    .navLogo img {
+        height: 35px;
+        margin: 0;
+    }
+    .version {
+        font-size: clamp(.8em, .9em, 1em);
+    }
+
 }
