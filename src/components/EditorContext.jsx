@@ -12,6 +12,7 @@ import LikertBlock from "../blockTools/LikertBlock.js";
 import QuestionBlock from "../blockTools/QuestionBlock.js";
 import SelectionBlock from "../blockTools/SelectionBlock.js";
 import UploadBlock from "../blockTools/UploadBlock.js";
+import SignatureBlock from "../blockTools/SignatureBlock.js";
 
 const AlignmentTuneTool = require('editorjs-text-alignment-blocktune');
 
@@ -64,6 +65,9 @@ function EditorContextProvider(props) {
                 },
                 UploadBlock: {
                     class: UploadBlock,
+                },
+                SignatureBlock: {
+                    class: SignatureBlock
                 },
             }
         });
