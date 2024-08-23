@@ -8,12 +8,12 @@ const PreviewModal = ({ isOpen, onClose, jsonData }) => {
     const [view, setView] = useState('json');
     const [fhirJsonStringData, setFhirJsonStringData] = useState('');
 
-    const jsonStringData = JSON.stringify(jsonData, null, 2);
+    const jsonStringData = JSON.stringify(jsonData, null, 5);
 
     useEffect(() => {
         if (view === 'fhir') {
             const fhirJson = convertToFHIR(jsonData);
-            setFhirJsonStringData(JSON.stringify(fhirJson, null, 2));
+            setFhirJsonStringData(JSON.stringify(fhirJson, null, 5));
         }
     }, [view, jsonData]);
 
