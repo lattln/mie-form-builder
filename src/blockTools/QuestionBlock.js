@@ -32,60 +32,65 @@ export default class QuestionBlock {
 
         deleteBlockBtn(this.wrapper, this.api, this.readOnly);
 
-        if (Array.isArray(this.data.blocks)) {
-            this.data.blocks.forEach(blockData => this.Block(blockData));
+        if (this.data && this.data.length > 0) {
+            this.data.forEach(blockData => this.block(blockData));
         } else {
-            this.Block();
+            this.block();
         }
 
         this.wrapper.appendChild(this.blockWrapper);
         return this.wrapper;
     }
 
-    Block(blockData = {}) {
-        if (this.blocks.length >= maxCol) {
-            return;
-        }
-        const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
-        const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
-        questionText.contentEditable = !this.readOnly;
-
-        setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
-        const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
-
-        multiAppend(blockContainer, [questionText, optionsContainer]);
-
-        if (!this.readOnly) {
-            const blockControls = makeElement('div', ['control-container']);
-            const addChoiceBtn = makeElement('button', ['style-button-transparent']);
-            addChoiceBtn.innerHTML = add_icon;
-            addChoiceBtn.onclick = () => this.addOption(optionsContainer, optionIndex, '', blockId);
-            multiAppend(blockControls, [addChoiceBtn]);
-            multiAppend(blockContainer, [blockControls]);
-        }
-
-        multiAppend(this.blockWrapper, [blockContainer]);
-
-        const optionIndex = { value: 0 };
-        const blockId = this.blocks.length;
-
-        if (blockData.options) {
-            blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option, blockId, blockData.selected));
-        } else {
-            for (let i = 0; i < 3; i++) {
-                this.addOption(optionsContainer, optionIndex, '', blockId);
-            }
-        }
-
-        this.blocks.push({
-            blockContainer,
-            questionText,
-            optionsContainer,
-            optionIndex,
-            type: this.isCheckBox ? 'checkbox' : 'radio',
-            blockId: blockId
-        });
+   block(blockData = {}) {
+    const blockId = `${this.id}_${this.blocks.length}`;
+    if (this.blocks.length >= maxCol) {
+        return;
     }
+
+    this.isCheckBox = blockData.type === 'checkbox';
+
+    const blockContainer = makeElement('div', ['customBlockTool-innerContainer']);
+    const questionText = makeElement('p', ['PLACER-HOLDER-QUESTIONTEXT']);
+    questionText.contentEditable = !this.readOnly;
+
+    setUpPlaceHolder(questionText, initalQuestion, blockData.question, !this.readOnly);
+    const optionsContainer = makeElement('div', ['customBlockTool-option-container']);
+
+    multiAppend(blockContainer, [questionText, optionsContainer]);
+
+    if (!this.readOnly) {
+        const blockControls = makeElement('div', ['control-container']);
+        const addChoiceBtn = makeElement('button', ['style-button-transparent']);
+        addChoiceBtn.innerHTML = add_icon;
+        addChoiceBtn.onclick = () => this.addOption(optionsContainer, optionIndex, '', blockId);
+        multiAppend(blockControls, [addChoiceBtn]);
+        multiAppend(blockContainer, [blockControls]);
+    }
+
+    multiAppend(this.blockWrapper, [blockContainer]);
+
+    const optionIndex = { value: 0 };
+
+    if (blockData.options) {
+        blockData.options.forEach(option => this.addOption(optionsContainer, optionIndex, option, blockId, blockData.selected));
+    } else {
+        for (let i = 0; i < 3; i++) {
+            this.addOption(optionsContainer, optionIndex, '', blockId);
+        }
+    }
+
+    this.blocks.push({
+        blockContainer,
+        questionText,
+        optionsContainer,
+        optionIndex,
+        type: this.isCheckBox ? 'checkbox' : 'radio',
+        blockId: blockId
+    });
+}
+
+    
 
     addOption(optionsContainer, optionIndex, optionText = '', blockId, selectedOptions = []) {
         const optionElement = makeElement('div', ['customBlockTool-option']);
@@ -101,10 +106,11 @@ export default class QuestionBlock {
 
         setUpPlaceHolder(labelElement, initalOption + optionIndex.value, optionText, !this.readOnly);
 
-        // Handle selected options during import/re-render
-        if (this.isCheckBox && Array.isArray(selectedOptions) && selectedOptions.includes(optionText)) {
-            inputElement.checked = true;
-        } else if (!this.isCheckBox && selectedOptions === optionText) {
+        if (this.isCheckBox && Array.isArray(selectedOptions)) {
+            if (selectedOptions.includes(optionText)) {
+                inputElement.checked = true;
+            }
+        } else if (!this.isCheckBox && selectedOptions.length && selectedOptions[0] === optionText) {
             inputElement.checked = true;
         }
 
@@ -124,6 +130,9 @@ export default class QuestionBlock {
         optionIndex.value++;
     }
 
+    
+    
+
     removeOption(block) {
         if (block.optionIndex.value > 1) {
             block.optionsContainer.lastElementChild.remove();
@@ -138,7 +147,7 @@ export default class QuestionBlock {
             {
                 name: 'Add Column',
                 icon: add_icon,
-                action: () => this.Block()
+                action: () => this.block()
             },
             {
                 name: 'Remove Column',
@@ -195,16 +204,12 @@ export default class QuestionBlock {
     }
 
     save() {
-        return {
-            type: this.isCheckBox ? 'checkbox' : 'radio',
-            blocks: this.blocks.map(block => {
-                const selectedOptions = Array.from(block.optionsContainer.querySelectorAll('input')).filter(input => input.checked).map(input => input.labels[0].textContent);
-                return {
-                    question: block.questionText.textContent,
-                    options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
-                    selected: this.isCheckBox ? selectedOptions : selectedOptions[0] || null
-                };
-            })
-        };
+        return this.blocks.map(block => ({
+            type: block.type,
+            question: block.questionText.textContent,
+            options: Array.from(block.optionsContainer.querySelectorAll('label')).map(label => label.textContent),
+            selected: Array.from(block.optionsContainer.querySelectorAll('input')).filter(input => input.checked).map(input => input.nextSibling.textContent)
+        }));
     }
+    
 }

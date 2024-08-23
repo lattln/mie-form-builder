@@ -1,95 +1,98 @@
+
 function convertFHIRToEditorJS(fhirData) {
     const editorJSData = {
         time: Date.now(),
         blocks: []
     };
 
-    fhirData.item.forEach((item) => {
-        let block = {};
+    // const blockList = ['calenderBlock', 'inputBlock', 'questionBlock_checkbox', 'questionBlock_radio', 'selectionBlock', 'likertBlock'];
+    fhirData.item.forEach(item => {
 
-        switch (item.type) {
-            case "choice":
-                block = {
-                    type: "questionBlock",
-                    data: {
-                        type: "radio", // Assuming choice translates to radio buttons
-                        question: item.text,
-                        options: item.answerOption.map(option => option.valueString),
-                        selected: item.initial ? item.initial.map(init => init.valueString).join('') : null
-                    }
-                };
-                break;
 
-            case "boolean":
-                block = {
-                    type: "questionBlock",
-                    data: {
-                        type: "checkbox", // Assuming boolean translates to a checkbox
-                        question: item.text,
-                        options: ["Yes", "No"],
-                        selected: item.initial ? (item.initial[0].valueBoolean ? "Yes" : "No") : null
-                    }
-                };
-                break;
+        let block = [];
+        let handledItem = groupHandler(item);
 
-            case "string":
-                block = {
-                    type: "inputBlock",
-                    data: {
-                        question: item.text,
-                        answer: item.initial ? item.initial[0].valueString : ""
-                    }
-                };
-                break;
+        handledItem.forEach(subItem => {
 
-            case "date":
-                block = {
-                    type: "calendarBlock",
-                    data: {
-                        question: item.text,
-                        date: item.initial ? item.initial[0].valueDate : null
-                    }
-                };
-                break;
+            let type = subItem.code?.[0]?.code;     
 
-            default:
-                console.warn(`Unsupported FHIR item type: ${item.type}`);
-        }
+            console.log(`Type: ${type}`);
+            console.log('subItems Below:');
+            console.log(subItem);
 
-        editorJSData.blocks.push(block);
-    });
+            switch (type) {
+                case 'calendarBlock':
+                    subItem.item.forEach(item => {
+                        block.push({
+                            id: item.linkId,
+                            type: type,
+                            data: [
+                                {
+                                    question: item.text,
+                                    date: item.initial?.[0]?.valueDate
+                                }
+                            ]
+                        })
+                    })
+                    
+                    break;
 
+                default:
+                    subItem.item.forEach(item => {
+                        block.push({
+                            id: item.linkId,
+                            type: 'inputBlock',
+                            data: [
+                                {
+                                    question: `unsupported Block ${type} --> ${item.text}`,
+                                    answer: `inital value: ${item.initial?.[0]?.valueString}`
+                                }
+                            ]
+                        })
+                    })
+                    
+                    break;
+            }
+            console.log('block --> :')
+            console.log(block);
+        })
+        editorJSData.blocks.push(block[0]);
+    
+    })
+
+    console.log(editorJSData);
     return editorJSData;
+
+
 }
 
-//EXAMPLE DATA
-const fhirData = {
-    "resourceType": "Questionnaire",
-    "id": "example-questionnaire",
-    "status": "draft",
-    "item": [
-        {
-        "linkId": "1",
-        "text": "What is your gender?",
-        "type": "choice",
-        "answerOption": [
-            {"valueString": "Male"},
-            {"valueString": "Female"},
-            {"valueString": "Other"}
-        ]
-        },
-        {
-        "linkId": "2",
-        "text": "Do you have any allergies?",
-        "type": "boolean"
-        },
-        {
-        "linkId": "3",
-        "text": "Please specify your allergies",
-        "type": "string"
-        }
-    ]
-};
+export default convertFHIRToEditorJS;
 
-const editorJSData = convertFHIRToEditorJS(fhirData);
-console.log(editorJSData);
+
+function groupHandler (item) {
+    let block = [];
+    let type = item.type
+    const code = item.code;
+    delete item.code;
+
+    switch(type) {
+        case 'group': 
+            const grouped = item.item.map( subItem => (subItem));
+            block.push({
+                item: grouped,
+                code
+            })
+            break;
+
+        default:
+                block.push({
+                    item: [item],
+                    code
+                })
+                
+            break; 
+    }
+    return block;
+}
+
+
