@@ -8,7 +8,7 @@
   border: 1px solid rgba(201, 201, 204, .35); 
   border-radius: 3px; 
   background-color: #fff; 
- /*width: 100%;*/
+  width: 100%;
 }
 
 .signature-clear-button {

@@ -1,5 +1,5 @@
 import { makeElement, deleteBlockBtn } from "../Utility/utilsFunction";
-import { signature_icon} from "../Utility/SVGIcons";
+import { signature_icon } from "../Utility/SVGIcons";
 import SignaturePad from "signature_pad";
 import "../blockTools_css/signature-block.css"
 
@@ -36,15 +36,18 @@ export default class SignatureBlock {
       this.clearSignature();
     });
 
+    // Add event listener for window resize
+    window.addEventListener('resize', () => {
+      this.adjustCanvasSize();
+      this.signaturePad.clear(); // Clear the canvas on resize to avoid distortions
+    });
+
     return this.wrapper;
   }
 
   initSignaturePad() {
-
-    // Set canvas dimensions
-    this.canvas.width = 650; 
-    this.canvas.height = 350; 
-
+    // Set initial canvas dimensions based on current window size
+    this.adjustCanvasSize();
 
     this.signaturePad = new SignaturePad(this.canvas, {
       penColor: 'rgb(0, 0, 0)',
@@ -53,7 +56,16 @@ export default class SignatureBlock {
     if (this.data && this.data.signature) {
       this.signaturePad.fromDataURL(this.data.signature);
     }
-    
+  }
+
+  adjustCanvasSize() {
+    // Get current window width and height
+    const width = document.body.clientWidth;
+    const height = document.body.clientHeight;
+
+    // Adjust the canvas size based on the window size
+    this.canvas.width = Math.min(width * 0.8, 750); 
+    this.canvas.height = Math.min(height * 0.5, 480); 
   }
 
   clearSignature() {
