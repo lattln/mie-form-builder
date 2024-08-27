@@ -1,0 +1,18 @@
+.signature-container {
+  padding: 10px; 
+  margin: 25px 25px 0px 25px;
+}
+
+
+.signature-canvas {
+  border: 1px solid rgba(201, 201, 204, .35); 
+  border-radius: 3px; 
+  background-color: #fff; 
+  width: 100%;
+}
+
+.signature-clear-button {
+  margin: 0px 8px 8px 35px;
+  padding: 8px 10px 8px 10px;
+  cursor: pointer;
+}

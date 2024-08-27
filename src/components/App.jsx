@@ -6,7 +6,7 @@ import NavBar from './NavBar';
 import EditSpace from './EditSpace';
 import Footer from './Footer';
 import { SvgImg } from '../Utility/utilsFunction';
-import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon } from '../Utility/SVGIcons';
+import { calendar_Icon, checkBox_icon, draggable_icon, fileUpload_icon, input_Icon, likert_icon, question_icon, radio_Icon, selection_Icon, signature_icon } from '../Utility/SVGIcons';
 import '../components_css/App.css';
 
 function App() {
@@ -100,7 +100,8 @@ function App() {
       questionBlock: question_icon,
       radioBlock: radio_Icon,
       selectionBlock: selection_Icon,
-      UploadBlock: fileUpload_icon
+      UploadBlock: fileUpload_icon,
+      SignatureBlock: signature_icon
     };
 
     const textMap = {
@@ -111,7 +112,8 @@ function App() {
       questionBlock: 'Question Block',
       radioBlock: 'Radio Block',
       selectionBlock: 'Selection Block',
-      UploadBlock: 'Upload Block'
+      UploadBlock: 'Upload Block',
+      SignatureBlock: 'Signature Block'
     };
 
     return (

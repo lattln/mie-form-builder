@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { SvgImg } from '../Utility/utilsFunction';
-import { calendar_Icon, fileUpload_icon, input_Icon, likert_icon, selection_Icon, draggable_icon, question_icon } from '../Utility/SVGIcons';
+import { calendar_Icon, fileUpload_icon, input_Icon, likert_icon, selection_Icon, draggable_icon, question_icon, signature_icon } from '../Utility/SVGIcons';
 import { trashCan_Icon, x_icon } from "../Utility/SVGIcons";
 import { useDraggable } from '@dnd-kit/core';
 import { EditorContext } from "./EditorContext";
@@ -51,6 +51,7 @@ const CustomToolBar = () => {
             <DraggableItem id='questionBlock' icon={question_icon} text='Question Block' />
             <DraggableItem id='selectionBlock' icon={selection_Icon} text='Selection Block' />
             <DraggableItem id='UploadBlock' icon={fileUpload_icon} text='Upload Block' />
+            <DraggableItem id='SignatureBlock' icon={signature_icon} text='Signature Block' />
         </div>
     );
 }
