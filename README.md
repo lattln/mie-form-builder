@@ -5,7 +5,6 @@
 Welcome to the MIE Form Builder repository! This project aims to provide a user-friendly and customizable form building tool that can be integrated into various applications, especially in the medical industry.
 
 
-### [live demo v2.4.07](https://lattln.github.io/mie-form-builder/) 
 ![image](https://github.com/user-attachments/assets/af3a642e-7db0-4bb0-8228-50817bb04383)
 ### Mobile adaptation
 ![image](https://github.com/user-attachments/assets/9007765b-95f3-4c84-aae2-a3922647b1b7)
@@ -20,7 +19,6 @@ Welcome to the MIE Form Builder repository! This project aims to provide a user-
 - [Usage](#usage)
 - [Export](#export)
 - [Import](#import)
-- [Demo](#demo)
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
@@ -80,10 +78,6 @@ To import a form from JSON:
 1. Click the "Import" button.
 2. Upload your JSON file.
 3. The form builder will load the form configuration from the JSON and render it in the interface.
-
-## Demo
-
-You can see a live demo of the MIE Form Builder in action at [this link](https://lattln.github.io/mie-form-builder/).
 
 ## License
 
